@@ -1,6 +1,29 @@
 import { ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const Hero = () => {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      setMousePos({ x, y });
+    };
+
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const scrollToContent = () => {
     window.scrollTo({
       top: window.innerHeight,
@@ -9,31 +32,83 @@ export const Hero = () => {
   };
 
   return (
-    <section className="fixed inset-0 h-screen w-full flex flex-col justify-between p-8 md:p-16 bg-background z-0">
+    <section className="fixed inset-0 h-screen w-full flex flex-col justify-between p-8 md:p-16 bg-background z-0 overflow-hidden">
+      {/* Floating geometric elements with parallax */}
+      <div 
+        className="absolute top-1/4 right-1/4 w-32 h-32 border border-accent/20 pointer-events-none transition-transform duration-300 ease-out"
+        style={{
+          transform: `translate(${mousePos.x * 30}px, ${mousePos.y * 30}px) rotate(${45 + mousePos.x * 10}deg)`,
+          opacity: 0.3,
+        }}
+      />
+      <div 
+        className="absolute bottom-1/3 left-1/4 w-24 h-24 border border-clay/20 rounded-full pointer-events-none transition-transform duration-500 ease-out"
+        style={{
+          transform: `translate(${mousePos.x * -20}px, ${mousePos.y * -20}px)`,
+          opacity: 0.2,
+        }}
+      />
+      <div 
+        className="absolute top-1/2 right-1/3 w-16 h-16 bg-rust/5 pointer-events-none transition-transform duration-700 ease-out"
+        style={{
+          transform: `translate(${mousePos.x * 40}px, ${mousePos.y * 40}px) rotate(${mousePos.x * 20}deg)`,
+        }}
+      />
+
       {/* Top navigation hint */}
-      <div className="flex justify-between items-start">
-        <span className="text-mono text-muted-foreground">Portfolio / 2024</span>
+      <div className="flex justify-between items-start relative z-10">
+        <span className="text-mono text-muted-foreground">Portfolio / 2025</span>
         <span className="text-mono text-muted-foreground">Scroll to explore</span>
       </div>
 
-      {/* Center content */}
-      <div className="flex-1 flex flex-col justify-center max-w-5xl">
+      {/* Center content with parallax */}
+      <div 
+        className="flex-1 flex flex-col justify-center max-w-5xl relative z-10"
+        style={{
+          transform: `translateY(${scrollY * -0.1}px)`,
+          opacity: 1 - scrollY / (window.innerHeight * 0.8),
+        }}
+      >
         <div className="space-y-6">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl text-editorial animate-fade-up">
-            Vinit Sharma
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed animate-fade-up-delay-1 font-sans">
-            I design and engineer systems for the web. 
-            <span className="text-foreground"> Building experiments</span> at the intersection of function and form.
-          </p>
+          <div className="overflow-hidden">
+            <h1 
+              className="text-5xl md:text-7xl lg:text-8xl text-editorial animate-fade-up"
+              style={{
+                transform: `translateX(${mousePos.x * 5}px)`,
+                transition: "transform 0.3s ease-out",
+              }}
+            >
+              Vinit Sharma
+            </h1>
+          </div>
+          <div className="overflow-hidden">
+            <p 
+              className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed animate-fade-up-delay-1 font-sans"
+              style={{
+                transform: `translateX(${mousePos.x * 3}px)`,
+                transition: "transform 0.3s ease-out",
+              }}
+            >
+              Full Stack Developer who doesn't just build websites—
+              <span className="text-foreground"> I design systems and experiences.</span>
+            </p>
+          </div>
+          <div className="flex gap-4 mt-8 animate-fade-up-delay-2">
+            <span className="text-xs px-3 py-1.5 border border-border text-muted-foreground">
+              B.E. Computer Science
+            </span>
+            <span className="text-xs px-3 py-1.5 border border-accent/30 text-accent">
+              Available for projects
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Bottom navigation hint */}
-      <div className="flex justify-between items-end">
+      <div className="flex justify-between items-end relative z-10">
         <div className="space-y-1 animate-fade-up-delay-2">
           <p className="text-mono text-muted-foreground">Based in</p>
-          <p className="text-sm">India</p>
+          <p className="text-sm">Chandigarh, India</p>
         </div>
 
         <button
@@ -47,8 +122,8 @@ export const Hero = () => {
         </button>
 
         <div className="space-y-1 text-right animate-fade-up-delay-2">
-          <p className="text-mono text-muted-foreground">Available for</p>
-          <p className="text-sm">Projects & Collaboration</p>
+          <p className="text-mono text-muted-foreground">Chandigarh University</p>
+          <p className="text-sm">2022 — 2026</p>
         </div>
       </div>
     </section>
