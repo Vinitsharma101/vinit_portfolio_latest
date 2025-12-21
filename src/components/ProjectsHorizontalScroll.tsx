@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
 
 interface Project {
@@ -13,40 +13,73 @@ interface Project {
 const projects: Project[] = [
   {
     id: 1,
-    title: "E-Commerce Platform",
+    title: "Project Manager Web App",
     category: "Full Stack",
     year: "2024",
-    description: "A scalable marketplace with real-time inventory management and secure payment processing.",
-    tech: ["React", "Node.js", "PostgreSQL", "Stripe"],
+    description: "Built a task and team collaboration platform with real-time React UI, authentication, and REST APIs.",
+    tech: ["React", "Node.js", "Express.js", "FastAPI", "SQL", "Tailwind CSS"],
   },
   {
     id: 2,
-    title: "Data Visualization Dashboard",
-    category: "Frontend",
+    title: "Live Location Sharing",
+    category: "Real-time Systems",
     year: "2024",
-    description: "Interactive analytics dashboard transforming complex datasets into intuitive visual narratives.",
-    tech: ["Next.js", "D3.js", "TypeScript", "Tailwind"],
+    description: "Developed a real-time location sharing app using WebSockets with <200ms map marker updates and seamless session management.",
+    tech: ["WebSockets", "Leaflet.js", "Node.js", "Real-time UI"],
   },
   {
     id: 3,
-    title: "API Gateway System",
-    category: "Backend",
-    year: "2023",
-    description: "Microservices architecture with rate limiting, authentication, and intelligent routing.",
-    tech: ["Go", "Redis", "Docker", "Kubernetes"],
+    title: "Token Buddy Platform",
+    category: "Healthcare Tech",
+    year: "2025",
+    description: "Healthcare data visualization platform with monthly team reports, identifying trends that led to 15% improvement in user satisfaction.",
+    tech: ["React", "Data Visualization", "Analytics", "Node.js"],
   },
   {
     id: 4,
-    title: "Real-time Collaboration Tool",
-    category: "Full Stack",
-    year: "2023",
-    description: "WebSocket-powered workspace enabling seamless team synchronization and document editing.",
-    tech: ["React", "Socket.io", "MongoDB", "AWS"],
+    title: "NLP & Web Scraping Tools",
+    category: "Data Engineering",
+    year: "2024",
+    description: "Built tools for extracting, cleaning, and analyzing web-based textual data using natural language processing techniques.",
+    tech: ["Python", "NLP", "Web Scraping", "Data Analysis"],
   },
 ];
 
 export const ProjectsHorizontalScroll = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        const progress = scrollLeft / (scrollWidth - clientWidth);
+        setScrollProgress(progress);
+      }
+    };
+
+    const scrollElement = scrollRef.current;
+    if (scrollElement) {
+      scrollElement.addEventListener("scroll", handleScroll);
+      return () => scrollElement.removeEventListener("scroll", handleScroll);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        setMousePos({ x, y });
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -59,30 +92,66 @@ export const ProjectsHorizontalScroll = () => {
   };
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative overflow-hidden">
+      {/* Floating geometric shape - moves with scroll */}
+      <div 
+        className="absolute top-1/2 -translate-y-1/2 w-32 h-32 border border-accent/20 pointer-events-none transition-all duration-700 ease-out z-0"
+        style={{
+          left: `${10 + scrollProgress * 60}%`,
+          transform: `translateY(-50%) rotate(${scrollProgress * 90}deg) scale(${1 + scrollProgress * 0.3})`,
+          opacity: 0.4 + scrollProgress * 0.3,
+        }}
+      />
+      
+      {/* Second floating element */}
+      <div 
+        className="absolute top-1/4 w-16 h-16 bg-clay/10 rounded-full pointer-events-none transition-all duration-500 ease-out z-0"
+        style={{
+          left: `${5 + scrollProgress * 70}%`,
+          transform: `translateX(${mousePos.x * 20}px) translateY(${mousePos.y * 20}px)`,
+        }}
+      />
+
       {/* Scroll controls */}
-      <div className="flex justify-end gap-4 mb-8">
-        <button
-          onClick={() => scroll("left")}
-          className="p-3 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
-        >
-          <ArrowRight className="w-4 h-4 rotate-180" />
-        </button>
-        <button
-          onClick={() => scroll("right")}
-          className="p-3 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
-        >
-          <ArrowRight className="w-4 h-4" />
-        </button>
+      <div className="flex justify-between items-center mb-8 relative z-10">
+        <div className="flex items-center gap-4">
+          <span className="text-mono text-muted-foreground">
+            {String(Math.round(scrollProgress * 100)).padStart(2, "0")}%
+          </span>
+          <div className="w-24 h-[2px] bg-border overflow-hidden">
+            <div 
+              className="h-full bg-accent transition-all duration-300"
+              style={{ width: `${scrollProgress * 100}%` }}
+            />
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <button
+            onClick={() => scroll("left")}
+            className="p-3 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+          >
+            <ArrowRight className="w-4 h-4 rotate-180" />
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className="p-3 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+          >
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Horizontal scroll container */}
-      <div ref={scrollRef} className="horizontal-scroll">
+      <div ref={scrollRef} className="horizontal-scroll relative z-10">
         {projects.map((project, index) => (
           <div
             key={project.id}
             className="w-[350px] md:w-[450px] experiment-card group cursor-pointer"
-            style={{ animationDelay: `${index * 0.1}s` }}
+            style={{ 
+              animationDelay: `${index * 0.1}s`,
+              transform: `translateY(${mousePos.y * (index % 2 === 0 ? 10 : -10)}px)`,
+              transition: "transform 0.3s ease-out",
+            }}
           >
             {/* Project number */}
             <span className="text-mono text-muted-foreground mb-4 block">
@@ -119,7 +188,7 @@ export const ProjectsHorizontalScroll = () => {
 
             {/* View project link */}
             <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-              <span className="line-reveal">View Project</span>
+              <span className="line-reveal">Explore Build</span>
               <ExternalLink className="w-3 h-3" />
             </div>
           </div>
