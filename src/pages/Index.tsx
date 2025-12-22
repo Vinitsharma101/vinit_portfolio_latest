@@ -8,10 +8,14 @@ import { ExperienceSection } from "@/components/ExperienceSection";
 import { ContactSection } from "@/components/ContactSection";
 import { FloatingNav } from "@/components/FloatingNav";
 import { TechStackSection } from "@/components/TechStackSection";
+import { CustomCursor } from "@/components/CustomCursor";
 
 const Index = () => {
   return (
     <div className="relative">
+      {/* Custom cursor */}
+      <CustomCursor />
+
       {/* Scroll progress indicator */}
       <ScrollProgress />
 
