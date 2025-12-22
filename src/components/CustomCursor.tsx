@@ -1,13 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [isOnDark, setIsOnDark] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const positionRef = useRef({ x: 0, y: 0 });
+  const targetRef = useRef({ x: 0, y: 0 });
+  const rafRef = useRef<number>();
 
   useEffect(() => {
+    // Check if touch device
+    if ('ontouchstart' in window) return;
+
+    const lerp = (start: number, end: number, factor: number) => {
+      return start + (end - start) * factor;
+    };
+
+    const animate = () => {
+      positionRef.current.x = lerp(positionRef.current.x, targetRef.current.x, 0.15);
+      positionRef.current.y = lerp(positionRef.current.y, targetRef.current.y, 0.15);
+
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${positionRef.current.x - 8}px, ${positionRef.current.y - 8}px, 0)`;
+      }
+
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      targetRef.current = { x: e.clientX, y: e.clientY };
       setIsVisible(true);
 
       // Check background color at cursor position
@@ -25,11 +46,13 @@ export const CustomCursor = () => {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
+    rafRef.current = requestAnimationFrame(animate);
     window.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
     return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
@@ -43,15 +66,15 @@ export const CustomCursor = () => {
 
   return (
     <div
-      className={`fixed pointer-events-none z-[9999] rounded-full border-2 transition-opacity duration-200 mix-blend-difference ${
+      ref={cursorRef}
+      className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-opacity duration-200 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
       style={{
-        left: position.x - 16,
-        top: position.y - 16,
-        width: 32,
-        height: 32,
-        borderColor: isOnDark ? 'white' : 'black',
+        width: 16,
+        height: 16,
+        backgroundColor: isOnDark ? 'white' : 'black',
+        willChange: 'transform',
       }}
     />
   );
