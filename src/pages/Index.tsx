@@ -7,6 +7,7 @@ import { PhilosophySection } from "@/components/PhilosophySection";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ContactSection } from "@/components/ContactSection";
 import { FloatingNav } from "@/components/FloatingNav";
+import { TechStackSection } from "@/components/TechStackSection";
 
 const Index = () => {
   return (
@@ -64,6 +65,9 @@ const Index = () => {
         >
           <PhilosophySection />
         </ExperimentSection>
+
+        {/* Experiment 05: Tech Stack */}
+        <TechStackSection />
 
         {/* Contact section */}
         <ContactSection />
