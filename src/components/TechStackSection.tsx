@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { useInView } from "@/hooks/useInView";
 
 interface TechCategory {
@@ -134,7 +133,6 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
 };
 
 export const TechStackSection = () => {
-  const navigate = useNavigate();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { threshold: 0.1 });
 
@@ -152,7 +150,7 @@ export const TechStackSection = () => {
           }`}
         >
           <span className="text-xs tracking-[0.3em] text-[#6a6a6a] uppercase mb-4 block">
-            Experiment 05
+            Experiment 03
           </span>
           <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl text-[#f5f5f5] mb-4">
             The Stack
@@ -172,22 +170,6 @@ export const TechStackSection = () => {
         {techCategories.map((category, index) => (
           <TechRow key={category.name} category={category} index={index} />
         ))}
-      </div>
-
-      {/* Action button */}
-      <div className="px-6 md:px-12 mt-16 md:mt-24">
-        <button
-          onClick={() => navigate("/skills")}
-          className="group relative inline-flex items-center gap-4 text-[#f5f5f5] text-lg md:text-xl tracking-wide transition-all duration-500 hover:gap-6"
-        >
-          <span className="relative">
-            Open the Stack
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-[#f5f5f5] transition-all duration-500 group-hover:w-full" />
-          </span>
-          <span className="text-2xl transition-transform duration-500 group-hover:translate-x-2">
-            →
-          </span>
-        </button>
       </div>
     </section>
   );

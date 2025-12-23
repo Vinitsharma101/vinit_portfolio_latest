@@ -2,7 +2,6 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { Hero } from "@/components/Hero";
 import { ExperimentSection } from "@/components/ExperimentSection";
 import { ProjectsHorizontalScroll } from "@/components/ProjectsHorizontalScroll";
-import { SkillsExperiment } from "@/components/SkillsExperiment";
 import { PhilosophySection } from "@/components/PhilosophySection";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ContactSection } from "@/components/ContactSection";
@@ -50,15 +49,8 @@ const Index = () => {
           <ExperienceSection />
         </ExperimentSection>
 
-        {/* Experiment 03: Skills - Technical Palette */}
-        <ExperimentSection
-          number="03"
-          title="Technical Palette"
-          description="The tools and technologies I use to bring ideas to life. Hover to explore proficiency levels."
-          accent="rust"
-        >
-          <SkillsExperiment />
-        </ExperimentSection>
+        {/* Experiment 03: Tech Stack */}
+        <TechStackSection />
 
         {/* Experiment 04: Philosophy - Performance Thinking */}
         <ExperimentSection
@@ -69,9 +61,6 @@ const Index = () => {
         >
           <PhilosophySection />
         </ExperimentSection>
-
-        {/* Experiment 05: Tech Stack */}
-        <TechStackSection />
 
         {/* Contact section */}
         <ContactSection />
