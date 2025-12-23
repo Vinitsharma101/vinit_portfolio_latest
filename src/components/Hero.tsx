@@ -1,15 +1,18 @@
 import { ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export const Hero = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [mousePixelPos, setMousePixelPos] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 2;
       const y = (e.clientY / window.innerHeight - 0.5) * 2;
       setMousePos({ x, y });
+      setMousePixelPos({ x: e.clientX, y: e.clientY });
     };
 
     const handleScroll = () => {
@@ -32,7 +35,35 @@ export const Hero = () => {
   };
 
   return (
-    <section className="fixed inset-0 h-screen w-full flex flex-col justify-between p-8 md:p-16 bg-background z-0 overflow-hidden">
+    <section 
+      ref={sectionRef}
+      className="fixed inset-0 h-screen w-full flex flex-col justify-between p-8 md:p-16 bg-background z-0 overflow-hidden"
+    >
+      {/* Interactive grid background */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, hsl(var(--foreground) / 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, hsl(var(--foreground) / 0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
+        }}
+      />
+      
+      {/* Hover reveal grid overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, hsl(var(--foreground) / 0.15) 1px, transparent 1px),
+            linear-gradient(to bottom, hsl(var(--foreground) / 0.15) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
+          maskImage: `radial-gradient(circle 150px at ${mousePixelPos.x}px ${mousePixelPos.y}px, black 0%, transparent 100%)`,
+          WebkitMaskImage: `radial-gradient(circle 150px at ${mousePixelPos.x}px ${mousePixelPos.y}px, black 0%, transparent 100%)`,
+        }}
+      />
       {/* Floating geometric elements with parallax */}
       <div 
         className="absolute top-1/4 right-1/4 w-32 h-32 border border-accent/20 pointer-events-none transition-transform duration-300 ease-out"
