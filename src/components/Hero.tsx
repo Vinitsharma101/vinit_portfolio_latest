@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Download, Linkedin } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
 export const Hero = () => {
@@ -137,9 +137,24 @@ export const Hero = () => {
 
       {/* Bottom navigation hint */}
       <div className="flex justify-between items-end relative z-10">
-        <div className="space-y-1 animate-fade-up-delay-2">
-          <p className="text-mono text-muted-foreground">Based in</p>
-          <p className="text-sm">Chandigarh, India</p>
+        <div className="flex gap-3 animate-fade-up-delay-2">
+          <a
+            href="/resume.pdf"
+            download
+            className="group flex items-center gap-2 px-4 py-2 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+          >
+            <Download className="w-4 h-4" />
+            <span className="text-sm">Resume</span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/sharma-vinit101/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2 px-4 py-2 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+          >
+            <Linkedin className="w-4 h-4" />
+            <span className="text-sm">LinkedIn</span>
+          </a>
         </div>
 
         <button

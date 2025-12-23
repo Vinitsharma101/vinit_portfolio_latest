@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Project {
   id: number;
@@ -199,6 +200,17 @@ export const ProjectsHorizontalScroll = () => {
       <p className="text-mono text-muted-foreground text-center mt-8 md:hidden">
         ← Swipe to explore →
       </p>
+
+      {/* View all projects link */}
+      <div className="flex justify-center mt-12">
+        <Link
+          to="/projects"
+          className="group flex items-center gap-3 px-6 py-3 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+        >
+          <span className="text-sm">View All Projects</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Link>
+      </div>
     </div>
   );
 };
