@@ -2,7 +2,6 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { Hero } from "@/components/Hero";
 import { ExperimentSection } from "@/components/ExperimentSection";
 import { ProjectsHorizontalScroll } from "@/components/ProjectsHorizontalScroll";
-import { PhilosophySection } from "@/components/PhilosophySection";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ContactSection } from "@/components/ContactSection";
 import { FloatingNav } from "@/components/FloatingNav";
@@ -51,16 +50,6 @@ const Index = () => {
 
         {/* Experiment 03: Tech Stack */}
         <TechStackSection />
-
-        {/* Experiment 04: Philosophy - Performance Thinking */}
-        <ExperimentSection
-          number="04"
-          title="Performance Thinking"
-          description="The philosophical foundation behind my approach. How I think about systems, design, and user experience."
-          accent="graphite"
-        >
-          <PhilosophySection />
-        </ExperimentSection>
 
         {/* Contact section */}
         <ContactSection />
