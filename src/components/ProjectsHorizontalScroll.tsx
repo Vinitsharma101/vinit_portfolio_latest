@@ -147,7 +147,7 @@ export const ProjectsHorizontalScroll = () => {
         {projects.map((project, index) => (
           <div
             key={project.id}
-            className="w-[350px] md:w-[450px] experiment-card group cursor-pointer"
+            className="w-[280px] md:w-[450px] experiment-card group cursor-pointer p-4 md:p-6"
             style={{ 
               animationDelay: `${index * 0.1}s`,
               transform: `translateY(${mousePos.y * (index % 2 === 0 ? 10 : -10)}px)`,
@@ -155,32 +155,32 @@ export const ProjectsHorizontalScroll = () => {
             }}
           >
             {/* Project number */}
-            <span className="text-mono text-muted-foreground mb-4 block">
+            <span className="text-mono text-muted-foreground mb-2 md:mb-4 block text-xs md:text-sm">
               {String(project.id).padStart(2, "0")}
             </span>
 
             {/* Project info */}
-            <div className="flex justify-between items-start mb-4">
-              <span className="text-xs uppercase tracking-wider text-accent">
+            <div className="flex justify-between items-start mb-2 md:mb-4">
+              <span className="text-[10px] md:text-xs uppercase tracking-wider text-accent">
                 {project.category}
               </span>
-              <span className="text-xs text-muted-foreground">{project.year}</span>
+              <span className="text-[10px] md:text-xs text-muted-foreground">{project.year}</span>
             </div>
 
-            <h3 className="text-2xl text-editorial mb-4 group-hover:text-rust transition-colors">
+            <h3 className="text-lg md:text-2xl text-editorial mb-2 md:mb-4 group-hover:text-rust transition-colors">
               {project.title}
             </h3>
 
-            <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+            <p className="text-muted-foreground text-xs md:text-sm mb-4 md:mb-6 leading-relaxed">
               {project.description}
             </p>
 
             {/* Tech stack */}
-            <div className="flex flex-wrap gap-2 mb-6">
+            <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-6">
               {project.tech.map((tech) => (
                 <span
                   key={tech}
-                  className="text-xs px-2 py-1 bg-secondary text-secondary-foreground"
+                  className="text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 md:py-1 bg-secondary text-secondary-foreground"
                 >
                   {tech}
                 </span>
@@ -188,7 +188,7 @@ export const ProjectsHorizontalScroll = () => {
             </div>
 
             {/* View project link */}
-            <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+            <div className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground group-hover:text-foreground transition-colors">
               <span className="line-reveal">Explore Build</span>
               <ExternalLink className="w-3 h-3" />
             </div>

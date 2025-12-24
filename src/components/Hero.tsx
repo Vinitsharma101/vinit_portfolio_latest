@@ -88,8 +88,10 @@ export const Hero = () => {
 
       {/* Top navigation hint */}
       <div className="flex justify-between items-start relative z-10">
-        <span className="text-mono text-muted-foreground">Portfolio / 2025</span>
-        <span className="text-mono text-muted-foreground">Scroll to explore</span>
+        <div className="space-y-1">
+          <p className="text-mono text-muted-foreground">Chandigarh University</p>
+          <p className="text-sm text-muted-foreground">2022 — 2026</p>
+        </div>
       </div>
 
       {/* Center content with parallax */}
@@ -167,10 +169,9 @@ export const Hero = () => {
           <ChevronDown className="w-5 h-5 text-muted-foreground group-hover:text-foreground animate-float transition-colors" />
         </button>
 
-        <div className="space-y-1 text-right animate-fade-up-delay-2">
-          <p className="text-mono text-muted-foreground">Chandigarh University</p>
-          <p className="text-sm">2022 — 2026</p>
-        </div>
+        <span className="text-mono text-muted-foreground animate-fade-up-delay-2">
+          Scroll to explore
+        </span>
       </div>
     </section>
   );
