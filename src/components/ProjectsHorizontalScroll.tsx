@@ -46,59 +46,18 @@ const projects: Project[] = [
   },
 ];
 
-// Duplicate projects for seamless infinite scroll
-const infiniteProjects = [...projects, ...projects, ...projects];
-
 export const ProjectsHorizontalScroll = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const animationRef = useRef<number | null>(null);
-
-  // Seamless infinite auto-scroll
-  useEffect(() => {
-    const scrollElement = scrollRef.current;
-    if (!scrollElement) return;
-
-    const animate = () => {
-      if (!isHovered && scrollElement) {
-        scrollElement.scrollLeft += 1;
-        
-        // Get the width of one set of projects
-        const singleSetWidth = scrollElement.scrollWidth / 3;
-        
-        // When we've scrolled past the first set, jump back seamlessly
-        if (scrollElement.scrollLeft >= singleSetWidth * 2) {
-          scrollElement.scrollLeft = singleSetWidth;
-        }
-        
-        // If somehow we're before the first set, jump forward
-        if (scrollElement.scrollLeft < singleSetWidth * 0.1) {
-          scrollElement.scrollLeft = singleSetWidth;
-        }
-      }
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    // Start from the middle set
-    scrollElement.scrollLeft = scrollElement.scrollWidth / 3;
-    animationRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [isHovered]);
 
   useEffect(() => {
     const handleScroll = () => {
       if (scrollRef.current) {
-        const singleSetWidth = scrollRef.current.scrollWidth / 3;
-        const relativeScroll = (scrollRef.current.scrollLeft % singleSetWidth) / singleSetWidth;
-        setScrollProgress(relativeScroll);
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        const progress = scrollLeft / (scrollWidth - clientWidth);
+        setScrollProgress(progress);
       }
     };
 
@@ -134,12 +93,7 @@ export const ProjectsHorizontalScroll = () => {
   };
 
   return (
-    <div 
-      ref={containerRef} 
-      className="relative overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div ref={containerRef} className="relative overflow-hidden">
       {/* Floating geometric shape - moves with scroll */}
       <div 
         className="absolute top-1/2 -translate-y-1/2 w-32 h-32 border border-accent/20 pointer-events-none transition-all duration-700 ease-out z-0"
@@ -190,19 +144,19 @@ export const ProjectsHorizontalScroll = () => {
 
       {/* Horizontal scroll container */}
       <div ref={scrollRef} className="horizontal-scroll relative z-10">
-        {infiniteProjects.map((project, index) => (
+        {projects.map((project, index) => (
           <div
-            key={`${project.id}-${index}`}
-            className="w-[280px] md:w-[450px] experiment-card group cursor-pointer p-4 md:p-6 flex-shrink-0"
+            key={project.id}
+            className="w-[280px] md:w-[450px] experiment-card group cursor-pointer p-4 md:p-6"
             style={{ 
-              animationDelay: `${(index % projects.length) * 0.1}s`,
+              animationDelay: `${index * 0.1}s`,
               transform: `translateY(${mousePos.y * (index % 2 === 0 ? 10 : -10)}px)`,
               transition: "transform 0.3s ease-out",
             }}
           >
             {/* Project number */}
             <span className="text-mono text-muted-foreground mb-2 md:mb-4 block text-xs md:text-sm">
-              {String((index % projects.length) + 1).padStart(2, "0")}
+              {String(project.id).padStart(2, "0")}
             </span>
 
             {/* Project info */}
