@@ -51,6 +51,29 @@ export const ProjectsHorizontalScroll = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
+  const userScrollTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-scroll effect
+  useEffect(() => {
+    const scrollElement = scrollRef.current;
+    if (!scrollElement || isHovered || isUserScrolling) return;
+
+    const autoScroll = setInterval(() => {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollElement;
+      const maxScroll = scrollWidth - clientWidth;
+      
+      if (scrollLeft >= maxScroll) {
+        // Reset to beginning when reaching the end
+        scrollElement.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        scrollElement.scrollBy({ left: 1, behavior: 'auto' });
+      }
+    }, 30);
+
+    return () => clearInterval(autoScroll);
+  }, [isHovered, isUserScrolling]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,10 +84,26 @@ export const ProjectsHorizontalScroll = () => {
       }
     };
 
+    const handleUserScroll = () => {
+      setIsUserScrolling(true);
+      if (userScrollTimeout.current) {
+        clearTimeout(userScrollTimeout.current);
+      }
+      userScrollTimeout.current = setTimeout(() => {
+        setIsUserScrolling(false);
+      }, 2000);
+    };
+
     const scrollElement = scrollRef.current;
     if (scrollElement) {
       scrollElement.addEventListener("scroll", handleScroll);
-      return () => scrollElement.removeEventListener("scroll", handleScroll);
+      scrollElement.addEventListener("wheel", handleUserScroll);
+      scrollElement.addEventListener("touchstart", handleUserScroll);
+      return () => {
+        scrollElement.removeEventListener("scroll", handleScroll);
+        scrollElement.removeEventListener("wheel", handleUserScroll);
+        scrollElement.removeEventListener("touchstart", handleUserScroll);
+      };
     }
   }, []);
 
@@ -93,7 +132,12 @@ export const ProjectsHorizontalScroll = () => {
   };
 
   return (
-    <div ref={containerRef} className="relative overflow-hidden">
+    <div 
+      ref={containerRef} 
+      className="relative overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* Floating geometric shape - moves with scroll */}
       <div 
         className="absolute top-1/2 -translate-y-1/2 w-32 h-32 border border-accent/20 pointer-events-none transition-all duration-700 ease-out z-0"
