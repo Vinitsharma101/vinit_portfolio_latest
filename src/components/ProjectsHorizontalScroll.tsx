@@ -46,23 +46,11 @@ const projects: Project[] = [
   },
 ];
 
-// Double the projects for seamless infinite scroll
-const infiniteProjects = [...projects, ...projects];
-
 export const ProjectsHorizontalScroll = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isPaused, setIsPaused] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -108,7 +96,7 @@ export const ProjectsHorizontalScroll = () => {
     <div ref={containerRef} className="relative overflow-hidden">
       {/* Floating geometric shape - moves with scroll */}
       <div 
-        className="absolute top-1/2 -translate-y-1/2 w-32 h-32 border border-accent/20 pointer-events-none transition-all duration-700 ease-out z-0 hidden md:block"
+        className="absolute top-1/2 -translate-y-1/2 w-32 h-32 border border-accent/20 pointer-events-none transition-all duration-700 ease-out z-0"
         style={{
           left: `${10 + scrollProgress * 60}%`,
           transform: `translateY(-50%) rotate(${scrollProgress * 90}deg) scale(${1 + scrollProgress * 0.3})`,
@@ -118,15 +106,15 @@ export const ProjectsHorizontalScroll = () => {
       
       {/* Second floating element */}
       <div 
-        className="absolute top-1/4 w-16 h-16 bg-clay/10 rounded-full pointer-events-none transition-all duration-500 ease-out z-0 hidden md:block"
+        className="absolute top-1/4 w-16 h-16 bg-clay/10 rounded-full pointer-events-none transition-all duration-500 ease-out z-0"
         style={{
           left: `${5 + scrollProgress * 70}%`,
           transform: `translateX(${mousePos.x * 20}px) translateY(${mousePos.y * 20}px)`,
         }}
       />
 
-      {/* Scroll controls - Desktop only */}
-      <div className="hidden md:flex justify-between items-center mb-8 relative z-10">
+      {/* Scroll controls */}
+      <div className="flex justify-between items-center mb-8 relative z-10">
         <div className="flex items-center gap-4">
           <span className="text-mono text-muted-foreground">
             {String(Math.round(scrollProgress * 100)).padStart(2, "0")}%
@@ -154,135 +142,73 @@ export const ProjectsHorizontalScroll = () => {
         </div>
       </div>
 
-      {/* Mobile: Auto-scrolling marquee */}
-      {isMobile ? (
-        <div 
-          className="overflow-hidden relative z-10"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => setIsPaused(false)}
-        >
-          <div 
-            className={`flex gap-4 ${isPaused ? '' : 'animate-marquee'}`}
-            style={{ width: 'max-content' }}
+      {/* Horizontal scroll container */}
+      <div ref={scrollRef} className="horizontal-scroll relative z-10">
+        {projects.map((project, index) => (
+          <div
+            key={project.id}
+            className="w-[350px] md:w-[450px] experiment-card group cursor-pointer"
+            style={{ 
+              animationDelay: `${index * 0.1}s`,
+              transform: `translateY(${mousePos.y * (index % 2 === 0 ? 10 : -10)}px)`,
+              transition: "transform 0.3s ease-out",
+            }}
           >
-            {infiniteProjects.map((project, index) => (
-              <div
-                key={`${project.id}-${index}`}
-                className="w-[260px] flex-shrink-0 p-4 border border-border bg-background/50"
-              >
-                {/* Project number */}
-                <span className="text-mono text-xs text-muted-foreground mb-2 block">
-                  {String(project.id).padStart(2, "0")}
-                </span>
+            {/* Project number */}
+            <span className="text-mono text-muted-foreground mb-4 block">
+              {String(project.id).padStart(2, "0")}
+            </span>
 
-                {/* Project info */}
-                <div className="flex justify-between items-start mb-2">
-                  <span className="text-[10px] uppercase tracking-wider text-accent">
-                    {project.category}
-                  </span>
-                  <span className="text-[10px] text-muted-foreground">{project.year}</span>
-                </div>
-
-                <h3 className="text-base text-editorial mb-2">
-                  {project.title}
-                </h3>
-
-                <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2">
-                  {project.description}
-                </p>
-
-                {/* Tech stack - show only first 3 */}
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {project.tech.slice(0, 3).map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-[10px] px-1.5 py-0.5 bg-secondary text-secondary-foreground"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.tech.length > 3 && (
-                    <span className="text-[10px] px-1.5 py-0.5 text-muted-foreground">
-                      +{project.tech.length - 3}
-                    </span>
-                  )}
-                </div>
-
-                {/* View project link */}
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <span>Explore</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        /* Desktop: Horizontal scroll container */
-        <div ref={scrollRef} className="horizontal-scroll relative z-10">
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              className="w-[350px] md:w-[450px] experiment-card group cursor-pointer"
-              style={{ 
-                animationDelay: `${index * 0.1}s`,
-                transform: `translateY(${mousePos.y * (index % 2 === 0 ? 10 : -10)}px)`,
-                transition: "transform 0.3s ease-out",
-              }}
-            >
-              {/* Project number */}
-              <span className="text-mono text-muted-foreground mb-4 block">
-                {String(project.id).padStart(2, "0")}
+            {/* Project info */}
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-xs uppercase tracking-wider text-accent">
+                {project.category}
               </span>
-
-              {/* Project info */}
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-xs uppercase tracking-wider text-accent">
-                  {project.category}
-                </span>
-                <span className="text-xs text-muted-foreground">{project.year}</span>
-              </div>
-
-              <h3 className="text-2xl text-editorial mb-4 group-hover:text-rust transition-colors">
-                {project.title}
-              </h3>
-
-              <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
-                {project.description}
-              </p>
-
-              {/* Tech stack */}
-              <div className="flex flex-wrap gap-2 mb-6">
-                {project.tech.map((tech) => (
-                  <span
-                    key={tech}
-                    className="text-xs px-2 py-1 bg-secondary text-secondary-foreground"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              {/* View project link */}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                <span className="line-reveal">Explore Build</span>
-                <ExternalLink className="w-3 h-3" />
-              </div>
+              <span className="text-xs text-muted-foreground">{project.year}</span>
             </div>
-          ))}
-        </div>
-      )}
+
+            <h3 className="text-2xl text-editorial mb-4 group-hover:text-rust transition-colors">
+              {project.title}
+            </h3>
+
+            <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+              {project.description}
+            </p>
+
+            {/* Tech stack */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {project.tech.map((tech) => (
+                <span
+                  key={tech}
+                  className="text-xs px-2 py-1 bg-secondary text-secondary-foreground"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            {/* View project link */}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+              <span className="line-reveal">Explore Build</span>
+              <ExternalLink className="w-3 h-3" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Scroll hint */}
+      <p className="text-mono text-muted-foreground text-center mt-8 md:hidden">
+        ← Swipe to explore →
+      </p>
 
       {/* View all projects link */}
-      <div className="flex justify-center mt-8 md:mt-12">
+      <div className="flex justify-center mt-12">
         <Link
           to="/projects"
-          className="group flex items-center gap-3 px-4 md:px-6 py-2 md:py-3 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+          className="group flex items-center gap-3 px-6 py-3 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
         >
-          <span className="text-xs md:text-sm">View All Projects</span>
-          <ArrowRight className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
+          <span className="text-sm">View All Projects</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
     </div>
