@@ -88,8 +88,8 @@ export const Hero = () => {
 
       {/* Top navigation hint */}
       <div className="flex justify-between items-start relative z-10">
-        <span className="text-mono text-muted-foreground">Portfolio / 2025</span>
-        <span className="text-mono text-muted-foreground">Scroll to explore</span>
+        <span className="text-mono text-muted-foreground">Chandigarh University</span>
+        <span className="text-mono text-muted-foreground hidden md:block">Scroll to explore</span>
       </div>
 
       {/* Center content with parallax */}
@@ -159,7 +159,7 @@ export const Hero = () => {
 
         <button
           onClick={scrollToContent}
-          className="group flex flex-col items-center gap-2 animate-fade-up-delay-3"
+          className="group hidden md:flex flex-col items-center gap-2 animate-fade-up-delay-3"
         >
           <span className="text-mono text-muted-foreground group-hover:text-foreground transition-colors">
             Begin Journey
@@ -167,9 +167,8 @@ export const Hero = () => {
           <ChevronDown className="w-5 h-5 text-muted-foreground group-hover:text-foreground animate-float transition-colors" />
         </button>
 
-        <div className="space-y-1 text-right animate-fade-up-delay-2">
-          <p className="text-mono text-muted-foreground">Chandigarh University</p>
-          <p className="text-sm">2022 — 2026</p>
+        <div className="space-y-1 text-right animate-fade-up-delay-2 hidden md:block">
+          <p className="text-mono text-muted-foreground">2022 — 2026</p>
         </div>
       </div>
     </section>
