@@ -38,18 +38,18 @@ const Index = () => {
           <ProjectsHorizontalScroll />
         </ExperimentSection>
 
-        {/* Experiment 02: Experience - System Architecture */}
+        {/* Experiment 02: Tech Stack */}
+        <TechStackSection />
+
+        {/* Experiment 03: Experience - System Architecture */}
         <ExperimentSection
-          number="02"
+          number="03"
           title="System Architecture"
           description="The journey through startups, teams, and real development challenges. Where theory met practice."
           accent="clay"
         >
           <ExperienceSection />
         </ExperimentSection>
-
-        {/* Experiment 03: Tech Stack */}
-        <TechStackSection />
 
         {/* Contact section */}
         <ContactSection />
