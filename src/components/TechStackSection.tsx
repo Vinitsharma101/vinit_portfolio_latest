@@ -72,9 +72,9 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
       <div className="absolute top-0 left-0 right-0 h-px bg-[#3a3a3a]" />
       
       {/* Main row */}
-      <div className="py-8 md:py-12 px-6 md:px-12 flex items-center justify-between">
+      <div className="py-5 md:py-8 px-4 md:px-10 flex items-center justify-between">
         <h3
-          className="font-serif text-3xl md:text-5xl lg:text-6xl font-normal tracking-tight transition-all duration-500"
+          className="font-serif text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight transition-all duration-500"
           style={{
             color: isActive ? "#ffffff" : "#8a8a8a",
           }}
@@ -83,7 +83,7 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
         </h3>
         
         <span
-          className="text-sm md:text-base tracking-widest transition-all duration-500"
+          className="text-xs md:text-sm tracking-widest transition-all duration-500"
           style={{
             color: isActive ? "#ffffff" : "#5a5a5a",
           }}
@@ -96,27 +96,27 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
       <div
         className="overflow-hidden transition-all duration-700 ease-out"
         style={{
-          maxHeight: isActive ? "120px" : "0px",
+          maxHeight: isActive ? "100px" : "0px",
           opacity: isActive ? 1 : 0,
         }}
       >
-        <div className="px-6 md:px-12 pb-8 flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide">
+        <div className="px-4 md:px-10 pb-5 flex gap-3 md:gap-5 overflow-x-auto scrollbar-hide">
           {category.techs.map((tech, techIndex) => (
             <div
               key={tech.name}
-              className="flex items-center gap-3 flex-shrink-0 transition-all duration-500"
+              className="flex items-center gap-2 flex-shrink-0 transition-all duration-500"
               style={{
                 transform: isActive 
-                  ? `translateX(${Math.min(techIndex * 8, 40)}px)` 
+                  ? `translateX(${Math.min(techIndex * 6, 30)}px)` 
                   : "translateX(-20px)",
                 opacity: isActive ? 1 : 0,
                 transitionDelay: `${techIndex * 50}ms`,
               }}
             >
-              <span className="text-2xl md:text-3xl text-[#6a6a6a]">
+              <span className="text-xl md:text-2xl text-[#6a6a6a]">
                 {tech.icon}
               </span>
-              <span className="text-sm md:text-base text-[#aaaaaa] whitespace-nowrap">
+              <span className="text-xs md:text-sm text-[#aaaaaa] whitespace-nowrap">
                 {tech.name}
               </span>
             </div>
@@ -139,23 +139,23 @@ export const TechStackSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-20 md:py-32"
+      className="relative py-14 md:py-24"
       style={{ backgroundColor: "#1f1f1f" }}
     >
       {/* Section header */}
-      <div className="px-6 md:px-12 mb-12 md:mb-20">
+      <div className="px-4 md:px-10 mb-8 md:mb-14">
         <div
           className={`transition-all duration-700 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <span className="text-xs tracking-[0.3em] text-[#6a6a6a] uppercase mb-4 block">
-            Experiment 03
+          <span className="text-xs tracking-[0.3em] text-[#6a6a6a] uppercase mb-3 block">
+            Experiment 02
           </span>
-          <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl text-[#f5f5f5] mb-4">
+          <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl text-[#f5f5f5] mb-3">
             The Stack
           </h2>
-          <p className="text-[#8a8a8a] max-w-xl text-base md:text-lg">
+          <p className="text-[#8a8a8a] max-w-xl text-sm md:text-base">
             Technologies I engineer with. Hover to explore the tools behind the systems.
           </p>
         </div>
