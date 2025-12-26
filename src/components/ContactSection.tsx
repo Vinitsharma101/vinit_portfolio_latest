@@ -1,6 +1,69 @@
 import { Mail, Phone, ArrowUpRight, Award, BookOpen } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useInView } from "@/hooks/useInView";
+
+const ScrollRevealText = ({ text }: { text: string }) => {
+  const containerRef = useRef<HTMLParagraphElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      
+      const rect = containerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Start revealing when element enters viewport, complete when it's 30% up
+      const start = windowHeight;
+      const end = windowHeight * 0.3;
+      const current = rect.top;
+      
+      if (current >= start) {
+        setScrollProgress(0);
+      } else if (current <= end) {
+        setScrollProgress(1);
+      } else {
+        const progress = (start - current) / (start - end);
+        setScrollProgress(Math.min(Math.max(progress, 0), 1));
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const words = text.split(" ");
+  
+  return (
+    <p ref={containerRef} className="text-lg md:text-xl leading-relaxed mb-8">
+      {words.map((word, index) => {
+        const wordProgress = index / words.length;
+        const isRevealed = scrollProgress > wordProgress;
+        const isRevealing = scrollProgress > wordProgress - 0.1 && scrollProgress <= wordProgress;
+        
+        return (
+          <span
+            key={index}
+            className={`inline-block mr-[0.3em] transition-all duration-300 ${
+              isRevealed 
+                ? "opacity-100 text-primary-foreground" 
+                : isRevealing
+                  ? "opacity-50 text-primary-foreground/70"
+                  : "opacity-20 text-primary-foreground/30"
+            }`}
+            style={{
+              transitionDelay: `${index * 10}ms`,
+            }}
+          >
+            {word}
+          </span>
+        );
+      })}
+    </p>
+  );
+};
 
 const certificates = [
   "NLP and Web Scraping",
@@ -83,11 +146,9 @@ export const ContactSection = () => {
 
           {/* CTA */}
           <div className="flex flex-col justify-center">
-            <p className="text-lg opacity-80 mb-8 leading-relaxed">
-              Detail-oriented B.E. graduate seeking opportunities in full stack development. 
-              Strong technical foundation and interpersonal skills, committed to delivering solutions 
-              and evolving in fast-paced environments.
-            </p>
+            <ScrollRevealText 
+              text="Detail-oriented B.E. graduate seeking opportunities in full stack development. Strong technical foundation and interpersonal skills, committed to delivering solutions and evolving in fast-paced environments."
+            />
             <div className="flex flex-wrap gap-4 mb-8">
               <span className="text-xs px-3 py-2 border border-primary-foreground/30">
                 Freelance Projects
