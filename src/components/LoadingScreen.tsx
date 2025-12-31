@@ -44,32 +44,19 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
         isExiting ? "opacity-0 translate-y-[-20px]" : "opacity-100 translate-y-0"
       }`}
     >
-      {/* Centered TERMINAL text and loading */}
-      <div className="flex flex-col items-center">
-        <h1
-          className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-[0.2em] uppercase select-none"
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            background: `linear-gradient(90deg, rgb(255, 77, 0) ${progress}%, rgba(255, 255, 255, 0.2) ${progress}%)`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}
-        >
-          TERMINAL
-        </h1>
-        
-        {/* Loading text centered under TERMINAL */}
-        <span
-          className="mt-4 text-xs md:text-sm tracking-wider opacity-40"
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            color: "rgba(255, 255, 255, 0.5)",
-          }}
-        >
-          loading...
-        </span>
-      </div>
+      {/* Centered TERMINAL text */}
+      <h1
+        className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-[0.2em] uppercase select-none"
+        style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          background: `linear-gradient(90deg, rgb(255, 77, 0) ${progress}%, rgba(255, 255, 255, 0.2) ${progress}%)`,
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+        }}
+      >
+        TERMINAL
+      </h1>
     </div>
   );
 };
