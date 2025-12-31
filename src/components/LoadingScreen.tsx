@@ -44,8 +44,8 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
         isExiting ? "opacity-0 translate-y-[-20px]" : "opacity-100 translate-y-0"
       }`}
     >
-      {/* Centered TERMINAL text */}
-      <div className="relative">
+      {/* Centered TERMINAL text and loading */}
+      <div className="flex flex-col items-center">
         <h1
           className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-[0.2em] uppercase select-none"
           style={{
@@ -58,12 +58,10 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
         >
           TERMINAL
         </h1>
-      </div>
-
-      {/* Loading text in bottom-right */}
-      <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12">
+        
+        {/* Loading text centered under TERMINAL */}
         <span
-          className="text-xs md:text-sm tracking-wider opacity-40"
+          className="mt-4 text-xs md:text-sm tracking-wider opacity-40"
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
             color: "rgba(255, 255, 255, 0.5)",
