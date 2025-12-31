@@ -38,6 +38,9 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
     }
   }, [progress, onComplete]);
 
+  const text = "TERMINAL";
+  const filledChars = Math.floor((progress / 100) * text.length);
+
   return (
     <div
       className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[#0a0a0a] transition-all duration-500 ease-out ${
@@ -47,15 +50,19 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       {/* Centered TERMINAL text */}
       <h1
         className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-[0.2em] uppercase select-none"
-        style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          background: `linear-gradient(90deg, rgb(255, 77, 0) ${progress}%, rgba(255, 255, 255, 0.2) ${progress}%)`,
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-        }}
+        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
       >
-        TERMINAL
+        {text.split("").map((char, index) => (
+          <span
+            key={index}
+            style={{
+              color: index < filledChars ? "rgb(255, 77, 0)" : "rgba(255, 255, 255, 0.2)",
+              transition: "color 0.1s ease-out",
+            }}
+          >
+            {char}
+          </span>
+        ))}
       </h1>
     </div>
   );
