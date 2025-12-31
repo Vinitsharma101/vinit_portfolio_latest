@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { Hero } from "@/components/Hero";
 import { ExperimentSection } from "@/components/ExperimentSection";
@@ -7,10 +8,34 @@ import { ContactSection } from "@/components/ContactSection";
 import { FloatingNav } from "@/components/FloatingNav";
 import { TechStackSection } from "@/components/TechStackSection";
 import { CustomCursor } from "@/components/CustomCursor";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const Index = () => {
+  const [showLoading, setShowLoading] = useState(() => {
+    // Only show loading screen once per session
+    return !sessionStorage.getItem("terminal-loaded");
+  });
+
+  const handleLoadingComplete = () => {
+    sessionStorage.setItem("terminal-loaded", "true");
+    setShowLoading(false);
+  };
+
+  // Prevent scroll during loading
+  useEffect(() => {
+    if (showLoading) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showLoading]);
+
   return (
     <div className="relative">
+      {showLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
       {/* Custom cursor */}
       <CustomCursor />
 
