@@ -47,6 +47,7 @@ const Index = () => {
           title="System Architecture"
           description="The journey through startups, teams, and real development challenges. Where theory met practice."
           accent="clay"
+          slideFrom="right"
         >
           <ExperienceSection />
         </ExperimentSection>

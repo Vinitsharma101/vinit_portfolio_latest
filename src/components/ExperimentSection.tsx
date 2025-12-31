@@ -7,6 +7,7 @@ interface ExperimentSectionProps {
   description: string;
   children: React.ReactNode;
   accent?: "olive" | "clay" | "rust" | "graphite";
+  slideFrom?: "bottom" | "right";
 }
 
 const accentStyles = {
@@ -22,18 +23,41 @@ export const ExperimentSection = ({
   description,
   children,
   accent = "olive",
+  slideFrom = "bottom",
 }: ExperimentSectionProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { threshold: 0.2 });
+  const isInView = useInView(ref, { threshold: 0.15 });
+
+  const getTransformStyles = (inView: boolean) => {
+    if (slideFrom === "right") {
+      return inView 
+        ? "translate-x-0 opacity-100" 
+        : "translate-x-[100px] opacity-0";
+    }
+    return inView 
+      ? "translate-y-0 opacity-100" 
+      : "translate-y-10 opacity-0";
+  };
+
+  const getContentTransformStyles = (inView: boolean) => {
+    if (slideFrom === "right") {
+      return inView 
+        ? "translate-x-0 opacity-100" 
+        : "translate-x-[120px] opacity-0";
+    }
+    return inView 
+      ? "translate-y-0 opacity-100" 
+      : "translate-y-10 opacity-0";
+  };
 
   return (
     <section
       ref={ref}
-      className={`min-h-screen py-24 md:py-32 px-8 md:px-16 transition-opacity duration-700 ${
-        isInView ? "opacity-100" : "opacity-0"
-      }`}
+      className="min-h-screen py-24 md:py-32 px-8 md:px-16 overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto">
+      <div 
+        className={`max-w-6xl mx-auto transform transition-all duration-700 ease-out ${getTransformStyles(isInView)}`}
+      >
         {/* Section header */}
         <div className={`border-l-2 ${accentStyles[accent]} pl-6 mb-16`}>
           <span className="text-mono text-muted-foreground block mb-2">
@@ -45,9 +69,7 @@ export const ExperimentSection = ({
 
         {/* Section content */}
         <div
-          className={`transform transition-all duration-700 delay-200 ${
-            isInView ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-          }`}
+          className={`transform transition-all duration-700 ease-out delay-150 ${getContentTransformStyles(isInView)}`}
         >
           {children}
         </div>
