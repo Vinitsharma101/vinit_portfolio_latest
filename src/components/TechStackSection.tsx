@@ -83,9 +83,9 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
         </h3>
         
         <span
-          className="text-xs md:text-sm tracking-widest transition-all duration-500"
+          className="text-xs md:text-sm tracking-[0.35em] font-medium transition-all duration-500"
           style={{
-            color: isActive ? "#ffffff" : "#5a5a5a",
+            color: isActive ? "#ffffff" : "#4a4a4a",
           }}
         >
           {category.techs.length} TOOLS
