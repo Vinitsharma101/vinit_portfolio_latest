@@ -55,6 +55,10 @@ export default {
           DEFAULT: "hsl(var(--graphite))",
           foreground: "hsl(var(--graphite-foreground))",
         },
+        terminal: {
+          DEFAULT: "hsl(var(--terminal))",
+          foreground: "hsl(var(--terminal-foreground))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",

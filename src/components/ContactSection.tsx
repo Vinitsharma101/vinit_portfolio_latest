@@ -83,7 +83,7 @@ export const ContactSection = () => {
         {/* Section header */}
         <span className="text-mono opacity-60 block mb-4">Final Stage</span>
         <h2 
-          className={`text-5xl md:text-7xl text-editorial mb-16 transition-all duration-700 ${
+          className={`text-5xl md:text-7xl text-editorial text-terminal mb-16 transition-all duration-700 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >

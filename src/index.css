@@ -44,6 +44,10 @@
     --graphite: 220 5% 35%;
     --graphite-foreground: 40 33% 96%;
 
+    /* Terminal orange - for dark section titles */
+    --terminal: 18 100% 50%;
+    --terminal-foreground: 0 0% 100%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 40 33% 96%;
 
@@ -95,6 +99,7 @@
     --clay: 15 40% 55%;
     --rust: 20 50% 50%;
     --graphite: 220 8% 50%;
+    --terminal: 18 100% 50%;
 
     --border: 0 0% 20%;
     --input: 0 0% 20%;
