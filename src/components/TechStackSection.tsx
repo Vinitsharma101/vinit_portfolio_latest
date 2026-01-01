@@ -152,7 +152,7 @@ export const TechStackSection = () => {
           <span className="text-xs tracking-[0.3em] text-[#6a6a6a] uppercase mb-3 block">
             Experiment 02
           </span>
-          <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl text-[#f5f5f5] mb-3">
+          <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl text-terminal mb-3">
             The Stack
           </h2>
           <p className="text-[#8a8a8a] max-w-xl text-sm md:text-base">
