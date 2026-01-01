@@ -69,14 +69,17 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
       onTouchStart={handleTouch}
     >
       {/* Divider line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-[#3a3a3a]" />
+      <div 
+        className="absolute top-0 left-0 right-0 h-px transition-colors duration-500"
+        style={{ backgroundColor: isActive ? "rgba(255, 77, 0, 0.4)" : "#3a3a3a" }}
+      />
       
       {/* Main row */}
       <div className="py-5 md:py-8 px-4 md:px-10 flex items-center justify-between">
         <h3
           className="font-serif text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight transition-all duration-500"
           style={{
-            color: isActive ? "#ffffff" : "#8a8a8a",
+            color: isActive ? "rgb(255, 77, 0)" : "#8a8a8a",
           }}
         >
           {category.name}
@@ -85,7 +88,7 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
         <span
           className="text-xs md:text-sm tracking-[0.35em] font-medium transition-all duration-500"
           style={{
-            color: isActive ? "#ffffff" : "#4a4a4a",
+            color: isActive ? "rgb(255, 77, 0)" : "#4a4a4a",
           }}
         >
           {category.techs.length} TOOLS
@@ -113,7 +116,10 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
                 transitionDelay: `${techIndex * 50}ms`,
               }}
             >
-              <span className="text-xl md:text-2xl text-[#6a6a6a]">
+              <span 
+                className="text-xl md:text-2xl transition-colors duration-300"
+                style={{ color: "rgb(255, 77, 0)" }}
+              >
                 {tech.icon}
               </span>
               <span className="text-xs md:text-sm text-[#aaaaaa] whitespace-nowrap">
@@ -128,6 +134,17 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
       {index === techCategories.length - 1 && (
         <div className="absolute bottom-0 left-0 right-0 h-px bg-[#3a3a3a]" />
       )}
+
+      {/* Subtle orange glow on hover */}
+      <div 
+        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+        style={{
+          background: isActive 
+            ? "linear-gradient(90deg, rgba(255, 77, 0, 0.03) 0%, transparent 50%)" 
+            : "transparent",
+          opacity: isActive ? 1 : 0,
+        }}
+      />
     </div>
   );
 };
