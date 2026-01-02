@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink, Github, Globe } from "lucide-react";
-import { useInView } from "@/hooks/useInView";
 import { useRef } from "react";
+import { useInView } from "@/hooks/useInView";
+import { ContactSection } from "@/components/ContactSection";
 
 interface Project {
   id: number;
@@ -106,118 +107,131 @@ const Projects = () => {
         </div>
       </section>
 
-      {/* Projects grid */}
-      <section className="px-8 pb-24 max-w-7xl mx-auto">
-        <div className="grid gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </div>
+      {/* Projects stacking cards */}
+      <section className="px-8 pb-0 max-w-7xl mx-auto relative">
+        {projects.map((project, index) => (
+          <StickyProjectCard 
+            key={project.id} 
+            project={project} 
+            index={index} 
+            total={projects.length}
+          />
+        ))}
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-12 px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-muted-foreground text-sm">
-            © 2025 Vinit Sharma. Built with passion.
-          </p>
-          <Link
-            to="/"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Return to main site
-          </Link>
-        </div>
-      </footer>
+      {/* Contact Section */}
+      <ContactSection />
     </div>
   );
 };
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+const StickyProjectCard = ({ 
+  project, 
+  index, 
+  total 
+}: { 
+  project: Project; 
+  index: number; 
+  total: number;
+}) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const isVisible = useInView(cardRef, { threshold: 0.1 });
+
+  // Each card sticks slightly lower to create stacking effect
+  const topOffset = 80 + index * 8; // Header is ~64px + some spacing
+  const zIndex = total - index; // Higher index = lower z-index so earlier cards stay on top initially
 
   return (
     <div
       ref={cardRef}
-      className={`group border border-border p-8 md:p-12 transition-all duration-700 hover:border-foreground ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-      }`}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      className="sticky mb-8"
+      style={{ 
+        top: `${topOffset}px`,
+        zIndex: index + 1, // Later cards have higher z-index to cover previous ones
+      }}
     >
-      <div className="grid md:grid-cols-[1fr,2fr] gap-8">
-        {/* Left column - Meta info */}
-        <div className="space-y-4">
-          <span className="text-mono text-muted-foreground">
-            {String(project.id).padStart(2, "0")}
-          </span>
-          <div>
-            <span className="text-xs uppercase tracking-wider text-accent block mb-1">
-              {project.category}
+      <div 
+        className={`group bg-background border border-border p-8 md:p-12 transition-all duration-700 hover:border-foreground shadow-lg ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+        }`}
+        style={{ 
+          transitionDelay: `${index * 100}ms`,
+        }}
+      >
+        <div className="grid md:grid-cols-[1fr,2fr] gap-8">
+          {/* Left column - Meta info */}
+          <div className="space-y-4">
+            <span className="text-mono text-muted-foreground">
+              {String(project.id).padStart(2, "0")}
             </span>
-            <span className="text-sm text-muted-foreground">{project.year}</span>
-          </div>
-          
-          {/* Tech stack */}
-          <div className="flex flex-wrap gap-2 pt-4">
-            {project.tech.map((tech) => (
-              <span
-                key={tech}
-                className="text-xs px-2 py-1 bg-secondary text-secondary-foreground"
-              >
-                {tech}
+            <div>
+              <span className="text-xs uppercase tracking-wider text-accent block mb-1">
+                {project.category}
               </span>
-            ))}
+              <span className="text-sm text-muted-foreground">{project.year}</span>
+            </div>
+            
+            {/* Tech stack */}
+            <div className="flex flex-wrap gap-2 pt-4">
+              {project.tech.map((tech) => (
+                <span
+                  key={tech}
+                  className="text-xs px-2 py-1 bg-secondary text-secondary-foreground"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Right column - Content */}
-        <div className="space-y-6">
-          <h2 className="text-3xl md:text-4xl text-editorial group-hover:text-rust transition-colors">
-            {project.title}
-          </h2>
-          
-          <p className="text-muted-foreground leading-relaxed">
-            {project.longDescription}
-          </p>
+          {/* Right column - Content */}
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-4xl text-editorial group-hover:text-rust transition-colors">
+              {project.title}
+            </h2>
+            
+            <p className="text-muted-foreground leading-relaxed">
+              {project.longDescription}
+            </p>
 
-          {/* Features */}
-          <div className="grid grid-cols-2 gap-3">
-            {project.features.map((feature) => (
-              <div key={feature} className="flex items-center gap-2">
-                <div className="w-1 h-1 bg-accent" />
-                <span className="text-sm text-muted-foreground">{feature}</span>
+            {/* Features */}
+            <div className="grid grid-cols-2 gap-3">
+              {project.features.map((feature) => (
+                <div key={feature} className="flex items-center gap-2">
+                  <div className="w-1 h-1 bg-accent" />
+                  <span className="text-sm text-muted-foreground">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Links */}
+            <div className="flex gap-4 pt-4">
+              {project.links?.live && (
+                <a
+                  href={project.links.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Globe className="w-4 h-4" />
+                  <span>Live Demo</span>
+                </a>
+              )}
+              {project.links?.github && (
+                <a
+                  href={project.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Github className="w-4 h-4" />
+                  <span>Source Code</span>
+                </a>
+              )}
+              <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors cursor-pointer">
+                <ExternalLink className="w-4 h-4" />
+                <span>View Details</span>
               </div>
-            ))}
-          </div>
-
-          {/* Links */}
-          <div className="flex gap-4 pt-4">
-            {project.links?.live && (
-              <a
-                href={project.links.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Globe className="w-4 h-4" />
-                <span>Live Demo</span>
-              </a>
-            )}
-            {project.links?.github && (
-              <a
-                href={project.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Github className="w-4 h-4" />
-                <span>Source Code</span>
-              </a>
-            )}
-            <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors cursor-pointer">
-              <ExternalLink className="w-4 h-4" />
-              <span>View Details</span>
             </div>
           </div>
         </div>
