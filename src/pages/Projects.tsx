@@ -79,7 +79,7 @@ const Projects = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/40 backdrop-blur-md border-b border-border/50">
         <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
           <Link
             to="/"
