@@ -143,7 +143,7 @@ export const ProjectsHorizontalScroll = () => {
       </div>
 
       {/* Horizontal scroll container */}
-      <div ref={scrollRef} className="horizontal-scroll relative z-10">
+      <div ref={scrollRef} className="horizontal-scroll relative z-10 p-1">
         {projects.map((project, index) => (
           <div
             key={project.id}
