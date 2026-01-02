@@ -157,7 +157,7 @@ export const TechStackSection = () => {
     <section
       ref={sectionRef}
       className="relative py-14 md:py-24"
-      style={{ backgroundColor: "#1f1f1f" }}
+      style={{ backgroundColor: "#000000" }}
     >
       {/* Section header */}
       <div className="px-4 md:px-10 mb-8 md:mb-14">

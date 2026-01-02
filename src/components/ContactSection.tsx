@@ -78,7 +78,7 @@ export const ContactSection = () => {
   const [hoveredCert, setHoveredCert] = useState<number | null>(null);
 
   return (
-    <section ref={ref} className="min-h-screen py-24 md:py-32 px-8 md:px-16 bg-[#0a0a0a] text-[#f5f5f5] flex flex-col justify-center relative overflow-hidden">
+    <section ref={ref} className="min-h-screen py-24 md:py-32 px-8 md:px-16 bg-black text-[#f5f5f5] flex flex-col justify-center relative overflow-hidden">
       {/* Subtle orange ambient glow */}
       <div 
         className="absolute top-0 left-0 w-96 h-96 pointer-events-none"
