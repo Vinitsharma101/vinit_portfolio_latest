@@ -11,9 +11,13 @@ import { CustomCursor } from "@/components/CustomCursor";
 import LoadingScreen from "@/components/LoadingScreen";
 
 const Index = () => {
-  const [showLoading, setShowLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(() => {
+    // Only show loading if it hasn't been shown this session
+    return !sessionStorage.getItem("terminal-loaded");
+  });
 
   const handleLoadingComplete = () => {
+    sessionStorage.setItem("terminal-loaded", "true");
     setShowLoading(false);
   };
 
