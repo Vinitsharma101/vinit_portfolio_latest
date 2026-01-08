@@ -99,7 +99,10 @@ export const Hero = () => {
   return (
     <section 
       ref={sectionRef}
-      className="fixed inset-0 h-screen w-full z-0 overflow-hidden"
+      className="fixed inset-0 h-screen w-full z-10 overflow-hidden pointer-events-none"
+      style={{
+        pointerEvents: splitProgress < 1 ? 'auto' : 'none',
+      }}
     >
       {/* TOP HALF - moves upward */}
       <div 

@@ -45,15 +45,8 @@ const Index = () => {
       {/* Floating navigation */}
       <FloatingNav />
 
-      {/* Fixed hero section */}
-      <Hero />
-
-      {/* Spacer to allow hero to be visible */}
-      <div className="h-screen" />
-
-      {/* Content that covers the hero */}
-      <div className="relative z-10 bg-background">
-        {/* Experiment 01: Projects - Real World Builds */}
+      {/* Experiment 01 - Fixed behind Hero, revealed through split */}
+      <div className="fixed inset-0 z-0">
         <ExperimentSection
           number="01"
           title="Real-World Builds"
@@ -62,6 +55,16 @@ const Index = () => {
         >
           <ProjectsHorizontalScroll />
         </ExperimentSection>
+      </div>
+
+      {/* Hero with split reveal on top */}
+      <Hero />
+
+      {/* Spacer for Hero + Experiment 01 reveal */}
+      <div className="h-[200vh]" />
+
+      {/* Content that follows after reveal */}
+      <div className="relative z-10 bg-background">
 
         {/* Experiment 02: Tech Stack */}
         <TechStackSection />
