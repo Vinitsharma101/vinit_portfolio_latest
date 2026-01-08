@@ -1,10 +1,16 @@
 import { ChevronDown, Download, Linkedin } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
-export const Hero = () => {
+type HeroProps = {
+  /** 0..1 progress controlling the split-open reveal */
+  splitProgress?: number;
+  /** Optional: force-complete the reveal (used by the CTA) */
+  onBeginJourney?: () => void;
+};
+
+export const Hero = ({ splitProgress: splitProgressProp = 0, onBeginJourney }: HeroProps) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [mousePixelPos, setMousePixelPos] = useState({ x: 0, y: 0 });
-  const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -15,19 +21,14 @@ export const Hero = () => {
       setMousePixelPos({ x: e.clientX, y: e.clientY });
     };
 
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const scrollToContent = () => {
+    if (onBeginJourney) return onBeginJourney();
     window.scrollTo({
       top: window.innerHeight,
       behavior: "smooth",
@@ -35,8 +36,8 @@ export const Hero = () => {
   };
 
   // Calculate split animation progress (0 to 1)
-  const splitProgress = Math.min(scrollY / (window.innerHeight * 0.8), 1);
-  const splitAmount = splitProgress * 55; // Max 55% movement for each half
+  const splitProgress = Math.min(Math.max(splitProgressProp, 0), 1);
+  const splitAmount = splitProgress * 110; // Max movement so both halves fully exit
   const contentOpacity = 1 - splitProgress;
 
   // Shared background styles

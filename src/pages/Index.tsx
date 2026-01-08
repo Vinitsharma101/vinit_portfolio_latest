@@ -9,12 +9,16 @@ import { FloatingNav } from "@/components/FloatingNav";
 import { TechStackSection } from "@/components/TechStackSection";
 import { CustomCursor } from "@/components/CustomCursor";
 import LoadingScreen from "@/components/LoadingScreen";
+import { useLockedScrollProgress } from "@/hooks/useLockedScrollProgress";
 
 const Index = () => {
   const [showLoading, setShowLoading] = useState(() => {
     // Only show loading if it hasn't been shown this session
     return !sessionStorage.getItem("terminal-loaded");
   });
+
+  const [revealDone, setRevealDone] = useState(false);
+  const [revealDistance, setRevealDistance] = useState(() => window.innerHeight * 0.9);
 
   const handleLoadingComplete = () => {
     sessionStorage.setItem("terminal-loaded", "true");
@@ -33,6 +37,24 @@ const Index = () => {
     };
   }, [showLoading]);
 
+  useEffect(() => {
+    const onResize = () => setRevealDistance(window.innerHeight * 0.9);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const revealEnabled = !showLoading && !revealDone;
+  const { progress: splitProgress, complete } = useLockedScrollProgress(revealEnabled, revealDistance);
+
+  useEffect(() => {
+    if (splitProgress >= 1 && !revealDone) setRevealDone(true);
+  }, [splitProgress, revealDone]);
+
+  const handleBeginJourney = () => {
+    complete();
+    setRevealDone(true);
+  };
+
   return (
     <div className="relative">
       {showLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
@@ -45,44 +67,41 @@ const Index = () => {
       {/* Floating navigation */}
       <FloatingNav />
 
-      {/* Experiment 01 - Fixed behind Hero, revealed through split */}
-      <div className="fixed inset-0 z-0">
+      {/* Hero pinned; scroll input is locked + mapped to splitProgress until reveal completes */}
+      <Hero splitProgress={splitProgress} onBeginJourney={handleBeginJourney} />
+
+      <main className="relative z-0">
+        {/* Experiment 01: Projects - stays static; revealed by Hero split */}
         <ExperimentSection
           number="01"
           title="Real-World Builds"
           description="Projects that solve problems. Each experiment represents a unique challenge conquered with code and creativity."
           accent="olive"
+          animate={false}
         >
           <ProjectsHorizontalScroll />
         </ExperimentSection>
-      </div>
 
-      {/* Hero with split reveal on top */}
-      <Hero />
+        {/* Content after Experiment 01 */}
+        <div className="relative z-10 bg-background">
+          {/* Experiment 02: Tech Stack */}
+          <TechStackSection />
 
-      {/* Spacer for Hero + Experiment 01 reveal */}
-      <div className="h-[200vh]" />
+          {/* Experiment 03: Experience - System Architecture */}
+          <ExperimentSection
+            number="03"
+            title="System Architecture"
+            description="The journey through startups, teams, and real development challenges. Where theory met practice."
+            accent="clay"
+            slideFrom="right"
+          >
+            <ExperienceSection />
+          </ExperimentSection>
 
-      {/* Content that follows after reveal */}
-      <div className="relative z-10 bg-background">
-
-        {/* Experiment 02: Tech Stack */}
-        <TechStackSection />
-
-        {/* Experiment 03: Experience - System Architecture */}
-        <ExperimentSection
-          number="03"
-          title="System Architecture"
-          description="The journey through startups, teams, and real development challenges. Where theory met practice."
-          accent="clay"
-          slideFrom="right"
-        >
-          <ExperienceSection />
-        </ExperimentSection>
-
-        {/* Contact section */}
-        <ContactSection />
-      </div>
+          {/* Contact section */}
+          <ContactSection />
+        </div>
+      </main>
     </div>
   );
 };
