@@ -127,10 +127,10 @@ export const Hero = () => {
             </p>
           </div>
           <div className="flex gap-4 mt-8 animate-fade-up-delay-2">
-            <span className="text-xs px-3 py-1.5 border border-border text-muted-foreground">
+            <span className="text-xs px-3 py-1.5 border border-border text-muted-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
               B.E. Computer Science
             </span>
-            <span className="text-xs px-3 py-1.5 border border-accent/30 text-accent">
+            <span className="text-xs px-3 py-1.5 border border-accent/30 text-accent hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
               Available for projects
             </span>
           </div>
