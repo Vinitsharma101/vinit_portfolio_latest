@@ -1,5 +1,6 @@
 import { ChevronDown, Download, Linkedin } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import { LogoMarquee } from "./LogoMarquee";
 
 export const Hero = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -173,6 +174,9 @@ export const Hero = () => {
           Scroll to explore
         </span>
       </div>
+
+      {/* Logo Marquee */}
+      <LogoMarquee />
     </section>
   );
 };
