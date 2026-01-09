@@ -8,8 +8,6 @@ interface ExperimentSectionProps {
   children: React.ReactNode;
   accent?: "olive" | "clay" | "rust" | "graphite";
   slideFrom?: "bottom" | "right";
-  /** Disable entrance transforms (used for Experiment 01 during the split reveal) */
-  animate?: boolean;
 }
 
 const accentStyles = {
@@ -26,31 +24,36 @@ export const ExperimentSection = ({
   children,
   accent = "olive",
   slideFrom = "bottom",
-  animate = true,
 }: ExperimentSectionProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { threshold: 0.15 });
 
   const getTransformStyles = (inView: boolean) => {
-    if (!animate) return "translate-x-0 translate-y-0 opacity-100";
     if (slideFrom === "right") {
-      return inView ? "translate-x-0 opacity-100" : "translate-x-[100px] opacity-0";
+      return inView 
+        ? "translate-x-0 opacity-100" 
+        : "translate-x-[100px] opacity-0";
     }
-    return inView ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0";
+    return inView 
+      ? "translate-y-0 opacity-100" 
+      : "translate-y-10 opacity-0";
   };
 
   const getContentTransformStyles = (inView: boolean) => {
-    if (!animate) return "translate-x-0 translate-y-0 opacity-100";
     if (slideFrom === "right") {
-      return inView ? "translate-x-0 opacity-100" : "translate-x-[120px] opacity-0";
+      return inView 
+        ? "translate-x-0 opacity-100" 
+        : "translate-x-[120px] opacity-0";
     }
-    return inView ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0";
+    return inView 
+      ? "translate-y-0 opacity-100" 
+      : "translate-y-10 opacity-0";
   };
 
   return (
     <section
       ref={ref}
-      className={`min-h-screen py-24 md:py-32 px-8 md:px-16 ${animate ? "overflow-hidden" : ""}`}
+      className="min-h-screen py-24 md:py-32 px-8 md:px-16 overflow-hidden"
     >
       <div 
         className={`max-w-6xl mx-auto transform transition-all duration-700 ease-out ${getTransformStyles(isInView)}`}
