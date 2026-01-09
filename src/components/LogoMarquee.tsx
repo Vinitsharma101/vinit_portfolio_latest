@@ -72,28 +72,33 @@ export const LogoMarquee = () => {
 
   return (
     <div 
-      className="absolute top-0 left-0 right-0 overflow-hidden pointer-events-auto z-20"
+      className="absolute left-0 right-0 overflow-hidden pointer-events-auto z-20"
       style={{
-        height: '80px',
-        transform: 'rotate(3deg) translateY(-10px) translateX(-20px)',
-        width: 'calc(100% + 60px)',
+        top: '60px',
+        height: '70px',
+        transform: 'rotate(1deg)',
+        width: 'calc(100% + 40px)',
+        marginLeft: '-20px',
+        maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
       }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div 
-        className={`flex items-center gap-16 ${isPaused ? 'marquee-paused' : 'marquee-animate'}`}
+        className={`flex items-center ${isPaused ? 'marquee-paused' : 'marquee-animate'}`}
         style={{
           width: 'max-content',
+          gap: '50px',
         }}
       >
         {duplicatedLogos.map((logo, index) => (
           <div
             key={`${logo.name}-${index}`}
-            className="flex items-center text-foreground/30 hover:text-foreground/70 transition-all duration-300 hover:scale-125"
+            className="flex items-center text-foreground/40 hover:text-foreground transition-all duration-300 hover:scale-110"
             title={logo.name}
           >
-            <div className="w-8 h-8">
+            <div className="w-12 h-12 md:w-14 md:h-14">
               {logo.icon}
             </div>
           </div>
