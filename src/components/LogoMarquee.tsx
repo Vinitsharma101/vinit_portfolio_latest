@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // Simple SVG icon components for tech logos
 const logos = [
   { name: "React", icon: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
       <path d="M12 10.11c1.03 0 1.87.84 1.87 1.89 0 1-.84 1.85-1.87 1.85s-1.87-.85-1.87-1.85c0-1.05.84-1.89 1.87-1.89M7.37 20c.63.38 2.01-.2 3.6-1.7-.52-.59-1.03-1.23-1.51-1.9a22.7 22.7 0 0 1-2.4-.36c-.51 2.14-.32 3.61.31 3.96m.71-5.74-.29-.51c-.11.29-.22.58-.29.86.27.06.57.11.88.16l-.3-.51m6.54-.76.81-1.5-.81-1.5c-.3-.53-.62-1-.91-1.47C13.17 9 12.6 9 12 9s-1.17 0-1.71.03c-.29.47-.61.94-.91 1.47L8.57 12l.81 1.5c.3.53.62 1 .91 1.47.54.03 1.11.03 1.71.03s1.17 0 1.71-.03c.29-.47.61-.94.91-1.47M12 6.78c-.19.22-.39.45-.59.72h1.18c-.2-.27-.4-.5-.59-.72m0 10.44c.19-.22.39-.45.59-.72h-1.18c.2.27.4.5.59.72M16.62 4c-.62-.38-2 .2-3.59 1.7.52.59 1.03 1.23 1.51 1.9.82.08 1.63.2 2.4.36.51-2.14.32-3.61-.32-3.96m-.7 5.74.29.51c.11-.29.22-.58.29-.86-.27-.06-.57-.11-.88-.16l.3.51m1.45-7.05c1.47.84 1.63 3.05 1.01 5.63 2.54.75 4.37 1.99 4.37 3.68s-1.83 2.93-4.37 3.68c.62 2.58.46 4.79-1.01 5.63-1.46.84-3.45-.12-5.37-1.95-1.92 1.83-3.91 2.79-5.38 1.95-1.46-.84-1.62-3.05-1-5.63-2.54-.75-4.37-1.99-4.37-3.68s1.83-2.93 4.37-3.68c-.62-2.58-.46-4.79 1-5.63 1.47-.84 3.46.12 5.38 1.95 1.92-1.83 3.91-2.79 5.37-1.95M17.08 12c.34.75.64 1.5.89 2.26 2.1-.63 3.28-1.53 3.28-2.26s-1.18-1.63-3.28-2.26c-.25.76-.55 1.51-.89 2.26M6.92 12c-.34-.75-.64-1.5-.89-2.26-2.1.63-3.28 1.53-3.28 2.26s1.18 1.63 3.28 2.26c.25-.76.55-1.51.89-2.26m9 2.26-.3.51c.31-.05.61-.1.88-.16-.07-.28-.18-.57-.29-.86l-.29.51m-9.82 1.12c.54.03 1.11.03 1.71.03l-.91-1.47-.81 1.5v-.06h.01m4.66 2.52c-.54-.03-1.08-.08-1.58-.15-.17.34-.35.67-.52.98.59.35 1.16.64 1.69.87-.01-.57-.03-1.14-.03-1.7h.44z"/>
     </svg>
   )},
@@ -67,22 +67,22 @@ const logos = [
 export const LogoMarquee = () => {
   const [isPaused, setIsPaused] = useState(false);
   
-  // Double the logos for seamless loop
+  // Triple the logos for seamless loop
   const duplicatedLogos = [...logos, ...logos, ...logos];
 
   return (
     <div 
-      className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-auto z-20"
+      className="absolute top-0 left-0 right-0 overflow-hidden pointer-events-auto z-20"
       style={{
-        height: '60px',
-        transform: 'rotate(-3deg) translateY(20px) translateX(-20px)',
-        width: 'calc(100% + 40px)',
+        height: '80px',
+        transform: 'rotate(3deg) translateY(-10px) translateX(-20px)',
+        width: 'calc(100% + 60px)',
       }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div 
-        className={`flex items-center gap-12 ${isPaused ? 'marquee-paused' : 'marquee-animate'}`}
+        className={`flex items-center gap-16 ${isPaused ? 'marquee-paused' : 'marquee-animate'}`}
         style={{
           width: 'max-content',
         }}
@@ -90,13 +90,12 @@ export const LogoMarquee = () => {
         {duplicatedLogos.map((logo, index) => (
           <div
             key={`${logo.name}-${index}`}
-            className="flex items-center gap-2 text-foreground/20 hover:text-foreground/50 transition-all duration-300 hover:scale-110"
+            className="flex items-center text-foreground/30 hover:text-foreground/70 transition-all duration-300 hover:scale-125"
             title={logo.name}
           >
-            {logo.icon}
-            <span className="text-xs font-mono tracking-wider uppercase hidden md:inline">
-              {logo.name}
-            </span>
+            <div className="w-8 h-8">
+              {logo.icon}
+            </div>
           </div>
         ))}
       </div>
