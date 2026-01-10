@@ -74,13 +74,13 @@ export const LogoMarquee = () => {
     <div 
       className="absolute left-0 right-0 overflow-hidden pointer-events-auto z-20"
       style={{
-        top: '60px',
+        top: '30px',
         height: '70px',
         transform: 'rotate(1deg)',
-        width: 'calc(100% + 40px)',
-        marginLeft: '-20px',
-        maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
-        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+        width: 'calc(100% + 80px)',
+        marginLeft: '-40px',
+        maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
       }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
