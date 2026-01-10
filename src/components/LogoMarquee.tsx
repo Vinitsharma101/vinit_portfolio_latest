@@ -89,7 +89,7 @@ export const LogoMarquee = () => {
         className={`flex items-center ${isPaused ? 'marquee-paused' : 'marquee-animate'}`}
         style={{
           width: 'max-content',
-          gap: '50px',
+          gap: '10px',
         }}
       >
         {duplicatedLogos.map((logo, index) => (
@@ -98,7 +98,7 @@ export const LogoMarquee = () => {
             className="flex items-center text-foreground/40 hover:text-foreground transition-all duration-300 hover:scale-110"
             title={logo.name}
           >
-            <div className="w-12 h-12 md:w-14 md:h-14">
+            <div className="w-14 h-14 md:w-16 md:h-16">
               {logo.icon}
             </div>
           </div>
