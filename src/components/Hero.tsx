@@ -95,45 +95,56 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Center content with parallax */}
+      {/* Main content area - two columns on desktop, stacked on mobile */}
       <div 
-        className="flex-1 flex flex-col justify-center max-w-5xl relative z-10"
+        className="flex-1 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0 relative z-10"
         style={{
           transform: `translateY(${scrollY * -0.1}px)`,
           opacity: 1 - scrollY / (window.innerHeight * 0.8),
         }}
       >
-        <div className="space-y-6">
-          <div className="overflow-hidden">
-            <h1 
-              className="text-5xl md:text-7xl lg:text-8xl text-editorial animate-fade-up"
-              style={{
-                transform: `translateX(${mousePos.x * 5}px)`,
-                transition: "transform 0.3s ease-out",
-              }}
-            >
-              Vinit Sharma
-            </h1>
+        {/* Left side - Name and intro (50% on desktop) */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center">
+          <div className="space-y-6">
+            <div className="overflow-hidden">
+              <h1 
+                className="text-5xl md:text-7xl lg:text-8xl text-editorial animate-fade-up"
+                style={{
+                  transform: `translateX(${mousePos.x * 5}px)`,
+                  transition: "transform 0.3s ease-out",
+                }}
+              >
+                Vinit Sharma
+              </h1>
+            </div>
+            <div className="overflow-hidden">
+              <p 
+                className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed animate-fade-up-delay-1 font-sans"
+                style={{
+                  transform: `translateX(${mousePos.x * 3}px)`,
+                  transition: "transform 0.3s ease-out",
+                }}
+              >
+                Full Stack Developer who doesn't just build websites—
+                <span className="text-foreground"> I design systems and experiences.</span>
+              </p>
+            </div>
+            <div className="flex gap-4 mt-8 animate-fade-up-delay-2">
+              <span className="text-xs px-3 py-1.5 border border-border text-muted-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
+                B.E. Computer Science
+              </span>
+              <span className="text-xs px-3 py-1.5 border border-accent/30 text-accent hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
+                Available for projects
+              </span>
+            </div>
           </div>
-          <div className="overflow-hidden">
-            <p 
-              className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed animate-fade-up-delay-1 font-sans"
-              style={{
-                transform: `translateX(${mousePos.x * 3}px)`,
-                transition: "transform 0.3s ease-out",
-              }}
-            >
-              Full Stack Developer who doesn't just build websites—
-              <span className="text-foreground"> I design systems and experiences.</span>
-            </p>
-          </div>
-          <div className="flex gap-4 mt-8 animate-fade-up-delay-2">
-            <span className="text-xs px-3 py-1.5 border border-border text-muted-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
-              B.E. Computer Science
-            </span>
-            <span className="text-xs px-3 py-1.5 border border-accent/30 text-accent hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
-              Available for projects
-            </span>
+        </div>
+
+        {/* Right side - Your component goes here (50% on desktop) */}
+        <div className="w-full md:w-1/2 flex items-center justify-center md:justify-end animate-fade-up-delay-2">
+          {/* Placeholder card - replace with your component */}
+          <div className="w-full max-w-md p-8 border border-border bg-background/50 backdrop-blur-sm">
+            <p className="text-muted-foreground text-center">Your component here</p>
           </div>
         </div>
       </div>
