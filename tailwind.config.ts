@@ -55,6 +55,7 @@ export default {
           DEFAULT: "hsl(var(--graphite))",
           foreground: "hsl(var(--graphite-foreground))",
         },
+        sand: "hsl(var(--sand))",
         terminal: {
           DEFAULT: "hsl(var(--terminal))",
           foreground: "hsl(var(--terminal-foreground))",

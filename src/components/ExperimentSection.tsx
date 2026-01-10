@@ -8,6 +8,7 @@ interface ExperimentSectionProps {
   children: React.ReactNode;
   accent?: "olive" | "clay" | "rust" | "graphite";
   slideFrom?: "bottom" | "right";
+  bgVariant?: "default" | "sand";
 }
 
 const accentStyles = {
@@ -24,9 +25,15 @@ export const ExperimentSection = ({
   children,
   accent = "olive",
   slideFrom = "bottom",
+  bgVariant = "default",
 }: ExperimentSectionProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { threshold: 0.15 });
+
+  const bgStyles = {
+    default: "",
+    sand: "bg-sand",
+  };
 
   const getTransformStyles = (inView: boolean) => {
     if (slideFrom === "right") {
@@ -53,7 +60,7 @@ export const ExperimentSection = ({
   return (
     <section
       ref={ref}
-      className="min-h-screen py-24 md:py-32 px-8 md:px-16 overflow-hidden"
+      className={`min-h-screen py-24 md:py-32 px-8 md:px-16 overflow-hidden ${bgStyles[bgVariant]}`}
     >
       <div 
         className={`max-w-6xl mx-auto transform transition-all duration-700 ease-out ${getTransformStyles(isInView)}`}

@@ -44,6 +44,9 @@
     --graphite: 220 5% 35%;
     --graphite-foreground: 40 33% 96%;
 
+    /* Warm sand for Experiment 01 */
+    --sand: 35 25% 90%;
+
     /* Terminal orange - for dark section titles */
     --terminal: 18 100% 50%;
     --terminal-foreground: 0 0% 100%;

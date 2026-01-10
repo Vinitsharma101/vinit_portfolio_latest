@@ -59,6 +59,7 @@ const Index = () => {
           title="Real-World Builds"
           description="Projects that solve problems. Each experiment represents a unique challenge conquered with code and creativity."
           accent="olive"
+          bgVariant="sand"
         >
           <ProjectsHorizontalScroll />
         </ExperimentSection>
