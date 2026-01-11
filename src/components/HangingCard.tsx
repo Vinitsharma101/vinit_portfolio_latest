@@ -24,21 +24,23 @@ const HangingCard = () => {
   const wireTopY = 0;
   
   // Initial card position (centered, hanging below)
-  const initialCardX = 0;
   const initialCardY = 60;
   
-  // Motion values for card position
-  const x = useMotionValue(initialCardX);
-  const y = useMotionValue(initialCardY);
+  // Motion values for card offset from initial position
+  const offsetX = useMotionValue(0);
+  const offsetY = useMotionValue(0);
   
   // Softer spring physics for gentle, realistic return
   const springConfig = { stiffness: 80, damping: 15, mass: 0.8 };
-  const springX = useSpring(x, springConfig);
-  const springY = useSpring(y, springConfig);
+  const springX = useSpring(offsetX, springConfig);
+  const springY = useSpring(offsetY, springConfig);
+
+  // Calculate actual Y position (initial + offset)
+  const actualY = useTransform(springY, (value) => initialCardY + value);
 
   // Calculate wire paths based on card position - wire ends connect to card dots
   const leftWirePath = useTransform(
-    [springX, springY],
+    [springX, actualY],
     ([latestX, latestY]: number[]) => {
       const cardDotX = wireTopLeftX + latestX;
       const cardDotY = latestY - 4;
@@ -53,7 +55,7 @@ const HangingCard = () => {
   );
 
   const rightWirePath = useTransform(
-    [springX, springY],
+    [springX, actualY],
     ([latestX, latestY]: number[]) => {
       const cardDotX = wireTopRightX + latestX;
       const cardDotY = latestY - 4;
@@ -80,8 +82,8 @@ const HangingCard = () => {
     setIsDragging(false);
     // Return to default position after 3 seconds
     timeoutRef.current = setTimeout(() => {
-      x.set(initialCardX);
-      y.set(initialCardY);
+      offsetX.set(0);
+      offsetY.set(0);
     }, 3000);
   };
 
@@ -125,22 +127,27 @@ const HangingCard = () => {
         className="absolute cursor-grab active:cursor-grabbing z-10"
         style={{
           x: springX,
-          y: springY,
+          y: actualY,
           width: cardWidth,
           left: `calc(50% - ${cardWidth / 2}px)`,
+          top: 0,
         }}
         drag
+        dragMomentum={false}
         dragConstraints={{
-          top: 20,
+          top: -40,
           left: -100,
           right: 100,
-          bottom: 120,
+          bottom: 60,
         }}
         dragElastic={0.1}
+        onDrag={(_, info) => {
+          offsetX.set(info.offset.x);
+          offsetY.set(info.offset.y);
+        }}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         whileDrag={{ scale: 1.02 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
         <div 
           className={`
