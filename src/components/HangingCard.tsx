@@ -1,17 +1,26 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const HangingCard = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Card dimensions
   const cardWidth = 280;
   const cardHeight = 350;
   
-  // Wire attachment points (top of container)
-  const wireTopLeftX = 80;
-  const wireTopRightX = 200;
+  // Container center X for calculating wire positions
+  const containerWidth = 320;
+  const cardCenterX = containerWidth / 2;
+  
+  // Wire attachment points on card (10px from edges, matching the dots)
+  const cardDotLeftOffset = 14; // 10px + 4px (half of dot width)
+  const cardDotRightOffset = 14;
+  
+  // Wire top attachment points (aligned with where card dots will be at rest)
+  const wireTopLeftX = cardCenterX - cardWidth / 2 + cardDotLeftOffset;
+  const wireTopRightX = cardCenterX + cardWidth / 2 - cardDotRightOffset;
   const wireTopY = 0;
   
   // Initial card position (centered, hanging below)
@@ -22,48 +31,96 @@ const HangingCard = () => {
   const x = useMotionValue(initialCardX);
   const y = useMotionValue(initialCardY);
   
-  // Spring physics for smooth return
-  const springConfig = { stiffness: 150, damping: 20, mass: 0.5 };
+  // Softer spring physics for gentle, realistic return
+  const springConfig = { stiffness: 80, damping: 15, mass: 0.8 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
-  // Calculate wire paths based on card position
+  // Auto-return to default position after 3 seconds
+  useEffect(() => {
+    const unsubscribeX = x.on("change", () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      
+      if (!isDragging) {
+        timeoutRef.current = setTimeout(() => {
+          x.set(initialCardX);
+          y.set(initialCardY);
+        }, 3000);
+      }
+    });
+
+    const unsubscribeY = y.on("change", () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      
+      if (!isDragging) {
+        timeoutRef.current = setTimeout(() => {
+          x.set(initialCardX);
+          y.set(initialCardY);
+        }, 3000);
+      }
+    });
+
+    return () => {
+      unsubscribeX();
+      unsubscribeY();
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [isDragging, x, y]);
+
+  // Calculate wire paths based on card position - wire ends connect to card dots
   const leftWirePath = useTransform(
     [springX, springY],
     ([latestX, latestY]: number[]) => {
-      const cardLeftX = wireTopLeftX + latestX;
-      const cardTopY = latestY;
+      // Card dot position (card left edge + dot offset + card movement)
+      const cardDotX = wireTopLeftX + latestX;
+      const cardDotY = latestY - 4; // -4px to connect at dot center (dot is at -top-1)
       
-      // Control points for bezier curve (creates the bend)
-      const midY = cardTopY / 2;
-      const bendAmount = latestX * 0.3;
+      // Control points for smooth bezier curve
+      const midY = cardDotY / 2;
+      const bendAmount = latestX * 0.4;
       
       return `M ${wireTopLeftX} ${wireTopY} 
-              Q ${wireTopLeftX + bendAmount * 0.5} ${midY}, 
-                ${cardLeftX} ${cardTopY}`;
+              Q ${wireTopLeftX + bendAmount * 0.3} ${midY}, 
+                ${cardDotX} ${cardDotY}`;
     }
   );
 
   const rightWirePath = useTransform(
     [springX, springY],
     ([latestX, latestY]: number[]) => {
-      const cardRightX = wireTopRightX + latestX;
-      const cardTopY = latestY;
+      // Card dot position (card right edge - dot offset + card movement)
+      const cardDotX = wireTopRightX + latestX;
+      const cardDotY = latestY - 4;
       
-      const midY = cardTopY / 2;
-      const bendAmount = latestX * 0.3;
+      const midY = cardDotY / 2;
+      const bendAmount = latestX * 0.4;
       
       return `M ${wireTopRightX} ${wireTopY} 
-              Q ${wireTopRightX + bendAmount * 0.5} ${midY}, 
-                ${cardRightX} ${cardTopY}`;
+              Q ${wireTopRightX + bendAmount * 0.3} ${midY}, 
+                ${cardDotX} ${cardDotY}`;
     }
   );
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
   const handleDragEnd = () => {
     setIsDragging(false);
-    // Animate back to original position
-    x.set(initialCardX);
-    y.set(initialCardY);
+    // Start 3-second timer after drag ends
+    timeoutRef.current = setTimeout(() => {
+      x.set(initialCardX);
+      y.set(initialCardY);
+    }, 3000);
   };
 
   return (
@@ -118,7 +175,7 @@ const HangingCard = () => {
           bottom: 120,
         }}
         dragElastic={0.1}
-        onDragStart={() => setIsDragging(true)}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         whileDrag={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
