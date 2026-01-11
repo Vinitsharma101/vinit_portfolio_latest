@@ -1,6 +1,7 @@
 import { ChevronDown, Download, Linkedin } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { LogoMarquee } from "./LogoMarquee";
+import HangingCard from "./HangingCard";
 
 export const Hero = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -140,12 +141,9 @@ export const Hero = () => {
           </div>
         </div>
 
-        {/* Right side - Your component goes here (50% on desktop) */}
-        <div className="w-full md:w-1/2 flex items-center justify-center md:justify-end animate-fade-up-delay-2">
-          {/* Placeholder card - replace with your component */}
-          <div className="w-full max-w-md p-8 border border-border bg-background/50 backdrop-blur-sm">
-            <p className="text-muted-foreground text-center">Your component here</p>
-          </div>
+        {/* Right side - Hanging card component (50% on desktop) */}
+        <div className="w-full md:w-1/2 flex items-center justify-center md:justify-end animate-fade-up-delay-2 pt-8 md:pt-0">
+          <HangingCard />
         </div>
       </div>
 
