@@ -1,10 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const HangingCard = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Card dimensions
   const cardWidth = 280;
@@ -31,29 +30,28 @@ const HangingCard = () => {
   const x = useMotionValue(initialCardX);
   const y = useMotionValue(initialCardY);
   
-  // Softer spring physics for gentle, realistic return
-  const springConfig = { stiffness: 80, damping: 15, mass: 0.8 };
+  // Elastic rubber-like spring physics for instant snap-back
+  const springConfig = { stiffness: 400, damping: 20, mass: 0.5 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    // Immediately snap back to default position with elastic effect
+    x.set(initialCardX);
+    y.set(initialCardY);
+  };
 
   // Calculate wire paths based on card position - wire ends connect to card dots
   const leftWirePath = useTransform(
     [springX, springY],
     ([latestX, latestY]: number[]) => {
-      // Card dot position (card left edge + dot offset + card movement)
       const cardDotX = wireTopLeftX + latestX;
-      const cardDotY = latestY - 4; // -4px to connect at dot center (dot is at -top-1)
-      
-      // Control points for smooth bezier curve
+      const cardDotY = latestY - 4;
       const midY = cardDotY / 2;
       const bendAmount = latestX * 0.4;
       
@@ -66,10 +64,8 @@ const HangingCard = () => {
   const rightWirePath = useTransform(
     [springX, springY],
     ([latestX, latestY]: number[]) => {
-      // Card dot position (card right edge - dot offset + card movement)
       const cardDotX = wireTopRightX + latestX;
       const cardDotY = latestY - 4;
-      
       const midY = cardDotY / 2;
       const bendAmount = latestX * 0.4;
       
@@ -78,22 +74,6 @@ const HangingCard = () => {
                 ${cardDotX} ${cardDotY}`;
     }
   );
-
-  const handleDragStart = () => {
-    setIsDragging(true);
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-    // Start 3-second timer after drag ends
-    timeoutRef.current = setTimeout(() => {
-      x.set(initialCardX);
-      y.set(initialCardY);
-    }, 3000);
-  };
 
   return (
     <div 
