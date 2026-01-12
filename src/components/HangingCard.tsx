@@ -36,42 +36,14 @@ const HangingCard = () => {
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
-  // Auto-return to default position after 3 seconds
+  // Cleanup timeout on unmount
   useEffect(() => {
-    const unsubscribeX = x.on("change", () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      
-      if (!isDragging) {
-        timeoutRef.current = setTimeout(() => {
-          x.set(initialCardX);
-          y.set(initialCardY);
-        }, 3000);
-      }
-    });
-
-    const unsubscribeY = y.on("change", () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      
-      if (!isDragging) {
-        timeoutRef.current = setTimeout(() => {
-          x.set(initialCardX);
-          y.set(initialCardY);
-        }, 3000);
-      }
-    });
-
     return () => {
-      unsubscribeX();
-      unsubscribeY();
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [isDragging, x, y]);
+  }, []);
 
   // Calculate wire paths based on card position - wire ends connect to card dots
   const leftWirePath = useTransform(
