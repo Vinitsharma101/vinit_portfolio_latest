@@ -198,7 +198,6 @@ const HangingCard = () => {
           left: `calc(50% - ${cardWidth / 2}px)`,
         }}
         drag
-        dragMomentum={false}
         dragConstraints={{
           top: 20,
           left: -100,
@@ -206,10 +205,6 @@ const HangingCard = () => {
           bottom: 120,
         }}
         dragElastic={0.1}
-        onDrag={(_, info) => {
-          x.set(initialCardX + info.offset.x);
-          y.set(initialCardY + info.offset.y);
-        }}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         whileDrag={{ scale: 1.02 }}
