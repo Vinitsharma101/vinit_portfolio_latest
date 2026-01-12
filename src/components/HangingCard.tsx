@@ -1,9 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const HangingCard = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -16,7 +15,7 @@ const HangingCard = () => {
   const cardCenterX = containerWidth / 2;
   
   // Wire attachment points on card (10px from edges, matching the dots)
-  const cardDotLeftOffset = 14;
+  const cardDotLeftOffset = 14; // 10px + 4px (half of dot width)
   const cardDotRightOffset = 14;
   
   // Wire top attachment points (aligned with where card dots will be at rest)
@@ -32,85 +31,29 @@ const HangingCard = () => {
   const x = useMotionValue(initialCardX);
   const y = useMotionValue(initialCardY);
   
-  // Magnetic hover offset
-  const magnetX = useMotionValue(0);
-  const magnetY = useMotionValue(0);
-  
   // Softer spring physics for gentle, realistic return
   const springConfig = { stiffness: 80, damping: 15, mass: 0.8 };
-  const magnetSpringConfig = { stiffness: 150, damping: 20, mass: 0.5 };
-  
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
-  const springMagnetX = useSpring(magnetX, magnetSpringConfig);
-  const springMagnetY = useSpring(magnetY, magnetSpringConfig);
-  
-  // Combined position (drag + magnetic effect)
-  const combinedX = useTransform([springX, springMagnetX], ([sx, mx]: number[]) => sx + mx);
-  const combinedY = useTransform([springY, springMagnetY], ([sy, my]: number[]) => sy + my);
 
-  // Magnetic hover effect
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (isDragging || !cardRef.current || !containerRef.current) return;
-    
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const cardRect = cardRef.current.getBoundingClientRect();
-    
-    const cardCenterXPos = cardRect.left + cardRect.width / 2;
-    const cardCenterYPos = cardRect.top + cardRect.height / 2;
-    
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-    
-    const distX = mouseX - cardCenterXPos;
-    const distY = mouseY - cardCenterYPos;
-    const distance = Math.sqrt(distX * distX + distY * distY);
-    
-    // Magnetic effect radius
-    const magnetRadius = 200;
-    const maxOffset = 12;
-    
-    if (distance < magnetRadius) {
-      const strength = 1 - (distance / magnetRadius);
-      const offsetX = (distX / distance) * maxOffset * strength * strength;
-      const offsetY = (distY / distance) * maxOffset * strength * strength;
-      
-      magnetX.set(offsetX);
-      magnetY.set(offsetY);
-    } else {
-      magnetX.set(0);
-      magnetY.set(0);
-    }
-  }, [isDragging, magnetX, magnetY]);
-
-  const handleMouseLeave = useCallback(() => {
-    magnetX.set(0);
-    magnetY.set(0);
-  }, [magnetX, magnetY]);
-
+  // Cleanup timeout on unmount
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    container.addEventListener('mouseleave', handleMouseLeave);
-    
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      container.removeEventListener('mouseleave', handleMouseLeave);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [handleMouseMove, handleMouseLeave]);
+  }, []);
 
   // Calculate wire paths based on card position - wire ends connect to card dots
   const leftWirePath = useTransform(
-    [combinedX, combinedY],
+    [springX, springY],
     ([latestX, latestY]: number[]) => {
+      // Card dot position (card left edge + dot offset + card movement)
       const cardDotX = wireTopLeftX + latestX;
-      const cardDotY = latestY - 4;
+      const cardDotY = latestY - 4; // -4px to connect at dot center (dot is at -top-1)
       
+      // Control points for smooth bezier curve
       const midY = cardDotY / 2;
       const bendAmount = latestX * 0.4;
       
@@ -121,8 +64,9 @@ const HangingCard = () => {
   );
 
   const rightWirePath = useTransform(
-    [combinedX, combinedY],
+    [springX, springY],
     ([latestX, latestY]: number[]) => {
+      // Card dot position (card right edge - dot offset + card movement)
       const cardDotX = wireTopRightX + latestX;
       const cardDotY = latestY - 4;
       
@@ -137,8 +81,6 @@ const HangingCard = () => {
 
   const handleDragStart = () => {
     setIsDragging(true);
-    magnetX.set(0);
-    magnetY.set(0);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -146,6 +88,7 @@ const HangingCard = () => {
 
   const handleDragEnd = () => {
     setIsDragging(false);
+    // Start 3-second timer after drag ends
     timeoutRef.current = setTimeout(() => {
       x.set(initialCardX);
       y.set(initialCardY);
@@ -189,11 +132,10 @@ const HangingCard = () => {
 
       {/* Draggable Card */}
       <motion.div
-        ref={cardRef}
         className="absolute cursor-grab active:cursor-grabbing z-10"
         style={{
-          x: combinedX,
-          y: combinedY,
+          x: springX,
+          y: springY,
           width: cardWidth,
           left: `calc(50% - ${cardWidth / 2}px)`,
         }}
