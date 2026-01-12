@@ -14,11 +14,11 @@ interface Project {
 const projects: Project[] = [
   {
     id: 1,
-    title: "Project Manager Web App",
-    category: "Full Stack",
-    year: "2024",
-    description: "Built a task and team collaboration platform with real-time React UI, authentication, and REST APIs.",
-    tech: ["React", "Node.js", "Express.js", "FastAPI", "SQL", "Tailwind CSS"],
+    title: "Token Buddy Platform",
+    category: "Healthcare Tech",
+    year: "2025",
+    description: "Healthcare data visualization platform with monthly team reports, identifying trends that led to 15% improvement in user satisfaction.",
+    tech: ["React", "Data Visualization", "Analytics", "Node.js"],
   },
   {
     id: 2,
@@ -30,11 +30,11 @@ const projects: Project[] = [
   },
   {
     id: 3,
-    title: "Token Buddy Platform",
-    category: "Healthcare Tech",
-    year: "2025",
-    description: "Healthcare data visualization platform with monthly team reports, identifying trends that led to 15% improvement in user satisfaction.",
-    tech: ["React", "Data Visualization", "Analytics", "Node.js"],
+    title: "Project Manager Web App",
+    category: "Full Stack",
+    year: "2024",
+    description: "Built a task and team collaboration platform with real-time React UI, authentication, and REST APIs.",
+    tech: ["React", "Node.js", "Express.js", "FastAPI", "SQL", "Tailwind CSS"],
   },
   {
     id: 4,
