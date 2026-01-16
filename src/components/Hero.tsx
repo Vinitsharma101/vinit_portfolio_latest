@@ -1,4 +1,4 @@
-import { ChevronDown, Download, Linkedin } from "lucide-react";
+import { ChevronDown, Download, Github, Linkedin } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { LogoMarquee } from "./LogoMarquee";
 import HangingCard from "./HangingCard";
@@ -166,6 +166,15 @@ export const Hero = () => {
           >
             <Linkedin className="w-4 h-4" />
             <span className="text-sm">LinkedIn</span>
+          </a>
+          <a
+            href="https://github.com/Vinitsharma101"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2 px-4 py-2 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+          >
+            <Github className="w-4 h-4" />
+            <span className="text-sm">GitHub</span>
           </a>
         </div>
 

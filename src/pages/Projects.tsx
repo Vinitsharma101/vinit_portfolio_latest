@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink, Github, Globe } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useInView } from "@/hooks/useInView";
 import { ContactSection } from "@/components/ContactSection";
 
@@ -117,6 +117,11 @@ const projects: Project[] = [
 const Projects = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const isHeaderVisible = useInView(headerRef, { threshold: 0.1 });
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
