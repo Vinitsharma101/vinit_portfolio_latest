@@ -196,13 +196,13 @@ export const ContactSection = () => {
             © 2025 Vinit Sharma. All rights reserved.
           </span>
           <div className="flex gap-8">
-            <a href="#" className="text-mono text-xs text-[#6a6a6a] hover:text-terminal transition-colors line-reveal">
+            <a href="https://github.com/Vinitsharma101" target="_blank" rel="noopener noreferrer" className="text-mono text-xs text-[#6a6a6a] hover:text-terminal transition-colors line-reveal">
               GitHub
             </a>
-            <a href="#" className="text-mono text-xs text-[#6a6a6a] hover:text-terminal transition-colors line-reveal">
+            <a href="https://www.linkedin.com/in/sharma-vinit101/" target="_blank" rel="noopener noreferrer" className="text-mono text-xs text-[#6a6a6a] hover:text-terminal transition-colors line-reveal">
               LinkedIn
             </a>
-            <a href="#" className="text-mono text-xs text-[#6a6a6a] hover:text-terminal transition-colors line-reveal">
+            <a href="https://vntdev.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-mono text-xs text-[#6a6a6a] hover:text-terminal transition-colors line-reveal">
               Portfolio
             </a>
           </div>
