@@ -31,6 +31,7 @@ const projects: Project[] = [
     features: ["Real-time collaboration", "Task management", "Team dashboards", "Authentication system"],
     links: {
       live: "https://teamsphere.vercel.app/",
+      github: "https://github.com/Vinitsharma101/teamsphere-ProMnager",
     },
   },
   {
@@ -44,6 +45,7 @@ const projects: Project[] = [
     features: ["Sub-200ms updates", "Interactive maps", "Session management", "Multi-user support"],
     links: {
       live: "https://locatemee.vercel.app/",
+      github: "https://github.com/Vinitsharma101/realtime-locationsharing",
     },
   },
   {
@@ -93,6 +95,7 @@ const projects: Project[] = [
     features: ["Global teammate matching", "Project creation", "Join requests", "Skill-based search"],
     links: {
       live: "https://projecttory.vercel.app/",
+      github: "https://github.com/Vinitsharma101/Projectory",
     },
   },
   {
@@ -106,6 +109,7 @@ const projects: Project[] = [
     features: ["Desktop UI design", "Real-time messaging", "Modern interface", "Responsive layout"],
     links: {
       live: "https://chattriix.vercel.app/",
+      github: "https://github.com/Vinitsharma101/realtime-chat-webapp-",
     },
   },
 ];
