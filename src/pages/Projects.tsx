@@ -22,23 +22,29 @@ interface Project {
 const projects: Project[] = [
   {
     id: 1,
-    title: "Project Manager Web App",
+    title: "TeamSphere - Project Manager",
     category: "Full Stack",
     year: "2024",
     description: "Built a task and team collaboration platform with real-time React UI, authentication, and REST APIs.",
     longDescription: "A comprehensive project management solution designed for teams to collaborate effectively. Features include real-time updates, task assignments, progress tracking, and team communication tools.",
     tech: ["React", "Node.js", "Express.js", "FastAPI", "SQL", "Tailwind CSS"],
     features: ["Real-time collaboration", "Task management", "Team dashboards", "Authentication system"],
+    links: {
+      live: "https://teamsphere.vercel.app/",
+    },
   },
   {
     id: 2,
-    title: "Live Location Sharing",
+    title: "LocateMe - Live Location Sharing",
     category: "Real-time Systems",
     year: "2024",
     description: "Developed a real-time location sharing app using WebSockets with <200ms map marker updates and seamless session management.",
     longDescription: "A high-performance location sharing application that enables users to share their live location with minimal latency. Built with WebSocket technology for instant updates and interactive map visualization.",
     tech: ["WebSockets", "Leaflet.js", "Node.js", "Real-time UI"],
     features: ["Sub-200ms updates", "Interactive maps", "Session management", "Multi-user support"],
+    links: {
+      live: "https://locatemee.vercel.app/",
+    },
   },
   {
     id: 3,
@@ -49,6 +55,9 @@ const projects: Project[] = [
     longDescription: "An analytics-driven healthcare platform that transforms raw data into actionable insights. Provides comprehensive reporting and trend analysis to improve patient care and operational efficiency.",
     tech: ["React", "Data Visualization", "Analytics", "Node.js"],
     features: ["Data visualization", "Trend analysis", "Monthly reports", "Performance metrics"],
+    links: {
+      live: "https://tokenbuddy.in/",
+    },
   },
   {
     id: 4,
@@ -69,6 +78,35 @@ const projects: Project[] = [
     longDescription: "This very portfolio you're viewing — built with React and modern web technologies. Features parallax effects, smooth scrolling, and a unique editorial design aesthetic.",
     tech: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
     features: ["Parallax effects", "Responsive design", "Interactive UI", "Performance optimized"],
+    links: {
+      live: "https://vntdev.vercel.app/",
+    },
+  },
+  {
+    id: 6,
+    title: "Projecttory - Find Your Team",
+    category: "Social Platform",
+    year: "2025",
+    description: "A global platform connecting peers to find teammates for projects, featuring project creation and join requests.",
+    longDescription: "A collaborative platform designed to connect developers, designers, and creators worldwide. Users can create projects, discover teammates with matching skills, and send join requests to collaborate on exciting ideas globally.",
+    tech: ["React", "Node.js", "MongoDB", "Real-time Notifications"],
+    features: ["Global teammate matching", "Project creation", "Join requests", "Skill-based search"],
+    links: {
+      live: "https://projecttory.vercel.app/",
+    },
+  },
+  {
+    id: 7,
+    title: "Chattriix - Desktop Chat App",
+    category: "Communication",
+    year: "2025",
+    description: "A modern chat application with desktop-inspired UI, featuring real-time messaging and sleek design.",
+    longDescription: "A beautifully designed chat application that brings the desktop messaging experience to the web. Features real-time communication, modern UI patterns, and seamless user interactions for an engaging chat experience.",
+    tech: ["React", "WebSockets", "Tailwind CSS", "Real-time Messaging"],
+    features: ["Desktop UI design", "Real-time messaging", "Modern interface", "Responsive layout"],
+    links: {
+      live: "https://chattriix.vercel.app/",
+    },
   },
 ];
 
