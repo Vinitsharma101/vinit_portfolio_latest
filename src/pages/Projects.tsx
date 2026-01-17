@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ExternalLink, Github, Globe } from "lucide-react";
-import { useRef, useEffect, useState } from "react";
+import { ArrowLeft, Github, Globe } from "lucide-react";
+import { useRef, useEffect } from "react";
 import { useInView } from "@/hooks/useInView";
 import { ContactSection } from "@/components/ContactSection";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -115,7 +115,7 @@ const projects: Project[] = [
   },
 ];
 
-// Floating decorative elements that move on scroll
+// Floating decorative elements - white/light theme for peachy background
 const FloatingElements = () => {
   const { scrollYProgress } = useScroll();
   
@@ -127,86 +127,125 @@ const FloatingElements = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {/* Large circle outline */}
+      {/* Large circle outline - white */}
       <motion.div
         style={{ y: y1, rotate: rotate1 }}
-        className="absolute top-[15%] right-[10%] w-64 h-64 border border-border/20 rounded-full"
+        className="absolute top-[15%] right-[10%] w-64 h-64 md:w-80 md:h-80 border-2 border-white/40 rounded-full"
       />
       
-      {/* Dotted arc path */}
-      <motion.svg
+      {/* Concentric circles */}
+      <motion.div
         style={{ y: y2 }}
-        className="absolute top-[40%] left-[5%] w-96 h-96 opacity-10"
-        viewBox="0 0 200 200"
+        className="absolute top-[25%] left-[15%] w-32 h-32"
+      >
+        <div className="absolute inset-0 border border-white/30 rounded-full" />
+        <div className="absolute inset-4 border border-white/20 rounded-full" />
+        <div className="absolute inset-8 border border-white/10 rounded-full" />
+      </motion.div>
+
+      {/* Chevron arrows - like in the reference */}
+      <motion.svg
+        style={{ y: y1 }}
+        className="absolute top-[50%] left-[8%] w-16 h-32"
+        viewBox="0 0 40 80"
       >
         <path
-          d="M 20 100 Q 100 20 180 100"
+          d="M 5 10 L 20 25 L 35 10"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeDasharray="4 6"
-          className="text-foreground"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.4"
+        />
+        <path
+          d="M 5 30 L 20 45 L 35 30"
+          fill="none"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.3"
+        />
+        <path
+          d="M 5 50 L 20 65 L 35 50"
+          fill="none"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.2"
         />
       </motion.svg>
 
       {/* Rotated square */}
       <motion.div
         style={{ y: y3, rotate: rotate2 }}
-        className="absolute top-[60%] right-[15%] w-32 h-32 border border-border/15 rotate-45"
+        className="absolute top-[60%] right-[15%] w-24 h-24 border-2 border-white/25 rotate-45"
       />
 
-      {/* Small decorative circles */}
+      {/* Small decorative dots */}
       <motion.div
         style={{ y: y1 }}
-        className="absolute top-[25%] left-[20%] w-3 h-3 bg-accent/20 rounded-full"
+        className="absolute top-[20%] left-[40%] w-2 h-2 bg-white/50 rounded-full"
       />
       <motion.div
         style={{ y: y2 }}
-        className="absolute top-[70%] left-[25%] w-2 h-2 bg-rust/20 rounded-full"
+        className="absolute top-[65%] left-[30%] w-3 h-3 bg-white/40 rounded-full"
       />
       <motion.div
         style={{ y: y3 }}
-        className="absolute top-[45%] right-[25%] w-4 h-4 border border-accent/20 rounded-full"
+        className="absolute top-[40%] right-[20%] w-2 h-2 bg-white/30 rounded-full"
       />
 
-      {/* Curved dashed line */}
+      {/* Curved dashed path */}
       <motion.svg
-        style={{ y: y1 }}
-        className="absolute top-[80%] right-[30%] w-64 h-32 opacity-10"
-        viewBox="0 0 200 100"
+        style={{ y: y2 }}
+        className="absolute top-[35%] right-[5%] w-64 h-96"
+        viewBox="0 0 100 200"
       >
         <path
-          d="M 0 80 Q 50 20 100 50 T 200 30"
+          d="M 80 0 Q 20 50 80 100 Q 140 150 80 200"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeDasharray="3 5"
-          className="text-foreground"
+          stroke="white"
+          strokeWidth="1.5"
+          strokeDasharray="6 8"
+          opacity="0.35"
         />
       </motion.svg>
 
       {/* Vertical dotted line */}
       <motion.div
-        style={{ 
-          y: y2,
-          backgroundImage: 'repeating-linear-gradient(to bottom, hsl(var(--border)) 0px, hsl(var(--border)) 4px, transparent 4px, transparent 10px)',
-        }}
-        className="absolute top-[10%] left-[50%] h-48 w-px"
+        style={{ y: y1 }}
+        className="absolute top-[10%] left-[55%] flex flex-col gap-2"
+      >
+        {[...Array(12)].map((_, i) => (
+          <div key={i} className="w-1 h-1 bg-white/30 rounded-full" />
+        ))}
+      </motion.div>
+
+      {/* Geometric arc */}
+      <motion.svg
+        style={{ y: y3 }}
+        className="absolute top-[75%] left-[20%] w-48 h-24"
+        viewBox="0 0 100 50"
+      >
+        <path
+          d="M 10 40 Q 50 0 90 40"
+          fill="none"
+          stroke="white"
+          strokeWidth="2"
+          opacity="0.3"
+        />
+      </motion.svg>
+
+      {/* Small rectangle outline */}
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute top-[45%] left-[5%] w-16 h-12 border border-white/20"
       />
 
-      {/* Geometric outline shapes */}
+      {/* Diagonal line */}
       <motion.div
-        style={{ y: y3 }}
-        className="absolute top-[35%] left-[8%] w-20 h-20 border border-border/10"
-      />
-      
-      {/* Horizontal guide line */}
-      <motion.div
-        style={{ 
-          y: y1,
-          backgroundImage: 'repeating-linear-gradient(to right, hsl(var(--foreground)) 0px, hsl(var(--foreground)) 20px, transparent 20px, transparent 40px)',
-        }}
-        className="absolute top-[55%] left-0 right-0 h-px opacity-5"
+        style={{ y: y1 }}
+        className="absolute top-[30%] right-[35%] w-32 h-px bg-white/20 rotate-45 origin-left"
       />
     </div>
   );
@@ -221,7 +260,6 @@ const ProjectEntry = ({
   index: number;
 }) => {
   const entryRef = useRef<HTMLDivElement>(null);
-  const isVisible = useInView(entryRef, { threshold: 0.1 });
   const { scrollYProgress } = useScroll({
     target: entryRef,
     offset: ["start end", "end start"]
@@ -241,9 +279,9 @@ const ProjectEntry = ({
       style={{ y, opacity }}
       className={`relative max-w-4xl ${offsetClass} mb-32 md:mb-48`}
     >
-      {/* Project number - positioned as decorative element */}
+      {/* Project number - white decorative element */}
       <span 
-        className={`absolute -top-8 ${isEven ? 'left-0 md:-left-16' : 'right-0 md:-right-16'} text-[120px] md:text-[180px] font-serif text-border/20 leading-none select-none pointer-events-none`}
+        className={`absolute -top-8 ${isEven ? 'left-0 md:-left-16' : 'right-0 md:-right-16'} text-[120px] md:text-[180px] font-serif text-white/20 leading-none select-none pointer-events-none`}
       >
         {String(project.id).padStart(2, "0")}
       </span>
@@ -251,30 +289,30 @@ const ProjectEntry = ({
       <div className={`relative z-10 space-y-6 ${alignClass}`}>
         {/* Category and year - subtle metadata */}
         <div className={`flex items-center gap-4 ${isEven ? '' : 'md:justify-end'}`}>
-          <span className="text-xs uppercase tracking-[0.25em] text-accent">
+          <span className="text-xs uppercase tracking-[0.25em] text-[#1a1a1a]/60">
             {project.category}
           </span>
-          <span className="w-8 h-px bg-border" />
-          <span className="text-xs text-muted-foreground tracking-wider">
+          <span className="w-8 h-px bg-[#1a1a1a]/20" />
+          <span className="text-xs text-[#1a1a1a]/40 tracking-wider">
             {project.year}
           </span>
         </div>
 
         {/* Title - editorial and bold */}
-        <h2 className="text-4xl md:text-5xl lg:text-6xl text-editorial leading-[1.1] group">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl text-editorial leading-[1.1] text-[#1a1a1a] group">
           <a 
             href={project.links?.live || "#"} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="relative inline-block hover:text-rust transition-colors duration-500"
+            className="relative inline-block hover:text-[#1a1a1a]/70 transition-colors duration-500"
           >
             {project.title}
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-rust group-hover:w-full transition-all duration-500" />
+            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#1a1a1a] group-hover:w-full transition-all duration-500" />
           </a>
         </h2>
 
         {/* Description */}
-        <p className={`text-lg text-muted-foreground leading-relaxed max-w-2xl ${isEven ? '' : 'md:ml-auto'}`}>
+        <p className={`text-lg text-[#1a1a1a]/60 leading-relaxed max-w-2xl ${isEven ? '' : 'md:ml-auto'}`}>
           {project.longDescription}
         </p>
 
@@ -283,7 +321,7 @@ const ProjectEntry = ({
           {project.tech.slice(0, 4).map((tech) => (
             <span
               key={tech}
-              className="text-xs tracking-wide text-muted-foreground/70 hover:text-foreground transition-colors"
+              className="text-xs tracking-wide text-[#1a1a1a]/40 hover:text-[#1a1a1a]/80 transition-colors"
             >
               {tech}
             </span>
@@ -297,12 +335,12 @@ const ProjectEntry = ({
               href={project.links.live}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/link flex items-center gap-2 text-sm text-foreground"
+              className="group/link flex items-center gap-2 text-sm text-[#1a1a1a]"
             >
               <Globe className="w-4 h-4" />
               <span className="relative">
                 View Live
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-foreground group-hover/link:w-full transition-all duration-300" />
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-[#1a1a1a] group-hover/link:w-full transition-all duration-300" />
               </span>
             </a>
           )}
@@ -311,12 +349,12 @@ const ProjectEntry = ({
               href={project.links.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/link flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="group/link flex items-center gap-2 text-sm text-[#1a1a1a]/60 hover:text-[#1a1a1a] transition-colors"
             >
               <Github className="w-4 h-4" />
               <span className="relative">
                 Source
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-foreground group-hover/link:w-full transition-all duration-300" />
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-[#1a1a1a] group-hover/link:w-full transition-all duration-300" />
               </span>
             </a>
           )}
@@ -341,21 +379,25 @@ const Projects = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-background relative">
+    <div 
+      ref={containerRef} 
+      className="min-h-screen relative"
+      style={{ backgroundColor: '#E8C4B8' }} // Warm peachy/blush background
+    >
       {/* Floating decorative elements */}
       <FloatingElements />
 
       {/* Minimal header */}
-      <header className="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
+      <header className="fixed top-0 left-0 right-0 z-50">
         <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between">
           <Link
             to="/"
-            className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors"
+            className="group flex items-center gap-2 text-[#1a1a1a]/60 hover:text-[#1a1a1a] transition-colors"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span className="text-xs tracking-wider uppercase">Back</span>
           </Link>
-          <span className="text-xs tracking-[0.3em] uppercase text-white/50">Archive</span>
+          <span className="text-xs tracking-[0.3em] uppercase text-[#1a1a1a]/40">Archive</span>
         </div>
       </header>
 
@@ -367,16 +409,16 @@ const Projects = () => {
       >
         <div className={`transition-all duration-1000 ${isHeaderVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
           <div className="flex items-end gap-4 mb-8">
-            <span className="text-xs tracking-[0.3em] uppercase text-muted-foreground">Selected Works</span>
-            <span className="flex-1 h-px bg-border/50 max-w-[200px]" />
-            <span className="text-xs text-muted-foreground">2024—2025</span>
+            <span className="text-xs tracking-[0.3em] uppercase text-[#1a1a1a]/50">Selected Works</span>
+            <span className="flex-1 h-px bg-[#1a1a1a]/20 max-w-[200px]" />
+            <span className="text-xs text-[#1a1a1a]/40">2024—2025</span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl lg:text-9xl text-editorial mb-8 leading-[0.9]">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl text-editorial mb-8 leading-[0.9] text-[#1a1a1a]">
             Projects
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed font-light">
+          <p className="text-xl md:text-2xl text-[#1a1a1a]/50 max-w-xl leading-relaxed font-light">
             A curated archive of experiments, systems, and interfaces.
           </p>
         </div>
@@ -396,9 +438,9 @@ const Projects = () => {
       {/* End marker */}
       <div className="flex items-center justify-center py-24 relative z-10">
         <div className="flex items-center gap-6">
-          <span className="w-12 h-px bg-border" />
-          <span className="text-xs tracking-[0.3em] uppercase text-muted-foreground">End of Archive</span>
-          <span className="w-12 h-px bg-border" />
+          <span className="w-12 h-px bg-[#1a1a1a]/20" />
+          <span className="text-xs tracking-[0.3em] uppercase text-[#1a1a1a]/40">End of Archive</span>
+          <span className="w-12 h-px bg-[#1a1a1a]/20" />
         </div>
       </div>
 
