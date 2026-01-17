@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink, Github, Globe } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useInView } from "@/hooks/useInView";
 import { ContactSection } from "@/components/ContactSection";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 interface Project {
   id: number;
@@ -114,9 +115,225 @@ const projects: Project[] = [
   },
 ];
 
+// Floating decorative elements that move on scroll
+const FloatingElements = () => {
+  const { scrollYProgress } = useScroll();
+  
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -350]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 45]);
+  const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -30]);
+
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      {/* Large circle outline */}
+      <motion.div
+        style={{ y: y1, rotate: rotate1 }}
+        className="absolute top-[15%] right-[10%] w-64 h-64 border border-border/20 rounded-full"
+      />
+      
+      {/* Dotted arc path */}
+      <motion.svg
+        style={{ y: y2 }}
+        className="absolute top-[40%] left-[5%] w-96 h-96 opacity-10"
+        viewBox="0 0 200 200"
+      >
+        <path
+          d="M 20 100 Q 100 20 180 100"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeDasharray="4 6"
+          className="text-foreground"
+        />
+      </motion.svg>
+
+      {/* Rotated square */}
+      <motion.div
+        style={{ y: y3, rotate: rotate2 }}
+        className="absolute top-[60%] right-[15%] w-32 h-32 border border-border/15 rotate-45"
+      />
+
+      {/* Small decorative circles */}
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute top-[25%] left-[20%] w-3 h-3 bg-accent/20 rounded-full"
+      />
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute top-[70%] left-[25%] w-2 h-2 bg-rust/20 rounded-full"
+      />
+      <motion.div
+        style={{ y: y3 }}
+        className="absolute top-[45%] right-[25%] w-4 h-4 border border-accent/20 rounded-full"
+      />
+
+      {/* Curved dashed line */}
+      <motion.svg
+        style={{ y: y1 }}
+        className="absolute top-[80%] right-[30%] w-64 h-32 opacity-10"
+        viewBox="0 0 200 100"
+      >
+        <path
+          d="M 0 80 Q 50 20 100 50 T 200 30"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeDasharray="3 5"
+          className="text-foreground"
+        />
+      </motion.svg>
+
+      {/* Vertical dotted line */}
+      <motion.div
+        style={{ 
+          y: y2,
+          backgroundImage: 'repeating-linear-gradient(to bottom, hsl(var(--border)) 0px, hsl(var(--border)) 4px, transparent 4px, transparent 10px)',
+        }}
+        className="absolute top-[10%] left-[50%] h-48 w-px"
+      />
+
+      {/* Geometric outline shapes */}
+      <motion.div
+        style={{ y: y3 }}
+        className="absolute top-[35%] left-[8%] w-20 h-20 border border-border/10"
+      />
+      
+      {/* Horizontal guide line */}
+      <motion.div
+        style={{ 
+          y: y1,
+          backgroundImage: 'repeating-linear-gradient(to right, hsl(var(--foreground)) 0px, hsl(var(--foreground)) 20px, transparent 20px, transparent 40px)',
+        }}
+        className="absolute top-[55%] left-0 right-0 h-px opacity-5"
+      />
+    </div>
+  );
+};
+
+// Editorial project entry component
+const ProjectEntry = ({ 
+  project, 
+  index,
+}: { 
+  project: Project; 
+  index: number;
+}) => {
+  const entryRef = useRef<HTMLDivElement>(null);
+  const isVisible = useInView(entryRef, { threshold: 0.1 });
+  const { scrollYProgress } = useScroll({
+    target: entryRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]);
+
+  // Alternate layout for visual variety
+  const isEven = index % 2 === 0;
+  const offsetClass = isEven ? "md:ml-0" : "md:ml-auto";
+  const alignClass = isEven ? "md:text-left" : "md:text-right";
+
+  return (
+    <motion.div
+      ref={entryRef}
+      style={{ y, opacity }}
+      className={`relative max-w-4xl ${offsetClass} mb-32 md:mb-48`}
+    >
+      {/* Project number - positioned as decorative element */}
+      <span 
+        className={`absolute -top-8 ${isEven ? 'left-0 md:-left-16' : 'right-0 md:-right-16'} text-[120px] md:text-[180px] font-serif text-border/20 leading-none select-none pointer-events-none`}
+      >
+        {String(project.id).padStart(2, "0")}
+      </span>
+
+      <div className={`relative z-10 space-y-6 ${alignClass}`}>
+        {/* Category and year - subtle metadata */}
+        <div className={`flex items-center gap-4 ${isEven ? '' : 'md:justify-end'}`}>
+          <span className="text-xs uppercase tracking-[0.25em] text-accent">
+            {project.category}
+          </span>
+          <span className="w-8 h-px bg-border" />
+          <span className="text-xs text-muted-foreground tracking-wider">
+            {project.year}
+          </span>
+        </div>
+
+        {/* Title - editorial and bold */}
+        <h2 className="text-4xl md:text-5xl lg:text-6xl text-editorial leading-[1.1] group">
+          <a 
+            href={project.links?.live || "#"} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="relative inline-block hover:text-rust transition-colors duration-500"
+          >
+            {project.title}
+            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-rust group-hover:w-full transition-all duration-500" />
+          </a>
+        </h2>
+
+        {/* Description */}
+        <p className={`text-lg text-muted-foreground leading-relaxed max-w-2xl ${isEven ? '' : 'md:ml-auto'}`}>
+          {project.longDescription}
+        </p>
+
+        {/* Tech stack - minimal tags */}
+        <div className={`flex flex-wrap gap-3 pt-2 ${isEven ? '' : 'md:justify-end'}`}>
+          {project.tech.slice(0, 4).map((tech) => (
+            <span
+              key={tech}
+              className="text-xs tracking-wide text-muted-foreground/70 hover:text-foreground transition-colors"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        {/* Links - refined and minimal */}
+        <div className={`flex items-center gap-6 pt-4 ${isEven ? '' : 'md:justify-end'}`}>
+          {project.links?.live && (
+            <a
+              href={project.links.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/link flex items-center gap-2 text-sm text-foreground"
+            >
+              <Globe className="w-4 h-4" />
+              <span className="relative">
+                View Live
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-foreground group-hover/link:w-full transition-all duration-300" />
+              </span>
+            </a>
+          )}
+          {project.links?.github && (
+            <a
+              href={project.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/link flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Github className="w-4 h-4" />
+              <span className="relative">
+                Source
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-foreground group-hover/link:w-full transition-all duration-300" />
+              </span>
+            </a>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const Projects = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const isHeaderVisible = useInView(headerRef, { threshold: 0.1 });
+  const { scrollYProgress } = useScroll();
+  
+  const headerY = useTransform(scrollYProgress, [0, 0.1], [0, -50]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
 
   // Scroll to top on mount
   useEffect(() => {
@@ -124,165 +341,69 @@ const Projects = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-md border-b border-border/30">
-        <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
+    <div ref={containerRef} className="min-h-screen bg-background relative">
+      {/* Floating decorative elements */}
+      <FloatingElements />
+
+      {/* Minimal header */}
+      <header className="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
+        <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between">
           <Link
             to="/"
-            className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span className="text-sm">Back to Home</span>
+            <span className="text-xs tracking-wider uppercase">Back</span>
           </Link>
-          <span className="text-mono text-muted-foreground">Projects Archive</span>
+          <span className="text-xs tracking-[0.3em] uppercase text-white/50">Archive</span>
         </div>
       </header>
 
-      {/* Hero section */}
-      <section 
+      {/* Hero section - editorial masthead */}
+      <motion.section 
         ref={headerRef}
-        className="pt-32 pb-16 px-8 max-w-7xl mx-auto"
+        style={{ y: headerY, opacity: headerOpacity }}
+        className="pt-32 pb-24 md:pt-40 md:pb-32 px-8 max-w-7xl mx-auto relative z-10"
       >
-        <div className={`transition-all duration-700 ${isHeaderVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <span className="text-mono text-accent mb-4 block">Archive / 2024-2025</span>
-          <h1 className="text-5xl md:text-7xl text-editorial mb-6">All Projects</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl">
-            A complete collection of my work — from full-stack applications to data engineering tools.
-            Each project represents a unique challenge conquered with code and creativity.
+        <div className={`transition-all duration-1000 ${isHeaderVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div className="flex items-end gap-4 mb-8">
+            <span className="text-xs tracking-[0.3em] uppercase text-muted-foreground">Selected Works</span>
+            <span className="flex-1 h-px bg-border/50 max-w-[200px]" />
+            <span className="text-xs text-muted-foreground">2024—2025</span>
+          </div>
+          
+          <h1 className="text-6xl md:text-8xl lg:text-9xl text-editorial mb-8 leading-[0.9]">
+            Projects
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed font-light">
+            A curated archive of experiments, systems, and interfaces.
           </p>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Projects stacking cards */}
-      <section className="px-8 pb-0 max-w-7xl mx-auto relative">
+      {/* Projects canvas - editorial layout */}
+      <section className="px-8 md:px-12 lg:px-16 pb-32 max-w-7xl mx-auto relative z-10">
         {projects.map((project, index) => (
-          <StickyProjectCard 
+          <ProjectEntry 
             key={project.id} 
             project={project} 
-            index={index} 
-            total={projects.length}
+            index={index}
           />
         ))}
       </section>
 
-      {/* Contact Section */}
-      <ContactSection />
-    </div>
-  );
-};
-
-const StickyProjectCard = ({ 
-  project, 
-  index, 
-  total 
-}: { 
-  project: Project; 
-  index: number; 
-  total: number;
-}) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isVisible = useInView(cardRef, { threshold: 0.1 });
-
-  // Each card sticks slightly lower to create stacking effect
-  const topOffset = 80 + index * 8; // Header is ~64px + some spacing
-  const zIndex = total - index; // Higher index = lower z-index so earlier cards stay on top initially
-
-  return (
-    <div
-      ref={cardRef}
-      className="sticky mb-8"
-      style={{ 
-        top: `${topOffset}px`,
-        zIndex: index + 1, // Later cards have higher z-index to cover previous ones
-      }}
-    >
-      <div 
-        className={`group bg-background border border-border p-8 md:p-12 transition-all duration-700 hover:border-foreground shadow-lg ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-        }`}
-        style={{ 
-          transitionDelay: `${index * 100}ms`,
-        }}
-      >
-        <div className="grid md:grid-cols-[1fr,2fr] gap-8">
-          {/* Left column - Meta info */}
-          <div className="space-y-4">
-            <span className="text-mono text-muted-foreground">
-              {String(project.id).padStart(2, "0")}
-            </span>
-            <div>
-              <span className="text-xs uppercase tracking-wider text-accent block mb-1">
-                {project.category}
-              </span>
-              <span className="text-sm text-muted-foreground">{project.year}</span>
-            </div>
-            
-            {/* Tech stack */}
-            <div className="flex flex-wrap gap-2 pt-4">
-              {project.tech.map((tech) => (
-                <span
-                  key={tech}
-                  className="text-xs px-2 py-1 bg-secondary text-secondary-foreground"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Right column - Content */}
-          <div className="space-y-6">
-            <h2 className="text-3xl md:text-4xl text-editorial group-hover:text-rust transition-colors">
-              {project.title}
-            </h2>
-            
-            <p className="text-muted-foreground leading-relaxed">
-              {project.longDescription}
-            </p>
-
-            {/* Features */}
-            <div className="grid grid-cols-2 gap-3">
-              {project.features.map((feature) => (
-                <div key={feature} className="flex items-center gap-2">
-                  <div className="w-1 h-1 bg-accent" />
-                  <span className="text-sm text-muted-foreground">{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Links */}
-            <div className="flex gap-4 pt-4">
-              {project.links?.live && (
-                <a
-                  href={project.links.live}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <Globe className="w-4 h-4" />
-                  <span>Live Demo</span>
-                </a>
-              )}
-              {project.links?.github && (
-                <a
-                  href={project.links.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <Github className="w-4 h-4" />
-                  <span>Source Code</span>
-                </a>
-              )}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors cursor-pointer">
-                <ExternalLink className="w-4 h-4" />
-                <span>View Details</span>
-              </div>
-            </div>
-          </div>
+      {/* End marker */}
+      <div className="flex items-center justify-center py-24 relative z-10">
+        <div className="flex items-center gap-6">
+          <span className="w-12 h-px bg-border" />
+          <span className="text-xs tracking-[0.3em] uppercase text-muted-foreground">End of Archive</span>
+          <span className="w-12 h-px bg-border" />
         </div>
       </div>
+
+      {/* Contact Section */}
+      <ContactSection />
     </div>
   );
 };
