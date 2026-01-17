@@ -115,7 +115,123 @@ const projects: Project[] = [
   },
 ];
 
-// Floating decorative elements - white/light theme for peachy background
+// Soft accent color palette
+const accentColors = {
+  peach: '#E8C4B8',
+  sage: '#C5D1C0',
+  lavender: '#D4CDE4',
+  cream: '#F5EBE0',
+  sky: '#C8DDE8',
+  blush: '#E8D0D0',
+  mint: '#D0E5E3',
+  sand: '#E5DDD0',
+};
+
+// Canvas background with colored regions
+const CanvasBackground = () => {
+  const { scrollYProgress } = useScroll();
+  
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, -150]);
+
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      {/* Large peach blob - top right */}
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute -top-20 right-[-10%] w-[500px] h-[600px] rounded-[40%_60%_70%_30%/40%_50%_60%_50%]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        <div 
+          className="w-full h-full rounded-[inherit]"
+          style={{ backgroundColor: accentColors.peach, opacity: 0.5 }}
+        />
+      </motion.div>
+
+      {/* Sage rectangle - left side */}
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute top-[20%] left-[-5%] w-[300px] h-[400px] -rotate-12"
+      >
+        <div 
+          className="w-full h-full"
+          style={{ backgroundColor: accentColors.sage, opacity: 0.4 }}
+        />
+      </motion.div>
+
+      {/* Lavender circle - mid right */}
+      <motion.div
+        style={{ y: y3 }}
+        className="absolute top-[35%] right-[5%] w-[250px] h-[250px] rounded-full"
+      >
+        <div 
+          className="w-full h-full rounded-full"
+          style={{ backgroundColor: accentColors.lavender, opacity: 0.45 }}
+        />
+      </motion.div>
+
+      {/* Sky panel - left middle */}
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute top-[50%] left-[10%] w-[200px] h-[350px] rotate-6"
+      >
+        <div 
+          className="w-full h-full"
+          style={{ backgroundColor: accentColors.sky, opacity: 0.35 }}
+        />
+      </motion.div>
+
+      {/* Blush blob - bottom area */}
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute top-[65%] right-[15%] w-[400px] h-[300px] rounded-[60%_40%_30%_70%/60%_30%_70%_40%]"
+      >
+        <div 
+          className="w-full h-full rounded-[inherit]"
+          style={{ backgroundColor: accentColors.blush, opacity: 0.4 }}
+        />
+      </motion.div>
+
+      {/* Mint square - bottom left */}
+      <motion.div
+        style={{ y: y3 }}
+        className="absolute top-[75%] left-[-3%] w-[180px] h-[180px] rotate-45"
+      >
+        <div 
+          className="w-full h-full"
+          style={{ backgroundColor: accentColors.mint, opacity: 0.45 }}
+        />
+      </motion.div>
+
+      {/* Sand stripe - decorative */}
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute top-[45%] left-[40%] w-[60px] h-[500px] -rotate-12"
+      >
+        <div 
+          className="w-full h-full"
+          style={{ backgroundColor: accentColors.sand, opacity: 0.3 }}
+        />
+      </motion.div>
+
+      {/* Small cream accent */}
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute top-[85%] right-[35%] w-[150px] h-[150px] rounded-full"
+      >
+        <div 
+          className="w-full h-full rounded-full"
+          style={{ backgroundColor: accentColors.cream, opacity: 0.5 }}
+        />
+      </motion.div>
+    </div>
+  );
+};
+
+// Decorative floating elements
 const FloatingElements = () => {
   const { scrollYProgress } = useScroll();
   
@@ -123,133 +239,66 @@ const FloatingElements = () => {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -350]);
   const y3 = useTransform(scrollYProgress, [0, 1], [0, -150]);
   const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 45]);
-  const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -30]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {/* Large circle outline - white */}
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
+      {/* Circle outline */}
       <motion.div
         style={{ y: y1, rotate: rotate1 }}
-        className="absolute top-[15%] right-[10%] w-64 h-64 md:w-80 md:h-80 border-2 border-white/40 rounded-full"
+        className="absolute top-[18%] right-[12%] w-48 h-48 border-2 border-[#1a1a1a]/10 rounded-full"
       />
       
-      {/* Concentric circles */}
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute top-[25%] left-[15%] w-32 h-32"
-      >
-        <div className="absolute inset-0 border border-white/30 rounded-full" />
-        <div className="absolute inset-4 border border-white/20 rounded-full" />
-        <div className="absolute inset-8 border border-white/10 rounded-full" />
-      </motion.div>
-
-      {/* Chevron arrows - like in the reference */}
+      {/* Chevrons */}
       <motion.svg
-        style={{ y: y1 }}
-        className="absolute top-[50%] left-[8%] w-16 h-32"
+        style={{ y: y2 }}
+        className="absolute top-[55%] left-[6%] w-12 h-24"
         viewBox="0 0 40 80"
       >
-        <path
-          d="M 5 10 L 20 25 L 35 10"
-          fill="none"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-          opacity="0.4"
-        />
-        <path
-          d="M 5 30 L 20 45 L 35 30"
-          fill="none"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-          opacity="0.3"
-        />
-        <path
-          d="M 5 50 L 20 65 L 35 50"
-          fill="none"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-          opacity="0.2"
-        />
+        <path d="M 8 15 L 20 27 L 32 15" fill="none" stroke="#1a1a1a" strokeWidth="1.5" opacity="0.15" />
+        <path d="M 8 30 L 20 42 L 32 30" fill="none" stroke="#1a1a1a" strokeWidth="1.5" opacity="0.12" />
+        <path d="M 8 45 L 20 57 L 32 45" fill="none" stroke="#1a1a1a" strokeWidth="1.5" opacity="0.08" />
       </motion.svg>
 
-      {/* Rotated square */}
-      <motion.div
-        style={{ y: y3, rotate: rotate2 }}
-        className="absolute top-[60%] right-[15%] w-24 h-24 border-2 border-white/25 rotate-45"
-      />
-
-      {/* Small decorative dots */}
-      <motion.div
-        style={{ y: y1 }}
-        className="absolute top-[20%] left-[40%] w-2 h-2 bg-white/50 rounded-full"
-      />
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute top-[65%] left-[30%] w-3 h-3 bg-white/40 rounded-full"
-      />
-      <motion.div
-        style={{ y: y3 }}
-        className="absolute top-[40%] right-[20%] w-2 h-2 bg-white/30 rounded-full"
-      />
-
-      {/* Curved dashed path */}
-      <motion.svg
-        style={{ y: y2 }}
-        className="absolute top-[35%] right-[5%] w-64 h-96"
-        viewBox="0 0 100 200"
-      >
-        <path
-          d="M 80 0 Q 20 50 80 100 Q 140 150 80 200"
-          fill="none"
-          stroke="white"
-          strokeWidth="1.5"
-          strokeDasharray="6 8"
-          opacity="0.35"
-        />
-      </motion.svg>
-
-      {/* Vertical dotted line */}
-      <motion.div
-        style={{ y: y1 }}
-        className="absolute top-[10%] left-[55%] flex flex-col gap-2"
-      >
-        {[...Array(12)].map((_, i) => (
-          <div key={i} className="w-1 h-1 bg-white/30 rounded-full" />
-        ))}
-      </motion.div>
-
-      {/* Geometric arc */}
+      {/* Dotted arc */}
       <motion.svg
         style={{ y: y3 }}
-        className="absolute top-[75%] left-[20%] w-48 h-24"
-        viewBox="0 0 100 50"
+        className="absolute top-[40%] right-[8%] w-40 h-80"
+        viewBox="0 0 80 160"
       >
         <path
-          d="M 10 40 Q 50 0 90 40"
+          d="M 60 0 Q 10 40 60 80 Q 110 120 60 160"
           fill="none"
-          stroke="white"
-          strokeWidth="2"
-          opacity="0.3"
+          stroke="#1a1a1a"
+          strokeWidth="1"
+          strokeDasharray="4 6"
+          opacity="0.12"
         />
       </motion.svg>
 
-      {/* Small rectangle outline */}
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute top-[45%] left-[5%] w-16 h-12 border border-white/20"
-      />
+      {/* Small dots */}
+      <motion.div style={{ y: y1 }} className="absolute top-[25%] left-[35%] w-2 h-2 bg-[#1a1a1a]/15 rounded-full" />
+      <motion.div style={{ y: y2 }} className="absolute top-[60%] left-[28%] w-1.5 h-1.5 bg-[#1a1a1a]/12 rounded-full" />
+      <motion.div style={{ y: y3 }} className="absolute top-[72%] right-[22%] w-2 h-2 bg-[#1a1a1a]/10 rounded-full" />
 
       {/* Diagonal line */}
       <motion.div
         style={{ y: y1 }}
-        className="absolute top-[30%] right-[35%] w-32 h-px bg-white/20 rotate-45 origin-left"
+        className="absolute top-[32%] right-[40%] w-24 h-px bg-[#1a1a1a]/10 rotate-45"
       />
     </div>
   );
 };
+
+// Project accent backgrounds - different colors for different projects
+const projectAccents = [
+  { color: accentColors.peach, position: 'left', rotation: -3 },
+  { color: accentColors.sage, position: 'right', rotation: 5 },
+  { color: accentColors.lavender, position: 'left', rotation: 2 },
+  { color: accentColors.sky, position: 'right', rotation: -4 },
+  { color: accentColors.blush, position: 'left', rotation: 6 },
+  { color: accentColors.mint, position: 'right', rotation: -2 },
+  { color: accentColors.sand, position: 'left', rotation: 4 },
+];
 
 // Editorial project entry component
 const ProjectEntry = ({ 
@@ -267,11 +316,13 @@ const ProjectEntry = ({
   
   const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]);
+  const accentY = useTransform(scrollYProgress, [0, 1], [30, -30]);
 
-  // Alternate layout for visual variety
   const isEven = index % 2 === 0;
   const offsetClass = isEven ? "md:ml-0" : "md:ml-auto";
   const alignClass = isEven ? "md:text-left" : "md:text-right";
+  
+  const accent = projectAccents[index % projectAccents.length];
 
   return (
     <motion.div
@@ -279,26 +330,43 @@ const ProjectEntry = ({
       style={{ y, opacity }}
       className={`relative max-w-4xl ${offsetClass} mb-32 md:mb-48`}
     >
-      {/* Project number - white decorative element */}
+      {/* Colored accent panel behind content */}
+      <motion.div
+        style={{ y: accentY }}
+        className={`absolute ${accent.position === 'left' ? '-left-8 md:-left-16' : '-right-8 md:-right-16'} top-1/2 -translate-y-1/2 w-[120%] h-[85%] -z-10`}
+      >
+        <div 
+          className="w-full h-full"
+          style={{ 
+            backgroundColor: accent.color, 
+            opacity: 0.25,
+            transform: `rotate(${accent.rotation}deg)`,
+          }}
+        />
+      </motion.div>
+
+      {/* Project number */}
       <span 
-        className={`absolute -top-8 ${isEven ? 'left-0 md:-left-16' : 'right-0 md:-right-16'} text-[120px] md:text-[180px] font-serif text-white/20 leading-none select-none pointer-events-none`}
+        className={`absolute -top-8 ${isEven ? 'left-0 md:-left-12' : 'right-0 md:-right-12'} text-[100px] md:text-[160px] font-serif text-[#1a1a1a]/[0.06] leading-none select-none pointer-events-none`}
       >
         {String(project.id).padStart(2, "0")}
       </span>
 
       <div className={`relative z-10 space-y-6 ${alignClass}`}>
-        {/* Category and year - subtle metadata */}
+        {/* Category badge with color */}
         <div className={`flex items-center gap-4 ${isEven ? '' : 'md:justify-end'}`}>
-          <span className="text-xs uppercase tracking-[0.25em] text-[#1a1a1a]/60">
+          <span 
+            className="text-xs uppercase tracking-[0.25em] px-3 py-1"
+            style={{ backgroundColor: accent.color, opacity: 0.7 }}
+          >
             {project.category}
           </span>
-          <span className="w-8 h-px bg-[#1a1a1a]/20" />
           <span className="text-xs text-[#1a1a1a]/40 tracking-wider">
             {project.year}
           </span>
         </div>
 
-        {/* Title - editorial and bold */}
+        {/* Title */}
         <h2 className="text-4xl md:text-5xl lg:text-6xl text-editorial leading-[1.1] text-[#1a1a1a] group">
           <a 
             href={project.links?.live || "#"} 
@@ -312,23 +380,26 @@ const ProjectEntry = ({
         </h2>
 
         {/* Description */}
-        <p className={`text-lg text-[#1a1a1a]/60 leading-relaxed max-w-2xl ${isEven ? '' : 'md:ml-auto'}`}>
+        <p className={`text-lg text-[#1a1a1a]/55 leading-relaxed max-w-2xl ${isEven ? '' : 'md:ml-auto'}`}>
           {project.longDescription}
         </p>
 
-        {/* Tech stack - minimal tags */}
+        {/* Tech stack */}
         <div className={`flex flex-wrap gap-3 pt-2 ${isEven ? '' : 'md:justify-end'}`}>
-          {project.tech.slice(0, 4).map((tech) => (
+          {project.tech.slice(0, 4).map((tech, i) => (
             <span
               key={tech}
-              className="text-xs tracking-wide text-[#1a1a1a]/40 hover:text-[#1a1a1a]/80 transition-colors"
+              className="text-xs tracking-wide px-2 py-0.5 text-[#1a1a1a]/60 hover:text-[#1a1a1a] transition-colors"
+              style={{ 
+                backgroundColor: i % 2 === 0 ? `${accent.color}40` : 'transparent',
+              }}
             >
               {tech}
             </span>
           ))}
         </div>
 
-        {/* Links - refined and minimal */}
+        {/* Links */}
         <div className={`flex items-center gap-6 pt-4 ${isEven ? '' : 'md:justify-end'}`}>
           {project.links?.live && (
             <a
@@ -373,7 +444,6 @@ const Projects = () => {
   const headerY = useTransform(scrollYProgress, [0, 0.1], [0, -50]);
   const headerOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
 
-  // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -381,13 +451,16 @@ const Projects = () => {
   return (
     <div 
       ref={containerRef} 
-      className="min-h-screen relative"
-      style={{ backgroundColor: '#E8C4B8' }} // Warm peachy/blush background
+      className="min-h-screen relative overflow-x-hidden"
+      style={{ backgroundColor: '#FAF8F5' }} // Neutral warm white base
     >
-      {/* Floating decorative elements */}
+      {/* Canvas colored regions */}
+      <CanvasBackground />
+      
+      {/* Decorative floating elements */}
       <FloatingElements />
 
-      {/* Minimal header */}
+      {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between">
           <Link
@@ -401,16 +474,27 @@ const Projects = () => {
         </div>
       </header>
 
-      {/* Hero section - editorial masthead */}
+      {/* Hero section */}
       <motion.section 
         ref={headerRef}
         style={{ y: headerY, opacity: headerOpacity }}
         className="pt-32 pb-24 md:pt-40 md:pb-32 px-8 max-w-7xl mx-auto relative z-10"
       >
+        {/* Accent shape behind title */}
+        <div 
+          className="absolute top-24 left-0 w-[300px] h-[200px] -z-10 -rotate-3"
+          style={{ backgroundColor: accentColors.cream, opacity: 0.6 }}
+        />
+        
         <div className={`transition-all duration-1000 ${isHeaderVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
           <div className="flex items-end gap-4 mb-8">
-            <span className="text-xs tracking-[0.3em] uppercase text-[#1a1a1a]/50">Selected Works</span>
-            <span className="flex-1 h-px bg-[#1a1a1a]/20 max-w-[200px]" />
+            <span 
+              className="text-xs tracking-[0.3em] uppercase px-3 py-1"
+              style={{ backgroundColor: accentColors.sage, opacity: 0.6 }}
+            >
+              Selected Works
+            </span>
+            <span className="flex-1 h-px bg-[#1a1a1a]/15 max-w-[200px]" />
             <span className="text-xs text-[#1a1a1a]/40">2024—2025</span>
           </div>
           
@@ -424,7 +508,7 @@ const Projects = () => {
         </div>
       </motion.section>
 
-      {/* Projects canvas - editorial layout */}
+      {/* Projects canvas */}
       <section className="px-8 md:px-12 lg:px-16 pb-32 max-w-7xl mx-auto relative z-10">
         {projects.map((project, index) => (
           <ProjectEntry 
@@ -435,8 +519,12 @@ const Projects = () => {
         ))}
       </section>
 
-      {/* End marker */}
+      {/* End marker with accent */}
       <div className="flex items-center justify-center py-24 relative z-10">
+        <div 
+          className="absolute w-[200px] h-[80px] -z-10"
+          style={{ backgroundColor: accentColors.lavender, opacity: 0.3 }}
+        />
         <div className="flex items-center gap-6">
           <span className="w-12 h-px bg-[#1a1a1a]/20" />
           <span className="text-xs tracking-[0.3em] uppercase text-[#1a1a1a]/40">End of Archive</span>
