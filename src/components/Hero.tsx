@@ -66,27 +66,6 @@ export const Hero = () => {
           WebkitMaskImage: `radial-gradient(circle 150px at ${mousePixelPos.x}px ${mousePixelPos.y}px, black 0%, transparent 100%)`,
         }}
       />
-      {/* Floating geometric elements with parallax */}
-      <div 
-        className="absolute top-1/4 right-1/4 w-32 h-32 border border-accent/20 pointer-events-none transition-transform duration-300 ease-out"
-        style={{
-          transform: `translate(${mousePos.x * 30}px, ${mousePos.y * 30}px) rotate(${45 + mousePos.x * 10}deg)`,
-          opacity: 0.3,
-        }}
-      />
-      <div 
-        className="absolute bottom-1/3 left-1/4 w-24 h-24 border border-clay/20 rounded-full pointer-events-none transition-transform duration-500 ease-out"
-        style={{
-          transform: `translate(${mousePos.x * -20}px, ${mousePos.y * -20}px)`,
-          opacity: 0.2,
-        }}
-      />
-      <div 
-        className="absolute top-1/2 right-1/3 w-16 h-16 bg-rust/5 pointer-events-none transition-transform duration-700 ease-out"
-        style={{
-          transform: `translate(${mousePos.x * 40}px, ${mousePos.y * 40}px) rotate(${mousePos.x * 20}deg)`,
-        }}
-      />
 
       {/* Top navigation hint */}
       <div className="flex justify-between items-start relative z-10">
@@ -96,41 +75,83 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Main content area - two columns on desktop, stacked on mobile */}
+      {/* Main editorial typography layout */}
       <div 
-        className="flex-1 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0 relative z-10"
+        className="flex-1 flex items-center justify-center relative z-10"
         style={{
           transform: `translateY(${scrollY * -0.1}px)`,
           opacity: 1 - scrollY / (window.innerHeight * 0.8),
         }}
       >
-        {/* Left side - Name and intro (50% on desktop) */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center">
-          <div className="space-y-6">
-            <div className="overflow-hidden">
-              <h1 
-                className="text-5xl md:text-7xl lg:text-8xl text-editorial animate-fade-up"
-                style={{
-                  transform: `translateX(${mousePos.x * 5}px)`,
-                  transition: "transform 0.3s ease-out",
-                }}
-              >
-                Vinit Sharma
-              </h1>
-            </div>
+        <div className="relative w-full max-w-7xl mx-auto">
+          
+          {/* Background "DEVELOPER" text - massive, behind everything */}
+          <div 
+            className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
+            style={{
+              transform: `translateX(${mousePos.x * 3}px)`,
+              transition: "transform 0.5s ease-out",
+            }}
+          >
+            <span 
+              className="text-[12vw] md:text-[14vw] lg:text-[16vw] font-serif font-normal tracking-tighter text-foreground/[0.04] whitespace-nowrap"
+              style={{ 
+                lineHeight: 0.85,
+              }}
+            >
+              DEVELOPER
+            </span>
+          </div>
+
+          {/* Secondary layer - "FULLSTACK" text */}
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
+            style={{
+              transform: `translate(-50%, -50%) translateX(${mousePos.x * 5}px)`,
+              transition: "transform 0.4s ease-out",
+            }}
+          >
+            <span className="text-mono text-muted-foreground/60 tracking-[0.5em] text-sm md:text-base">
+              FULLSTACK
+            </span>
+          </div>
+
+          {/* Main name - dominant visual element */}
+          <div className="relative z-10 text-center">
             <div className="overflow-hidden">
               <p 
-                className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed animate-fade-up-delay-1 font-sans"
+                className="text-mono text-muted-foreground tracking-[0.3em] text-xs md:text-sm mb-4 animate-fade-up"
+              >
+                PORTFOLIO
+              </p>
+            </div>
+            
+            <div className="overflow-hidden">
+              <h1 
+                className="text-[15vw] md:text-[12vw] lg:text-[10vw] font-serif font-normal tracking-tighter text-foreground animate-fade-up leading-[0.85]"
                 style={{
-                  transform: `translateX(${mousePos.x * 3}px)`,
+                  transform: `translateX(${mousePos.x * 8}px)`,
                   transition: "transform 0.3s ease-out",
                 }}
               >
-                Full Stack Developer who doesn't just build websites—
-                <span className="text-foreground"> I design systems and experiences.</span>
-              </p>
+                VINIT
+              </h1>
             </div>
-            <div className="flex gap-4 mt-8 animate-fade-up-delay-2">
+            
+            <div className="overflow-hidden">
+              <h1 
+                className="text-[15vw] md:text-[12vw] lg:text-[10vw] font-serif font-normal tracking-tighter text-foreground animate-fade-up-delay-1 leading-[0.85]"
+                style={{
+                  transform: `translateX(${mousePos.x * -6}px)`,
+                  transition: "transform 0.3s ease-out",
+                }}
+              >
+                SHARMA
+              </h1>
+            </div>
+
+            {/* Tags below name */}
+            <div className="flex justify-center gap-4 mt-8 animate-fade-up-delay-2">
               <span className="text-xs px-3 py-1.5 border border-border text-muted-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
                 B.E. Computer Science
               </span>
@@ -139,11 +160,16 @@ export const Hero = () => {
               </span>
             </div>
           </div>
-        </div>
 
-        {/* Right side - Hanging card component (50% on desktop) */}
-        <div className="w-full md:w-1/2 flex items-center justify-center md:justify-end animate-fade-up-delay-2 pt-8 md:pt-0">
-          <HangingCard />
+          {/* Hanging Card - positioned to overlap the typography */}
+          <div 
+            className="absolute top-1/2 right-0 md:right-[5%] lg:right-[10%] -translate-y-1/2 z-20 animate-fade-up-delay-2"
+            style={{
+              transform: `translateY(-50%) rotate(-2deg)`,
+            }}
+          >
+            <HangingCard />
+          </div>
         </div>
       </div>
 
