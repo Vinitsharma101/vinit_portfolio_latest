@@ -94,7 +94,7 @@ export const Hero = () => {
             }}
           >
             <span 
-              className="text-[12vw] md:text-[14vw] lg:text-[16vw] font-serif font-normal tracking-tighter text-foreground/10 whitespace-nowrap"
+              className="text-[12vw] md:text-[14vw] lg:text-[16vw] font-serif font-normal tracking-tighter text-foreground/[0.04] whitespace-nowrap"
               style={{ 
                 lineHeight: 0.85,
               }}
@@ -103,17 +103,16 @@ export const Hero = () => {
             </span>
           </div>
 
-          {/* Secondary layer - "FULLSTACK" text - positioned lower */}
+          {/* Secondary layer - "FULLSTACK" text */}
           <div 
-            className="absolute left-1/2 -translate-x-1/2 pointer-events-none select-none"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
             style={{
-              top: '75%',
-              transform: `translateX(-50%) translateX(${mousePos.x * 5}px)`,
+              transform: `translate(-50%, -50%) translateX(${mousePos.x * 5}px)`,
               transition: "transform 0.4s ease-out",
             }}
           >
             <span className="text-mono text-muted-foreground/60 tracking-[0.5em] text-sm md:text-base">
-              FULLSTACK DEVELOPER
+              FULLSTACK
             </span>
           </div>
 

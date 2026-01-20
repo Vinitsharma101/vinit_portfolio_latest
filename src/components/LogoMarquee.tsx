@@ -74,7 +74,7 @@ export const LogoMarquee = () => {
     <div 
       className="absolute left-0 right-0 overflow-hidden pointer-events-auto z-20"
       style={{
-        top: '100px',
+        top: '30px',
         height: '70px',
         transform: 'rotate(1deg)',
         width: 'calc(100% + 80px)',
