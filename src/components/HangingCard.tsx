@@ -6,32 +6,32 @@ const HangingCard = () => {
   const [isDragging, setIsDragging] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Card dimensions
-  const cardWidth = 280;
-  const cardHeight = 350;
+  // Card dimensions - smaller, more like an ID card
+  const cardWidth = 180;
+  const cardHeight = 240;
   
-  // Container center X for calculating wire positions
-  const containerWidth = 320;
+  // Container dimensions
+  const containerWidth = 220;
   const cardCenterX = containerWidth / 2;
   
-  // Wire attachment points on card (10px from edges, matching the dots)
-  const cardDotLeftOffset = 14; // 10px + 4px (half of dot width)
+  // Wire attachment points on card
+  const cardDotLeftOffset = 14;
   const cardDotRightOffset = 14;
   
-  // Wire top attachment points (aligned with where card dots will be at rest)
+  // Wire top attachment points
   const wireTopLeftX = cardCenterX - cardWidth / 2 + cardDotLeftOffset;
   const wireTopRightX = cardCenterX + cardWidth / 2 - cardDotRightOffset;
   const wireTopY = 0;
   
-  // Initial card position (centered, hanging below)
+  // Initial card position
   const initialCardX = 0;
-  const initialCardY = 60;
+  const initialCardY = 50;
   
   // Motion values for card position
   const x = useMotionValue(initialCardX);
   const y = useMotionValue(initialCardY);
   
-  // Softer spring physics for gentle, realistic return
+  // Soft spring physics
   const springConfig = { stiffness: 80, damping: 15, mass: 0.8 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
@@ -45,15 +45,12 @@ const HangingCard = () => {
     };
   }, []);
 
-  // Calculate wire paths based on card position - wire ends connect to card dots
+  // Calculate wire paths based on card position
   const leftWirePath = useTransform(
     [springX, springY],
     ([latestX, latestY]: number[]) => {
-      // Card dot position (card left edge + dot offset + card movement)
       const cardDotX = wireTopLeftX + latestX;
-      const cardDotY = latestY - 4; // -4px to connect at dot center (dot is at -top-1)
-      
-      // Control points for smooth bezier curve
+      const cardDotY = latestY - 4;
       const midY = cardDotY / 2;
       const bendAmount = latestX * 0.4;
       
@@ -66,10 +63,8 @@ const HangingCard = () => {
   const rightWirePath = useTransform(
     [springX, springY],
     ([latestX, latestY]: number[]) => {
-      // Card dot position (card right edge - dot offset + card movement)
       const cardDotX = wireTopRightX + latestX;
       const cardDotY = latestY - 4;
-      
       const midY = cardDotY / 2;
       const bendAmount = latestX * 0.4;
       
@@ -88,7 +83,6 @@ const HangingCard = () => {
 
   const handleDragEnd = () => {
     setIsDragging(false);
-    // Start 3-second timer after drag ends
     timeoutRef.current = setTimeout(() => {
       x.set(initialCardX);
       y.set(initialCardY);
@@ -98,14 +92,14 @@ const HangingCard = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full max-w-[320px] h-[480px] mx-auto"
+      className="relative w-[220px] h-[340px]"
     >
       {/* SVG for wires */}
       <svg 
         className="absolute inset-0 w-full h-full pointer-events-none z-0"
         style={{ overflow: "visible" }}
       >
-        {/* Wire attachment points (small circles at top) */}
+        {/* Wire attachment points */}
         <circle cx={wireTopLeftX} cy={wireTopY} r="3" fill="currentColor" className="text-foreground/60" />
         <circle cx={wireTopRightX} cy={wireTopY} r="3" fill="currentColor" className="text-foreground/60" />
         
@@ -142,9 +136,9 @@ const HangingCard = () => {
         drag
         dragConstraints={{
           top: 20,
-          left: -100,
-          right: 100,
-          bottom: 120,
+          left: -80,
+          right: 80,
+          bottom: 100,
         }}
         dragElastic={0.1}
         onDragStart={handleDragStart}
@@ -154,19 +148,24 @@ const HangingCard = () => {
       >
         <div 
           className={`
-            relative overflow-hidden border border-border bg-background
-            shadow-lg transition-shadow duration-300
-            ${isDragging ? 'shadow-2xl' : 'shadow-md'}
+            relative overflow-hidden border-2 border-foreground/20 bg-background
+            transition-shadow duration-300
+            ${isDragging ? 'shadow-2xl' : 'shadow-lg'}
           `}
-          style={{ height: cardHeight }}
+          style={{ 
+            height: cardHeight,
+            boxShadow: isDragging 
+              ? '8px 12px 30px rgba(0,0,0,0.25)' 
+              : '4px 6px 20px rgba(0,0,0,0.15)',
+          }}
         >
           {/* Card inner border effect */}
-          <div className="absolute inset-[1px] border border-border/30 pointer-events-none z-20" />
+          <div className="absolute inset-[2px] border border-foreground/10 pointer-events-none z-20" />
           
-          {/* Image placeholder - replace src with actual image */}
+          {/* Image placeholder */}
           <div className="w-full h-full bg-muted flex items-center justify-center overflow-hidden">
-            {/* Placeholder pattern */}
-            <div className="absolute inset-0 opacity-10">
+            {/* Subtle pattern background */}
+            <div className="absolute inset-0 opacity-5">
               <div 
                 className="w-full h-full"
                 style={{
@@ -176,30 +175,30 @@ const HangingCard = () => {
                     linear-gradient(45deg, transparent 75%, currentColor 75%),
                     linear-gradient(-45deg, transparent 75%, currentColor 75%)
                   `,
-                  backgroundSize: '20px 20px',
-                  backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+                  backgroundSize: '16px 16px',
+                  backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px'
                 }}
               />
             </div>
             
-            {/* Placeholder text */}
-            <div className="relative z-10 text-center p-6">
-              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-foreground/10 flex items-center justify-center">
-                <span className="text-3xl">👤</span>
+            {/* Placeholder content */}
+            <div className="relative z-10 text-center p-4">
+              <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-foreground/10 flex items-center justify-center border border-foreground/10">
+                <span className="text-2xl">👤</span>
               </div>
-              <p className="text-sm text-muted-foreground font-medium">Your Image</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Drag me around!</p>
+              <p className="text-xs text-muted-foreground font-medium tracking-wide">YOUR PHOTO</p>
+              <p className="text-[10px] text-muted-foreground/50 mt-1 italic">Drag me!</p>
             </div>
+
+            {/* Decorative corner marks */}
+            <div className="absolute top-2 left-2 w-3 h-3 border-t border-l border-foreground/20" />
+            <div className="absolute top-2 right-2 w-3 h-3 border-t border-r border-foreground/20" />
+            <div className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-foreground/20" />
+            <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-foreground/20" />
           </div>
-          
-          {/* Card corner accents */}
-          <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-foreground/20" />
-          <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-foreground/20" />
-          <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-foreground/20" />
-          <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-foreground/20" />
         </div>
         
-        {/* Wire attachment points on card (small visual indicators) */}
+        {/* Wire attachment points on card */}
         <div className="absolute -top-1 left-[10px] w-2 h-2 rounded-full bg-foreground/40" />
         <div className="absolute -top-1 right-[10px] w-2 h-2 rounded-full bg-foreground/40" />
       </motion.div>
