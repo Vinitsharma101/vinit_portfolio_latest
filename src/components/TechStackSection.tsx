@@ -44,7 +44,7 @@ const techCategories: TechCategory[] = [
     techs: [
       { name: "Git", icon: "⎇" },
       { name: "Docker", icon: "◳" },
-      { name: "AWS", icon: "☁" },
+      // { name: "AWS", icon: "☁" },
       { name: "VS Code", icon: "◫" },
       { name: "Figma", icon: "◧" },
       { name: "Postman", icon: "◨" },
