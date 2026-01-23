@@ -3,12 +3,13 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { Hero } from "@/components/Hero";
 import { ExperimentSection } from "@/components/ExperimentSection";
 import { ProjectsHorizontalScroll } from "@/components/ProjectsHorizontalScroll";
-import { ExperienceSection } from "@/components/ExperienceSection";
 import { ContactSection } from "@/components/ContactSection";
+
 import { FloatingNav } from "@/components/FloatingNav";
 import { TechStackSection } from "@/components/TechStackSection";
 import { CustomCursor } from "@/components/CustomCursor";
 import LoadingScreen from "@/components/LoadingScreen";
+import { ExperienceCanvasSection } from "@/components/ExperienceCanvasSectionProps";
 
 const Index = () => {
   const [showLoading, setShowLoading] = useState(() => {
@@ -37,6 +38,7 @@ const Index = () => {
     <div className="relative">
       {showLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
       {/* Custom cursor */}
+      {/* <CustomCursor /> */}
       <CustomCursor />
 
       {/* Scroll progress indicator */}
@@ -68,15 +70,11 @@ const Index = () => {
         <TechStackSection />
 
         {/* Experiment 03: Experience - System Architecture */}
-        <ExperimentSection
+        <ExperienceCanvasSection
           number="03"
           title="System Architecture"
           description="The journey through startups, teams, and real development challenges. Where theory met practice."
-          accent="clay"
-          slideFrom="right"
-        >
-          <ExperienceSection />
-        </ExperimentSection>
+        />
 
         {/* Contact section */}
         <ContactSection />

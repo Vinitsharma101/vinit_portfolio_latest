@@ -60,7 +60,7 @@ export const ExperienceSection = () => {
     <div ref={ref} className="relative">
       {/* Timeline line */}
       <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-1/2" />
-
+    
       <div className="space-y-16">
         {experiences.map((exp, index) => (
           <div

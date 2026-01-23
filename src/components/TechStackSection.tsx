@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useInView } from "@/hooks/useInView";
+import DecryptedText from "./DecryptedText";
 
 interface TechCategory {
   name: string;
@@ -52,7 +53,13 @@ const techCategories: TechCategory[] = [
   },
 ];
 
-const TechRow = ({ category, index }: { category: TechCategory; index: number }) => {
+const TechRow = ({
+  category,
+  index,
+}: {
+  category: TechCategory;
+  index: number;
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
   const isActive = isHovered || isTouched;
@@ -69,11 +76,13 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
       onTouchStart={handleTouch}
     >
       {/* Divider line */}
-      <div 
+      <div
         className="absolute top-0 left-0 right-0 h-px transition-colors duration-500"
-        style={{ backgroundColor: isActive ? "rgba(255, 77, 0, 0.4)" : "#3a3a3a" }}
+        style={{
+          backgroundColor: isActive ? "rgba(255, 77, 0, 0.4)" : "#3a3a3a",
+        }}
       />
-      
+
       {/* Main row */}
       <div className="py-5 md:py-8 px-4 md:px-10 flex items-center justify-between">
         <h3
@@ -82,9 +91,15 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
             color: isActive ? "rgb(255, 77, 0)" : "#8a8a8a",
           }}
         >
-          {category.name}
+          <DecryptedText
+            text={category.name}
+            animateOn="view"
+            revealDirection="start"
+            sequential
+            useOriginalCharsOnly={false}
+          />
         </h3>
-        
+
         <span
           className="text-xs md:text-sm tracking-[0.35em] font-medium transition-all duration-500"
           style={{
@@ -109,14 +124,14 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
               key={tech.name}
               className="flex items-center gap-2 flex-shrink-0 transition-all duration-500"
               style={{
-                transform: isActive 
-                  ? `translateX(${Math.min(techIndex * 6, 30)}px)` 
+                transform: isActive
+                  ? `translateX(${Math.min(techIndex * 6, 30)}px)`
                   : "translateX(-20px)",
                 opacity: isActive ? 1 : 0,
                 transitionDelay: `${techIndex * 50}ms`,
               }}
             >
-              <span 
+              <span
                 className="text-xl md:text-2xl transition-colors duration-300"
                 style={{ color: "rgb(255, 77, 0)" }}
               >
@@ -136,11 +151,11 @@ const TechRow = ({ category, index }: { category: TechCategory; index: number })
       )}
 
       {/* Subtle orange glow on hover */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none transition-opacity duration-500"
         style={{
-          background: isActive 
-            ? "linear-gradient(90deg, rgba(255, 77, 0, 0.03) 0%, transparent 50%)" 
+          background: isActive
+            ? "linear-gradient(90deg, rgba(255, 77, 0, 0.03) 0%, transparent 50%)"
             : "transparent",
           opacity: isActive ? 1 : 0,
         }}
@@ -173,7 +188,8 @@ export const TechStackSection = () => {
             The Stack
           </h2>
           <p className="text-[#8a8a8a] max-w-xl text-sm md:text-base">
-            Technologies I engineer with. Hover to explore the tools behind the systems.
+            Technologies I engineer with. Hover to explore the tools behind the
+            systems.
           </p>
         </div>
       </div>
