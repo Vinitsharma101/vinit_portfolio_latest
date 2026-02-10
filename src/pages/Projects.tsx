@@ -1,9 +1,27 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, Github, Globe } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useInView } from "@/hooks/useInView";
 import { ContactSection } from "@/components/ContactSection";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+
+import projectPreview1 from "@/assets/project-preview-1.jpg";
+import projectPreview2 from "@/assets/project-preview-2.jpg";
+import projectPreview3 from "@/assets/project-preview-3.jpg";
+import projectPreview4 from "@/assets/project-preview-4.jpg";
+import projectPreview5 from "@/assets/project-preview-5.jpg";
+import projectPreview6 from "@/assets/project-preview-6.jpg";
+import projectPreview7 from "@/assets/project-preview-7.jpg";
+
+const projectPreviews: { src: string; aspect: '16:9' | '9:16' }[] = [
+  { src: projectPreview1, aspect: '16:9' },
+  { src: projectPreview2, aspect: '16:9' },
+  { src: projectPreview3, aspect: '16:9' },
+  { src: projectPreview4, aspect: '9:16' },
+  { src: projectPreview5, aspect: '16:9' },
+  { src: projectPreview6, aspect: '16:9' },
+  { src: projectPreview7, aspect: '9:16' },
+];
 
 interface Project {
   id: number;
@@ -309,6 +327,7 @@ const ProjectEntry = ({
   index: number;
 }) => {
   const entryRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const { scrollYProgress } = useScroll({
     target: entryRef,
     offset: ["start end", "end start"]
@@ -323,13 +342,43 @@ const ProjectEntry = ({
   const alignClass = isEven ? "md:text-left" : "md:text-right";
   
   const accent = projectAccents[index % projectAccents.length];
+  const preview = projectPreviews[index % projectPreviews.length];
+  const imgWidth = preview.aspect === '16:9' ? 'w-[320px] md:w-[420px]' : 'w-[220px] md:w-[280px]';
 
   return (
     <motion.div
       ref={entryRef}
       style={{ y, opacity }}
       className={`relative max-w-4xl ${offsetClass} mb-32 md:mb-48`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Floating preview image */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            className={`hidden md:block absolute top-1/2 -translate-y-1/2 ${imgWidth} z-[60] pointer-events-none`}
+            style={{
+              [isEven ? 'right' : 'left']: '-10%',
+              transform: 'translateX(' + (isEven ? '60%' : '-60%') + ')',
+            }}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <img
+              src={preview.src}
+              alt={`${project.title} preview`}
+              className="w-full h-auto shadow-2xl"
+              style={{ 
+                filter: 'saturate(0.9) contrast(1.05)',
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Colored accent panel behind content */}
       <motion.div
         style={{ y: accentY }}
