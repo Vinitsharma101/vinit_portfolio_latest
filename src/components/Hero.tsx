@@ -128,9 +128,9 @@ export const Hero = () => {
               <span className="text-xs px-3 py-1.5 border border-border text-muted-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default select-none">
                 B.E. Computer Science
               </span>
-              <span className="text-xs px-3 py-1.5 border border-accent/30 text-accent hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
+              {/* <span className="text-xs px-3 py-1.5 border border-accent/30 text-accent hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
                 Available for projects
-              </span>
+              </span> */}
             </div>
           </div>
 

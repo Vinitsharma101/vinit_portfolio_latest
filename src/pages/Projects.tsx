@@ -350,8 +350,6 @@ const ProjectEntry = ({
       ref={entryRef}
       style={{ y, opacity }}
       className={`relative max-w-4xl ${offsetClass} mb-32 md:mb-48`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Floating preview image */}
       <AnimatePresence>
@@ -362,15 +360,15 @@ const ProjectEntry = ({
               [isEven ? 'right' : 'left']: '-10%',
               transform: 'translateX(' + (isEven ? '60%' : '-60%') + ')',
             }}
-            initial={{ opacity: 0, y: 60 }}
+            initial={{ opacity: 0, y: 80 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <img
               src={preview.src}
               alt={`${project.title} preview`}
-              className="w-full h-auto shadow-2xl"
+              className="w-full h-auto shadow-2xl rounded-xl"
               style={{ 
                 filter: 'saturate(0.9) contrast(1.05)',
               }}
@@ -416,7 +414,11 @@ const ProjectEntry = ({
         </div>
 
         {/* Title */}
-        <h2 className="text-4xl md:text-5xl lg:text-6xl text-editorial leading-[1.1] text-[#1a1a1a] group">
+        <h2 
+          className="text-4xl md:text-5xl lg:text-6xl text-editorial leading-[1.1] text-[#1a1a1a] group"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <a 
             href={project.links?.live || "#"} 
             target="_blank" 
@@ -429,7 +431,11 @@ const ProjectEntry = ({
         </h2>
 
         {/* Description */}
-        <p className={`text-lg text-[#1a1a1a]/55 leading-relaxed max-w-2xl ${isEven ? '' : 'md:ml-auto'}`}>
+        <p 
+          className={`text-lg text-[#1a1a1a]/55 leading-relaxed max-w-2xl ${isEven ? '' : 'md:ml-auto'}`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           {project.longDescription}
         </p>
 
