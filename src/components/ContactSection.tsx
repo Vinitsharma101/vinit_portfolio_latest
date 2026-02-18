@@ -2,6 +2,7 @@ import { Mail, Phone, ArrowUpRight, Award, BookOpen } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { useInView } from "@/hooks/useInView";
 import TextPressure from "./TextPressure";
+import electric from "@/assets/eletric.png";
 
 const ScrollRevealText = ({ text }: { text: string }) => {
   const containerRef = useRef<HTMLParagraphElement>(null);
@@ -14,10 +15,8 @@ const ScrollRevealText = ({ text }: { text: string }) => {
       const rect = containerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Start revealing when element enters viewport
       const start = windowHeight;
-      // End when element is 70% up instead of 30%
-      const end = windowHeight * 0.4;
+      const end = windowHeight * 0.5;
       const current = rect.top;
 
       if (current >= start) {
@@ -46,7 +45,6 @@ const ScrollRevealText = ({ text }: { text: string }) => {
         const isRevealing =
           scrollProgress > wordProgress - 0.1 && scrollProgress <= wordProgress;
 
-        // Calculate blur amount based on reveal state
         const blurAmount = isRevealed ? 0 : isRevealing ? 2 : 4;
 
         return (
@@ -87,9 +85,16 @@ export const ContactSection = () => {
   return (
     <section
       ref={ref}
-      className="min-h-screen py-24 md:py-32 px-8 md:px-16 bg-black text-[#f5f5f5] flex flex-col justify-center relative overflow-hidden"
+      className="max-h-screen py-16 md:py-24 px-8 md:px-16 bg-black text-[#f5f5f5] flex flex-col justify-center relative overflow-hidden"
     >
-      {/* Subtle orange ambient glow */}
+      <div className="absolute right-5 top-1/3 -translate-y-1/2 pointer-events-none select-none opacity-30">
+        <img
+          src={electric}
+          alt=""
+          className="w-64 md:w-80 lg:w-96 object-contain"
+        />
+      </div>
+
       <div
         className="absolute top-0 left-0 w-96 h-96 pointer-events-none"
         style={{
@@ -106,10 +111,9 @@ export const ContactSection = () => {
       />
 
       <div className="max-w-6xl mx-auto w-full relative z-10">
-        {/* Section header */}
         <span className="text-mono text-[#6a6a6a] block mb-4">Final Stage</span>
 
-        <div className="mb-16 max-w-4xl ">
+        <div className="mb-16 max-w-4xl">
           <div
             className={`relative transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -157,7 +161,7 @@ export const ContactSection = () => {
           <div className="space-y-8">
             <a
               href="mailto:vinitsharmapc827@gmail.com"
-              className="group flex items-start gap-4 p-6 border border-[#2a2a2a] hover:border-terminal/50  transition-all duration-300"
+              className="group flex items-start gap-4 p-6 border border-[#2a2a2a] hover:border-terminal/50 transition-all duration-300"
             >
               <Mail className="w-5 h-5 mt-1 text-[#6a6a6a] group-hover:text-terminal transition-colors" />
               <div>
@@ -190,23 +194,35 @@ export const ContactSection = () => {
               <div className="flex items-center gap-2 mb-4">
                 <Award className="w-4 h-4 text-terminal" />
                 <span className="text-mono text-xs text-[#6a6a6a]">
-                  Certifications
+                  Certifications ---
                 </span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {certificates.map((cert, i) => (
-                  <span
-                    key={cert}
-                    className={`text-xs px-3 py-1.5 border transition-all duration-300 cursor-default ${
-                      hoveredCert === i
-                        ? "border-terminal/50 bg-terminal/10 text-terminal"
-                        : "border-[#2a2a2a] text-[#8a8a8a]"
-                    }`}
-                    onMouseEnter={() => setHoveredCert(i)}
-                    onMouseLeave={() => setHoveredCert(null)}
-                  >
-                    {cert}
-                  </span>
+                  <div key={cert} className="relative group/cert">
+                    <a
+                      href="https://drive.google.com/drive/folders/11lhsthi_i6OYYTE0iHhl4VoMuQF5Ttit?usp=drive_link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span
+                        className={`text-xs px-3 py-1.5 border transition-all duration-300 cursor-pointer block ${
+                          hoveredCert === i
+                            ? "border-terminal/50 bg-terminal/10 text-terminal"
+                            : "border-[#2a2a2a] text-[#8a8a8a]"
+                        }`}
+                        onMouseEnter={() => setHoveredCert(i)}
+                        onMouseLeave={() => setHoveredCert(null)}
+                      >
+                        {cert}
+                      </span>
+                    </a>
+                    {/* Hover tooltip */}
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md text-xs text-white bg-[#1a1a1a] border border-[#3a3a3a] whitespace-nowrap opacity-0 group-hover/cert:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                      Click to open
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#3a3a3a]" />
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -227,7 +243,6 @@ export const ContactSection = () => {
               </span>
             </div>
 
-            {/* Interpersonal skills */}
             <div className="flex items-center gap-2 mb-4">
               <BookOpen className="w-4 h-4 text-terminal" />
               <span className="text-mono text-xs text-[#6a6a6a]">

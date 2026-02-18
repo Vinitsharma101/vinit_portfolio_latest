@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { Hero } from "@/components/Hero";
 import { ExperimentSection } from "@/components/ExperimentSection";
-import { ProjectsHorizontalScroll } from "@/components/ProjectsHorizontalScroll";
 import { ContactSection } from "@/components/ContactSection";
 
 import { FloatingNav } from "@/components/FloatingNav";
@@ -10,6 +9,7 @@ import { TechStackSection } from "@/components/TechStackSection";
 import { CustomCursor } from "@/components/CustomCursor";
 import LoadingScreen from "@/components/LoadingScreen";
 import { ExperienceCanvasSection } from "@/components/ExperienceCanvasSectionProps";
+import { ProjectsStickyScroll } from "@/components/ProjectsStickyScroll";
 
 const Index = () => {
   const [showLoading, setShowLoading] = useState(() => {
@@ -55,7 +55,7 @@ const Index = () => {
 
       {/* Content that covers the hero */}
       <div className="relative z-10 bg-background">
-        {/* Experiment 01: Projects - Real World Builds */}
+        {/*  01: Projects - Real World Builds */}
         <ExperimentSection
           number="01"
           title="Real-World Builds"
@@ -63,16 +63,16 @@ const Index = () => {
           accent="olive"
           bgVariant="sand"
         >
-          <ProjectsHorizontalScroll />
+          <ProjectsStickyScroll />
         </ExperimentSection>
 
-        {/* Experiment 02: Tech Stack */}
+        {/*  02: Tech Stack */}
         <TechStackSection />
 
-        {/* Experiment 03: Experience - System Architecture */}
+        {/*  03: Experience  */}
         <ExperienceCanvasSection
           number="03"
-          title="System Architecture"
+          title="Experience And Training"
           description="The journey through startups, teams, and real development challenges. Where theory met practice."
         />
 

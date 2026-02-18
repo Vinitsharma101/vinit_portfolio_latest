@@ -142,6 +142,14 @@ export const Hero = () => {
               transform: `translateY(-50%) rotate(-2deg)`,
             }}
           >
+            {/* Sticker placed directly above the hanging card (non-interactive) */}
+            <img
+              src="/dragme.png"
+              alt="Drag me"
+              className="absolute -top-20 left-1/3 -translate-x-1/2 w-20 h-20 md:w-40 md:h-36 pointer-events-none z-40"
+              style={{ transform: "rotate(-8deg)" }}
+            />
+
             <HangingCard />
           </div>
         </div>

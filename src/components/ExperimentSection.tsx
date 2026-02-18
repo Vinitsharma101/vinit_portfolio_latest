@@ -68,7 +68,7 @@ export const ExperimentSection = ({
         {/* Section header */}
         <div className={`border-l-2 ${accentStyles[accent]} pl-6 mb-16`}>
           <span className="text-mono text-muted-foreground block mb-2">
-            Experiment {number}
+            {number}
           </span>
           <h2 className="text-4xl md:text-5xl text-editorial mb-4">{title}</h2>
           <p className="text-muted-foreground max-w-xl">{description}</p>

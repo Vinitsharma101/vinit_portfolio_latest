@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useInView } from "@/hooks/useInView";
 import DecryptedText from "./DecryptedText";
+import baby from "@/assets/baby.png";
 
 interface TechCategory {
   name: string;
@@ -171,9 +172,16 @@ export const TechStackSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-14 md:py-24"
+      className="relative w-screen min-h-screen flex flex-col justify-center py-14 md:py-24"
       style={{ backgroundColor: "#000000" }}
     >
+      <div className="absolute right-10 top-1/2 -translate-y-1/2 pointer-events-none select-none opacity-30">
+        <img
+          src={baby}
+          alt=""
+          className="w-64 md:w-80 lg:w-96 object-contain"
+        />
+      </div>
       {/* Section header */}
       <div className="px-4 md:px-10 mb-8 md:mb-14">
         <div
@@ -182,7 +190,7 @@ export const TechStackSection = () => {
           }`}
         >
           <span className="text-xs tracking-[0.3em] text-[#6a6a6a] uppercase mb-3 block">
-            Experiment 02
+            02
           </span>
           <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl text-terminal mb-3">
             The Stack
