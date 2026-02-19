@@ -259,7 +259,7 @@ export const ExperienceCanvasSection = ({
     <section
       ref={sectionRef}
       id="experience"
-      className="relative min-h-screen py-24 md:py-32 px-8 md:px-16 overflow-hidden"
+      className="relative min-h-screen py-24 md:py-32 px-8 md:px-16 overflow-hidden "
     >
       {/* Large background typography - "03" */}
       <motion.div

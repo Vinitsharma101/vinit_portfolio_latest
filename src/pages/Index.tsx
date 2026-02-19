@@ -54,30 +54,42 @@ const Index = () => {
       <div className="h-screen" />
 
       {/* Content that covers the hero */}
-      <div className="relative z-10 bg-background">
+      <div className="relative z-10">
         {/*  01: Projects - Real World Builds */}
-        <ExperimentSection
-          number="01"
-          title="Real-World Builds"
-          description="Projects that solve problems. Each experiment represents a unique challenge conquered with code and creativity."
-          accent="olive"
-          bgVariant="sand"
-        >
-          <ProjectsStickyScroll />
-        </ExperimentSection>
+        <div className="sticky  z-[1] top-0">
+          <div className="bg-sand">
+            <ExperimentSection
+              number="01"
+              title="Real-World Builds"
+              description="Projects that solve problems. Each project represents a unique challenge conquered with code and creativity."
+              accent="olive"
+              bgVariant="sand"
+            >
+              <ProjectsStickyScroll />
+            </ExperimentSection>
+          </div>
+        </div>
 
+        
         {/*  02: Tech Stack */}
-        <TechStackSection />
+        <div className="sticky top-0 z-[2]">
+          <TechStackSection />
+        </div>
 
         {/*  03: Experience  */}
-        <ExperienceCanvasSection
-          number="03"
-          title="Experience And Training"
-          description="The journey through startups, teams, and real development challenges. Where theory met practice."
-        />
-
+         <div className="sticky z-[3]">
+          <div className="bg-background">
+            <ExperienceCanvasSection
+              number="03"
+              title="System Architecture"
+              description="The journey through startups, teams, and real development challenges. Where theory met practice."
+            />
+          </div>
+        </div>
         {/* Contact section */}
-        <ContactSection />
+        <div className="relative z-[4]">
+          <ContactSection />
+        </div>{" "}
       </div>
     </div>
   );

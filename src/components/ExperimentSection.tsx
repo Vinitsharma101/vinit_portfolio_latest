@@ -60,7 +60,7 @@ export const ExperimentSection = ({
   return (
     <section
       ref={ref}
-      className={`min-h-screen py-24 md:py-32 px-8 md:px-16 overflow-hidden ${bgStyles[bgVariant]}`}
+      className={`min-h-screen py-24 md:py-20 px-8 md:px-16 overflow-hidden ${bgStyles[bgVariant]}`}
     >
       <div 
         className={`max-w-6xl mx-auto transform transition-all duration-700 ease-out ${getTransformStyles(isInView)}`}
@@ -70,7 +70,7 @@ export const ExperimentSection = ({
           <span className="text-mono text-muted-foreground block mb-2">
             {number}
           </span>
-          <h2 className="text-4xl md:text-5xl text-editorial mb-4">{title}</h2>
+          <h2 className="text-4xl md:text-5xl text-editorial mb-2">{title}</h2>
           <p className="text-muted-foreground max-w-xl">{description}</p>
         </div>
 
