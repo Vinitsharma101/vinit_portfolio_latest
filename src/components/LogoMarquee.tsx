@@ -74,9 +74,9 @@ export const LogoMarquee = () => {
     <div 
       className="absolute left-0 right-0 overflow-hidden pointer-events-auto z-20"
       style={{
-        top: '30px',
+        top: '40px',
         height: '70px',
-        transform: 'rotate(1deg)',
+        transform: 'rotate(3deg)',
         width: 'calc(100% + 80px)',
         marginLeft: '-40px',
         maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
@@ -98,7 +98,7 @@ export const LogoMarquee = () => {
             className="flex items-center text-foreground/40 hover:text-foreground transition-all duration-300 hover:scale-110"
             title={logo.name}
           >
-            <div className="w-14 h-14 md:w-16 md:h-16">
+            <div className="w-14 h-16 md:w-16 md:h-16">
               {logo.icon}
             </div>
           </div>

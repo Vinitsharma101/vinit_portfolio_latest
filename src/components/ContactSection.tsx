@@ -85,7 +85,7 @@ export const ContactSection = () => {
   return (
     <section
       ref={ref}
-      className="max-h-screen py-16 md:py-24 px-8 md:px-16 bg-black text-[#f5f5f5] flex flex-col justify-center relative overflow-hidden"
+      className="  max-h-screen py-16 md:py-24 px-8 md:px-16 bg-black text-[#f5f5f5] flex flex-col justify-center relative overflow-hidden"
     >
       <div className="absolute right-5 top-1/3 -translate-y-1/2 pointer-events-none select-none opacity-30">
         <img
@@ -110,10 +110,10 @@ export const ContactSection = () => {
         }}
       />
 
-      <div className="max-w-6xl mx-auto w-full relative z-10">
-        <span className="text-mono text-[#6a6a6a] block mb-4">Final Stage</span>
+      <div className="max-w-6xl mx-auto w-full relative z-10 pt-3 ">
+        <span className="text-mono text-[#6a6a6a] block ">Final Stage</span>
 
-        <div className="mb-16 max-w-4xl">
+        <div className="mb-8 max-w-4xl">
           <div
             className={`relative transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -156,9 +156,9 @@ export const ContactSection = () => {
         </div>
 
         {/* Contact grid */}
-        <div className="grid md:grid-cols-2 gap-12 md:gap-24">
+        <div className="grid md:grid-cols-2 gap-10 md:gap-20">
           {/* Contact info */}
-          <div className="space-y-8">
+          <div className="space-y-3">
             <a
               href="mailto:vinitsharmapc827@gmail.com"
               className="group flex items-start gap-4 p-6 border border-[#2a2a2a] hover:border-terminal/50 transition-all duration-300"

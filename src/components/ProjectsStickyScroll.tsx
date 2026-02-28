@@ -127,46 +127,22 @@ export const ProjectsStickyScroll = () => {
     }, INTERVAL_MS);
   };
 
-  return (
-    <div className="relative">
-      <CanvasElements />
+return (
+  <div className="relative">
+    <CanvasElements />
 
-      <div className="relative border-2 border-foreground/20 rounded-lg overflow-hidden">
-        {/* Faded background text */}
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 text-[800px] md:text-[100px] font-serif opacity-[0.03] pointer-events-none select-none leading-none">
-          PROJECTS
-        </div>
+    <div className="relative border-2 border-foreground/20 rounded-lg overflow-hidden">
+      {/* Faded background text */}
+      <div className="absolute right-8 top-1/2 -translate-y-1/2 text-[800px] md:text-[100px] font-serif opacity-[0.03] pointer-events-none select-none leading-none">
+        PROJECTS
+      </div>
 
-      <div className="px-5 md:px-8 py-5 flex flex-col justify-between">
-        {/* Top: Title + NXT */}
-        <div className="flex justify-between items-start gap-4">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCard}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.4 }}
-              className="max-w-sm"
-            >
-              <span className="text-mono text-muted-foreground text-[10px] tracking-widest uppercase block mb-1">
-                Featured Project
-              </span>
-
-              <h2 className="text-editorial text-xl md:text-2xl lg:text-3xl mb-2">
-                {content[activeCard].title}
-              </h2>
-
-              <p className="text-muted-foreground text-xs md:text-sm leading-relaxed max-w-xs">
-                {content[activeCard].description}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* NXT */}
+      <div className="px-5 md:px-8 py-4 flex flex-col justify-between">
+        {/* Top: NXT button only */}
+        <div className="flex justify-end items-start">
           <button
             onClick={() => goTo((activeCard + 1) % content.length)}
-            className="hidden md:flex items-center gap-2 group shrink-0 mt-2"
+            className="hidden md:flex items-center gap-2 group shrink-0"
           >
             <span className="text-4xl lg:text-5xl font-bold text-foreground group-hover:text-accent transition-colors duration-300 tracking-tight">
               NXT
@@ -175,10 +151,10 @@ export const ProjectsStickyScroll = () => {
           </button>
         </div>
 
-        {/* Image Section */}
-        <div className="mt-4 relative">
+        {/* Image + Text Side by Side */}
+        <div className="mt-2 flex items-end gap-5 relative">
 
-          {/* Big Image (smaller + balanced) */}
+          {/* Big Image */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeCard}
@@ -186,7 +162,7 @@ export const ProjectsStickyScroll = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.45 }}
-              className="w-full md:w-[55%] h-[170px]  md:h-[350px] rounded-xl overflow-hidden"
+              className="w-full md:w-[55%] shrink-0 h-[170px] md:h-[350px] rounded-xl overflow-hidden"
             >
               <img
                 src={content[activeCard].image}
@@ -197,10 +173,31 @@ export const ProjectsStickyScroll = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* Right Corner Controls */}
-          <div className="absolute top-0 right-0 flex flex-col items-end gap-3">
+          {/* Title + Description — right of image, bottom-aligned */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCard}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+              className="hidden md:flex flex-col max-w-[220px] pb-1"
+            >
+              <span className="text-mono text-muted-foreground text-[9px] tracking-widest uppercase block mb-1">
+                Featured Project
+              </span>
+              <h2 className="text-editorial text-lg lg:text-xl leading-tight mb-2">
+                {content[activeCard].title}
+              </h2>
+              <p className="text-muted-foreground text-xs leading-relaxed">
+                {content[activeCard].description}
+              </p>
+            </motion.div>
+          </AnimatePresence>
 
-            {/* 4 Small Progress Lines */}
+          {/* Right Corner Controls — absolute to this container */}
+          <div className="absolute top-0 right-0 flex flex-col items-end gap-3">
+            {/* Progress Lines */}
             <div className="flex gap-2">
               {content.map((_, index) => (
                 <div
@@ -239,11 +236,10 @@ export const ProjectsStickyScroll = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t-2 border-foreground/20 px-6 md:px-10 py-4 flex items-center justify-between">
+      <div className="border-t-2 border-foreground/20 px-6 md:px-10 py-3 flex items-center justify-between">
         <span className="text-mono text-muted-foreground text-sm hidden sm:block">
-          {content.length} Projects
+        Projects
         </span>
-
         <Link
           to="/projects"
           className="group inline-flex items-center gap-3 text-sm font-medium text-foreground hover:text-accent transition-colors duration-300"

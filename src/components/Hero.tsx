@@ -75,10 +75,10 @@ export const Hero = () => {
       {/* Top navigation hint */}
       <div className="flex justify-between items-start relative z-10">
         <div className="space-y-1">
-          <p className="text-mono text-muted-foreground">
+          <p className="text-mono text-muted-foreground text-[10px] md:text-base">
             Chandigarh University
           </p>
-          <p className="text-sm text-muted-foreground">2022 — 2026</p>
+          <p className="text-[10px] md:text-base text-muted-foreground">2022 — 2026</p>
         </div>
       </div>
 
@@ -137,7 +137,7 @@ export const Hero = () => {
           {/* Hanging Card - positioned to overlap the typography */}
 
           <div
-            className="absolute top-1/2 right-0 md:right-[5%] lg:right-[18%] -translate-y-1/2 z-20 animate-fade-up-delay-2 pointer-events-auto"
+            className="hidden md:flex absolute top-1/2 right-0 md:right-[5%] lg:right-[18%] -translate-y-1/2 z-20 animate-fade-up-delay-2 pointer-events-auto"
             style={{
               transform: `translateY(-50%) rotate(-2deg)`,
             }}
@@ -190,7 +190,7 @@ export const Hero = () => {
       <div className="flex justify-between items-end relative z-10 pointer-events-auto">
         <div className="hidden md:flex gap-3 animate-fade-up-delay-2 ">
           <a
-            href="https://drive.google.com/file/d/1qyhGcE6XP_bXcnX-b5nZNXO0hYMu98AZ/view?usp=sharing"
+            href="https://drive.google.com/file/d/1SAh062nRIF-QVeHDI-cWMd8poyI0SlTb/view?usp=drive_link"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center gap-2 px-4 py-2 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
