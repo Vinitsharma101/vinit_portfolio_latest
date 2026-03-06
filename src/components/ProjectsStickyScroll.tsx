@@ -2,12 +2,9 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import projectPreview1 from "@/assets/project-preview-1.jpg";
-import projectPreview2 from "@/assets/project-preview-2.jpg";
-import projectPreview3 from "@/assets/project-preview-3.jpg";
-import projectPreview4 from "@/assets/project-preview-4.jpg";
-import projectPreview5 from "@/assets/project-preview-5.jpg";
-import projectPreview6 from "@/assets/project-preview-6.jpg";
+import projectPreview1 from "@/assets/project-preview-1.png";
+import projectPreview2 from "@/assets/project-preview-2.png";
+import projectPreview3 from "@/assets/project-preview-3.png";
 
 const INTERVAL_MS = 3500;
 
