@@ -172,7 +172,7 @@ export const TechStackSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-screen min-h-screen flex flex-col justify-center py-14 md:py-24"
+      className="relative min-h-screen flex flex-col justify-center py-14 md:py-24"
       style={{ backgroundColor: "#000000" }}
     >
       <div className="absolute right-10 top-1/2 -translate-y-1/2 pointer-events-none select-none opacity-30">

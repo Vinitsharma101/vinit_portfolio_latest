@@ -1,25 +1,17 @@
-import { ChevronDown, Download, Github, Linkedin, Menu, X } from "lucide-react";
+import { Download, Github, Linkedin, Menu, X } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { LogoMarquee } from "./LogoMarquee";
-import HangingCard from "./HangingCard";
-
 import CircularText from "./CircularText";
+import { AnimatePresence, motion } from "framer-motion";
+import scroll from "/st.png";
+const images = ["/mypic.jpeg"];
 
 export const Hero = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [mousePixelPos, setMousePixelPos] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
-  const sectionRef = useRef<HTMLElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const [position, setPosition] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
-  const [dragStart, setDragStart] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -29,9 +21,7 @@ export const Hero = () => {
       setMousePixelPos({ x: e.clientX, y: e.clientY });
     };
 
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+    const handleScroll = () => setScrollY(window.scrollY);
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", handleScroll);
@@ -41,255 +31,263 @@ export const Hero = () => {
     };
   }, []);
 
+  const heroOpacity = Math.max(0, 1 - scrollY / (window.innerHeight * 0.7));
+  const heroTranslateY = scrollY * -0.08;
+  const [isHovered, setIsHovered] = useState(false);
+  const [currentImage, setCurrentImage] = useState<string | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startCycling = () => {
+    if (intervalRef.current) return;
+
+    const showNextImage = () => {
+      const randomImage = images[Math.floor(Math.random() * images.length)];
+      setCurrentImage(randomImage);
+    };
+
+    showNextImage(); // show first immediately
+    intervalRef.current = setInterval(showNextImage, 2000);
+  };
+
+  const stopCycling = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setCurrentImage(null);
+  };
+
   return (
     <section
       ref={sectionRef}
-      className="fixed inset-0 h-screen w-full flex flex-col justify-between p-8 md:p-16 bg-background z-0 overflow-hidden select-none"
+      className="fixed inset-0 h-screen w-full flex flex-col bg-background z-0 overflow-hidden select-none"
     >
-      {/* Interactive grid background */}
+      {/* Base grid */}
       <div
-        className="absolute inset-0 "
+        className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: `
-            linear-gradient(to right, hsl(var(--foreground) / 0.05) 3px, transparent 1px),
-            linear-gradient(to bottom, hsl(var(--foreground) / 0.03) 1px, transparent 1px)
+            linear-gradient(to right, hsl(var(--foreground) / 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, hsl(var(--foreground) / 0.04) 1px, transparent 1px)
           `,
           backgroundSize: "60px 60px",
         }}
       />
 
-      {/* Hover reveal grid overlay */}
+      {/* Mouse-reveal grid overlay */}
       <div
-        className="absolute inset-0  transition-opacity duration-300"
+        className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: `
-            linear-gradient(to right, hsl(var(--foreground) / 0.20) 2px, transparent 2px),
-            linear-gradient(to bottom, hsl(var(--foreground) / 0.20) 2px, transparent 2px)
+            linear-gradient(to right, hsl(var(--foreground) / 0.18) 1px, transparent 1px),
+            linear-gradient(to bottom, hsl(var(--foreground) / 0.18) 1px, transparent 1px)
           `,
           backgroundSize: "60px 60px",
-          maskImage: `radial-gradient(circle 150px at ${mousePixelPos.x}px ${mousePixelPos.y}px, black 0%, transparent 100%)`,
-          WebkitMaskImage: `radial-gradient(circle 150px at ${mousePixelPos.x}px ${mousePixelPos.y}px, black 0%, transparent 100%)`,
+          maskImage: `radial-gradient(circle 180px at ${mousePixelPos.x}px ${mousePixelPos.y}px, black 0%, transparent 100%)`,
+          WebkitMaskImage: `radial-gradient(circle 180px at ${mousePixelPos.x}px ${mousePixelPos.y}px, black 0%, transparent 100%)`,
         }}
       />
 
-      {/* Top navigation hint */}
-      <div className="flex justify-between items-start relative z-10">
-        <div className="space-y-1">
-          <p className="text-mono text-muted-foreground text-[10px] md:text-base">
+      {/* ── Top Bar ── */}
+      <header className="relative z-20 flex justify-between items-start px-6 sm:px-10 md:px-16 pt-6 md:pt-10">
+        <div className="space-y-0.5">
+          <p className="text-[10px] sm:text-xs text-muted-foreground tracking-widest uppercase">
             Chandigarh University
           </p>
-          <p className="text-[10px] md:text-base text-muted-foreground">2022 — 2026</p>
-        </div>
-      </div>
-
-      {/* Main editorial typography layout */}
-      <div
-        className="flex-1 flex items-center justify-center relative z-10"
-        style={{
-          transform: `translateY(${scrollY * -0.1}px)`,
-          opacity: 1 - scrollY / (window.innerHeight * 0.8),
-        }}
-      >
-        <div className="relative w-full max-w-8xl mx-auto ">
-          {/* Main name - dominant visual element */}
-          <div className="relative z-10 text-center">
-            <div className="overflow-hidden">
-              <p className="text-mono text-muted-foreground tracking-[0.3em] text-xs md:text-sm mb-4 animate-fade-up">
-                PORTFOLIO
-              </p>
-            </div>
-
-            <div className="overflow-hidden">
-              <h1
-                className="text-[15vw] md:text-[12vw] lg:text-[10vw] font-serif font-normal tracking-tighter text-foreground animate-fade-up leading-[0.85]"
-                style={{
-                  transform: `translateX(${mousePos.x * 8}px)`,
-                  transition: "transform 0.3s ease-out",
-                }}
-              >
-                VINIT
-              </h1>
-            </div>
-
-            <div className="overflow-hidden relative ">
-              <h1
-                className="text-[15vw] md:text-[12vw] lg:text-[10vw] font-serif font-normal tracking-tighter text-foreground animate-fade-up-delay-1 leading-[0.85] "
-                style={{
-                  transform: `translateX(${mousePos.x * -6}px)`,
-                  transition: "transform 0.3s ease-out",
-                }}
-              >
-                SHARMA
-              </h1>
-            </div>
-
-            {/* Tags below name */}
-            <div className="flex gap-4 mt-8 animate-fade-up-delay-2 justify-center ml-[40vh] pointer-events-auto">
-              <span className="text-xs px-3 py-1.5 border border-border text-muted-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default select-none">
-                B.E. Computer Science
-              </span>
-              {/* <span className="text-xs px-3 py-1.5 border border-accent/30 text-accent hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-default">
-                Available for projects
-              </span> */}
-            </div>
-          </div>
-
-          {/* Hanging Card - positioned to overlap the typography */}
-
-          <div
-            className="hidden md:flex absolute top-1/2 right-0 md:right-[5%] lg:right-[18%] -translate-y-1/2 z-20 animate-fade-up-delay-2 pointer-events-auto"
-            style={{
-              transform: `translateY(-50%) rotate(-2deg)`,
-            }}
-          >
-            {/* Sticker placed directly above the hanging card (non-interactive) */}
-            <img
-              src="/dragme.png"
-              alt="Drag me"
-              className="absolute -top-20 left-1/3 -translate-x-1/2 w-20 h-20 md:w-40 md:h-36 pointer-events-none z-40"
-              style={{ transform: "rotate(-8deg)" }}
-            />
-
-            <HangingCard />
-          </div>
+          <p className="text-[10px] sm:text-xs text-muted-foreground/60 tabular-nums">
+            2022 — 2026
+          </p>
         </div>
 
-        <div>
-          <div
-            className=" bottom-32 absolute left-2 select-none"
-            style={{
-              transform: `translateX(${mousePos.x * 9}px)`,
-              transition: "transform 0.4s ease-out",
-            }}
-          >
-            <span className=" text-muted-foreground/60 tracking-[0.5em] text-[4vw] md:text-[2vw] lg:text-[1vw]">
-              FULLSTACK
-            </span>
-          </div>
-
-          <div
-            className="absolute bottom-2 left-0     select-none overflow-hidden"
-            style={{
-              transform: `translateX(${mousePos.x * 9}px)`,
-              transition: "transform 0.5s ease-out",
-            }}
-          >
-            <span
-              className="text-[8vw] md:text-[8vw] lg:text-[8vw] font-serif font-normal tracking-tighter text-foreground/[0.2] whitespace-nowrap"
-              style={{
-                lineHeight: 0.85,
-              }}
-            >
-              DEVELOPER
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom navigation hint */}
-      <div className="flex justify-between items-end relative z-10 pointer-events-auto">
-        <div className="hidden md:flex gap-3 animate-fade-up-delay-2 ">
+        {/* Desktop nav links */}
+        <nav className="hidden md:flex items-center gap-2">
           <a
             href="https://drive.google.com/file/d/1SAh062nRIF-QVeHDI-cWMd8poyI0SlTb/view?usp=drive_link"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-4 py-2 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+            className="flex items-center gap-2 px-4 py-2 text-xs border border-border text-muted-foreground hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-200"
           >
-            <Download className="w-4 h-4" />
-            <span className="text-sm">Resume</span>
+            <Download className="w-3.5 h-3.5" />
+            Resume
           </a>
-
           <a
             href="https://www.linkedin.com/in/sharma-vinit101/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-4 py-2 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+            className="p-2 border border-border text-muted-foreground hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-200"
+            aria-label="LinkedIn"
           >
-            <Linkedin className="w-4 h-4" />
+            <Linkedin className="w-3.5 h-3.5" />
           </a>
           <a
             href="https://github.com/Vinitsharma101"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-4 py-2 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+            className="p-2 border border-border text-muted-foreground hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-200"
+            aria-label="GitHub"
           >
-            <Github className="w-4 h-4" />
+            <Github className="w-3.5 h-3.5" />
           </a>
-        </div>
+        </nav>
 
-        <div className="md:hidden animate-fade-up-delay-2">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-3 border border-border hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
-        </div>
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden p-2 border border-border text-muted-foreground hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-200"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? (
+            <X className="w-4 h-4" />
+          ) : (
+            <Menu className="w-4 h-4" />
+          )}
+        </button>
 
-        {/* Mobile menu popup */}
+        {/* Mobile dropdown */}
         {mobileMenuOpen && (
-          <div className="pointer-events-auto md:hidden absolute bottom-16 left-0 bg-background border border-border shadow-lg animate-fade-in z-50">
-            <div className="flex flex-col">
-              <a
-                href="/resume.pdf"
-                download
-                className="flex items-center gap-3 px-5 py-3 hover:bg-foreground hover:text-background transition-all duration-300 border-b border-border"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Download className="w-4 h-4" />
-                <span className="text-sm">Resume</span>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/sharma-vinit101/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 px-5 py-3 hover:bg-foreground hover:text-background transition-all duration-300 border-b border-border"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Linkedin className="w-4 h-4" />
-                <span className="text-sm">LinkedIn</span>
-              </a>
-              <a
-                href="https://github.com/Vinitsharma101"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 px-5 py-3 hover:bg-foreground hover:text-background transition-all duration-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Github className="w-4 h-4" />
-                <span className="text-sm">GitHub</span>
-              </a>
-            </div>
+          <div className="absolute top-16 right-6 bg-background border border-border shadow-xl z-50 min-w-[160px] animate-fade-in">
+            <a
+              href="https://drive.google.com/file/d/1SAh062nRIF-QVeHDI-cWMd8poyI0SlTb/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-foreground hover:text-background transition-all duration-200 border-b border-border"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Download className="w-3.5 h-3.5" /> Resume
+            </a>
+            <a
+              href="https://www.linkedin.com/in/sharma-vinit101/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-foreground hover:text-background transition-all duration-200 border-b border-border"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Linkedin className="w-3.5 h-3.5" /> LinkedIn
+            </a>
+            <a
+              href="https://github.com/Vinitsharma101"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-foreground hover:text-background transition-all duration-200"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Github className="w-3.5 h-3.5" /> GitHub
+            </a>
           </div>
         )}
-        <div className="relative w-full h-full top-20">
-          <img
-            src="/st.png"
-            className="w-52 h-32 animate-fade-up-delay-2 cursor-grab active:cursor-grabbing"
+      </header>
+
+      {/* ── Main Content ── */}
+      <main
+        className="flex-1 flex flex-col items-center justify-center relative z-10 px-6 sm:px-10 md:px-16"
+        style={{
+          transform: `translateY(${heroTranslateY}px)`,
+          opacity: heroOpacity,
+        }}
+      >
+        {/* Label */}
+        <p className="text-[10px] sm:text-xs tracking-[0.4em] text-muted-foreground/70 uppercase mb-5 animate-fade-up">
+          Portfolio
+        </p>
+
+        {/* Name stack */}
+
+        <div className="overflow-hidden relative " >
+          <h1
+            className="text-[15vw] md:text-[12vw] lg:text-[10vw] font-serif font-normal tracking-tighter text-foreground animate-fade-up-delay-1 leading-[0.85] "
             style={{
-              left: `${position.x}px`,
-              top: `${position.y}px`,
-              userSelect: "none",
+              transform: `translateX(${mousePos.x * -6}px)`,
+              transition: "transform 0.3s ease-out",
             }}
-            draggable="false"
-          />
+          >
+            VINIT
+          </h1>
+        </div>
+        <div
+          className=" relative"
+          onMouseEnter={startCycling}
+          onMouseLeave={stopCycling}
+        >
+          <h1
+            className="block text-[18vw] sm:text-[15vw] md:text-[13vw] lg:text-[11vw] font-serif font-normal tracking-tighter text-foreground animate-fade-up leading-[0.88]"
+            style={{
+              transform: `translateX(${mousePos.x * 7}px)`,
+              transition: "transform 0.35s ease-out",
+            }}
+          >
+            SHARMA
+          </h1>
+
+          {/* Floating preview image */}
+          <AnimatePresence>
+            {currentImage && (
+              <motion.div
+                key={currentImage} // stable key based on image source
+                className="hidden md:block absolute top-1/2 -translate-y-1/2 w-[200px] md:w-[250px] z-[60] pointer-events-none"
+                style={{
+                  right: "-10%",
+                  transform: "translateX(60%)",
+                }}
+                initial={{ opacity: 0, y: 80 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <img
+                  src={currentImage}
+                  alt="Vinit Sharma preview"
+                  className="w-full h-auto shadow-2xl rounded-xl"
+                  style={{
+                    filter: "saturate(0.9) contrast(1.05)",
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </main>
+
+      {/* ── Bottom Bar ── */}
+      <footer className="relative z-10 px-6 sm:px-10 md:px-16 pb-6 md:pb-10 flex justify-between items-end">
+        {/* FULLSTACK + ghost DEVELOPER text */}
+        <div className="flex flex-col leading-none select-none">
+          {/* FULLSTACK */}
+          <span className="text-[2vw] sm:text-[1.5vw] md:text-[1vw] tracking-[0.4em] text-muted-foreground/50 uppercase">
+            Fullstack
+          </span>
+
+          {/* DEVELOPER + IMAGE */}
+          <div className="flex items-end gap-4">
+            <span
+              className="text-[9vw] sm:text-[7vw] md:text-[6vw] lg:text-[5vw] font-serif font-normal tracking-tighter text-foreground/[0.3] whitespace-nowrap"
+              style={{
+                lineHeight: 0.9,
+                transform: `translateX(${mousePos.x * 7}px) perspective(600px) rotateX(20deg)`,
+                transition: "transform 0.5s ease-out",
+              }}
+            >
+              DEVELOPER
+            </span>
+
+            {/* IMAGE */}
+            <img
+              src={scroll}
+              alt="scroll"
+              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-32 lg:h-24 object-contain animate-fade-up-delay-3"
+            />
+          </div>
         </div>
 
-        <span className="hidden lg:block">
+        {/* Circular text — desktop only */}
+        <span className="hidden lg:block animate-fade-up-delay-2">
           <CircularText
-            text="Full-StackDev*App-Dev*"
+            text="FULL-STACK*APP-DEV*"
             onHover="speedUp"
             spinDuration={20}
             className="custom-class border border-black     "
           />
         </span>
-      </div>
-
+      </footer>
       {/* Logo Marquee */}
       <LogoMarquee />
     </section>

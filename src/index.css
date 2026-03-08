@@ -28,6 +28,8 @@
     --muted: 35 15% 85%;
     --muted-foreground: 0 0% 40%;
 
+
+
     /* Olive accent */
     --accent: 75 20% 35%;
     --accent-foreground: 40 33% 96%;
@@ -166,9 +168,6 @@
     -ms-overflow-style: none;
   }
 
-  .horizontal-scroll::-webkit-scrollbar {
-    display: none;
-  }
 
   .horizontal-scroll > * {
     @apply snap-center flex-shrink-0;
@@ -291,4 +290,14 @@
     animation: marquee 30s linear infinite;
     animation-play-state: paused;
   }
+}
+
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }

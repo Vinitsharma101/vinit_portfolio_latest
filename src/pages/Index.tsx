@@ -69,15 +69,13 @@ const Index = () => {
             </ExperimentSection>
           </div>
         </div>
-
-        
+        ```
         {/*  02: Tech Stack */}
         <div className="sticky top-0 z-[2]">
           <TechStackSection />
         </div>
-
         {/*  03: Experience  */}
-         <div className="sticky z-[3]">
+        <div className="sticky z-[3]">
           <div className="bg-background">
             <ExperienceCanvasSection
               number="03"
