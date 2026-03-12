@@ -4,7 +4,38 @@ import { LogoMarquee } from "./LogoMarquee";
 import CircularText from "./CircularText";
 import { AnimatePresence, motion } from "framer-motion";
 import scroll from "/st.png";
+
 const images = ["/mypic.jpeg"];
+
+const revealStyles = `
+  
+  @keyframes a-ltr-before {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(200%); }
+  }
+  .reveal-span {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    line-height: 1.2;
+  }
+  
+  .reveal-span::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 100%; height: 100%;
+    background: var(--reveal-bg, #0a0a0a);
+    animation: a-ltr-before 2s cubic-bezier(.77,0,.18,1) forwards;
+    transform: translateX(0);
+  }
+  .reveal-span:nth-of-type(1)::before,
+  .reveal-span:nth-of-type(1)::after { animation-delay: 3s; }
+  .reveal-span:nth-of-type(2)::before,
+  .reveal-span:nth-of-type(2)::after { animation-delay: 3.5s; }
+  .reveal-span:nth-of-type(3)::before,
+  .reveal-span:nth-of-type(3)::after { animation-delay: 3s; }
+`;
 
 export const Hero = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -12,6 +43,16 @@ export const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Inject reveal animation styles once
+  useEffect(() => {
+    if (!document.getElementById("reveal-anim-style")) {
+      const el = document.createElement("style");
+      el.id = "reveal-anim-style";
+      el.textContent = revealStyles;
+      document.head.appendChild(el);
+    }
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -33,19 +74,17 @@ export const Hero = () => {
 
   const heroOpacity = Math.max(0, 1 - scrollY / (window.innerHeight * 0.7));
   const heroTranslateY = scrollY * -0.08;
-  const [isHovered, setIsHovered] = useState(false);
+
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startCycling = () => {
     if (intervalRef.current) return;
-
     const showNextImage = () => {
       const randomImage = images[Math.floor(Math.random() * images.length)];
       setCurrentImage(randomImage);
     };
-
-    showNextImage(); // show first immediately
+    showNextImage();
     intervalRef.current = setInterval(showNextImage, 2000);
   };
 
@@ -136,11 +175,7 @@ export const Hero = () => {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          {mobileMenuOpen ? (
-            <X className="w-4 h-4" />
-          ) : (
-            <Menu className="w-4 h-4" />
-          )}
+          {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
         </button>
 
         {/* Mobile dropdown */}
@@ -191,10 +226,9 @@ export const Hero = () => {
         </p>
 
         {/* Name stack */}
-
-        <div className="overflow-hidden relative " >
+        <div className="overflow-hidden relative">
           <h1
-            className="text-[15vw] md:text-[12vw] lg:text-[10vw] font-serif font-normal tracking-tighter text-foreground animate-fade-up-delay-1 leading-[0.85] "
+            className="text-[15vw] md:text-[12vw] lg:text-[10vw] font-serif font-normal tracking-tighter text-foreground animate-fade-up-delay-1 leading-[0.85]"
             style={{
               transform: `translateX(${mousePos.x * -6}px)`,
               transition: "transform 0.3s ease-out",
@@ -203,8 +237,9 @@ export const Hero = () => {
             VINIT
           </h1>
         </div>
+
         <div
-          className=" relative"
+          className="relative"
           onMouseEnter={startCycling}
           onMouseLeave={stopCycling}
         >
@@ -222,12 +257,9 @@ export const Hero = () => {
           <AnimatePresence>
             {currentImage && (
               <motion.div
-                key={currentImage} // stable key based on image source
+                key={currentImage}
                 className="hidden md:block absolute top-1/2 -translate-y-1/2 w-[200px] md:w-[250px] z-[60] pointer-events-none"
-                style={{
-                  right: "-10%",
-                  transform: "translateX(60%)",
-                }}
+                style={{ right: "-10%", transform: "translateX(60%)" }}
                 initial={{ opacity: 0, y: 80 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
@@ -237,9 +269,7 @@ export const Hero = () => {
                   src={currentImage}
                   alt="Vinit Sharma preview"
                   className="w-full h-auto shadow-2xl rounded-xl"
-                  style={{
-                    filter: "saturate(0.9) contrast(1.05)",
-                  }}
+                  style={{ filter: "saturate(0.9) contrast(1.05)" }}
                 />
               </motion.div>
             )}
@@ -249,31 +279,28 @@ export const Hero = () => {
 
       {/* ── Bottom Bar ── */}
       <footer className="relative z-10 px-6 sm:px-10 md:px-16 pb-6 md:pb-10 flex justify-between items-end">
-        {/* FULLSTACK + ghost DEVELOPER text */}
+        {/* FULLSTACK + ghost DEVELOPER text with reveal animation */}
         <div className="flex flex-col leading-none select-none">
-          {/* FULLSTACK */}
-          <span className="text-[2vw] sm:text-[1.5vw] md:text-[1vw] tracking-[0.4em] text-muted-foreground/50 uppercase">
+          {/* nth-of-type(1) → delay 0.3s */}
+          <span className=" text-[2vw] sm:text-[1vw] md:text-[1vw] tracking-[0.4em] text-muted-foreground/50 uppercase">
             Fullstack
           </span>
 
           {/* DEVELOPER + IMAGE */}
           <div className="flex items-end gap-4">
+            {/* nth-of-type(2) → delay 0.8s */}
             <span
-              className="text-[9vw] sm:text-[7vw] md:text-[6vw] lg:text-[5vw] font-serif font-normal tracking-tighter text-foreground/[0.3] whitespace-nowrap"
-              style={{
-                lineHeight: 0.9,
-                transform: `translateX(${mousePos.x * 7}px) perspective(600px) rotateX(20deg)`,
-                transition: "transform 0.5s ease-out",
-              }}
+              className="reveal-span text-[9vw] sm:text-[7vw] md:text-[6vw] lg:text-[5vw] font-serif font-normal tracking-tighter text-foreground/[0.3] whitespace-nowrap"
+              style={{ lineHeight: 0.9 }}
             >
               DEVELOPER
             </span>
 
-            {/* IMAGE */}
+            {/* nth-of-type(3) → delay 1.3s */}
             <img
               src={scroll}
               alt="scroll"
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-32 lg:h-24 object-contain animate-fade-up-delay-3"
+              className=" w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-32 lg:h-24 object-contain"
             />
           </div>
         </div>
@@ -284,10 +311,11 @@ export const Hero = () => {
             text="FULL-STACK*APP-DEV*"
             onHover="speedUp"
             spinDuration={20}
-            className="custom-class border border-black     "
+            className="custom-class border border-black"
           />
         </span>
       </footer>
+
       {/* Logo Marquee */}
       <LogoMarquee />
     </section>

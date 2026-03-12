@@ -76,10 +76,10 @@ const Index = () => {
         </div>
         {/*  03: Experience  */}
         <div className="sticky z-[3]">
-          <div className="bg-background">
+          <div className="bg-background ">
             <ExperienceCanvasSection
               number="03"
-              title="System Architecture"
+              title="Experience"
               description="The journey through startups, teams, and real development challenges. Where theory met practice."
             />
           </div>

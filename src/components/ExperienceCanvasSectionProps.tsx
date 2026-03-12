@@ -275,7 +275,7 @@ export const ExperienceCanvasSection = ({
           y: useTransform(scrollYProgress, [0, 1], [-50, 50]),
           opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.03, 0.2, 0])
         }}
-        className="absolute left-10 top-1/3 text-[8vw] font-serif text-foreground leading-none select-none pointer-events-none tracking-widest"
+        className=" absolute left-10 top-1/3 text-[8vw] font-serif text-foreground leading-none select-none pointer-events-none tracking-widest"
       >
         JOURNEY
       </motion.div>
@@ -293,7 +293,7 @@ export const ExperienceCanvasSection = ({
           <span className="text-mono text-muted-foreground block mb-2">
             {number}
           </span>
-          <h2 className="text-4xl md:text-5xl text-editorial mb-4">{title}</h2>
+          <h2 className="text-4xl md:text-5xl text-editorial mb-4 reveal-span">{title}</h2>
           <p className="text-muted-foreground max-w-xl">{description}</p>
         </motion.div>
 

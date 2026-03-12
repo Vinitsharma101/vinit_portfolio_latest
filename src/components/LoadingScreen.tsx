@@ -31,7 +31,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
     if (progress >= 100) {
       setTimeout(() => {
         setIsExiting(true);
-        setTimeout(onComplete, 600);
+        setTimeout(onComplete, 800);
       }, 200);
     }
   }, [progress, onComplete]);
@@ -84,7 +84,6 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       user-select: none;
       position: relative;
       z-index: 2;
-      /* keep background transparent so goo blobs show through */
       background: transparent;
     }
 
@@ -93,73 +92,71 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
     }
 
     /* ── Drop blob ── */
-    
-
     .dropp {
       height: 28px;
       width: 28px;
       border-radius: 50%;
       background-color: rgba(255, 77, 0, 0.85);
       position: absolute;
-      /* start at far right of the text row, animate down through it */
+      right: 40%;
+      top: 50%;
+      transform-origin: center;
+      animation: dropFall 4s cubic-bezier(0.77, 0.02, 0.68, 0.14) infinite;
+      z-index: 1;
+    }
+
+    .droppp {
+      height: 28px;
+      width: 28px;
+      border-radius: 50%;
+      background-color: rgba(255, 77, 0, 0.85);
+      position: absolute;
       right: 80%;
       top: 50%;
       transform-origin: center;
       animation: dropFall 4s cubic-bezier(0.77, 0.02, 0.68, 0.14) infinite;
       z-index: 1;
     }
-      .droppp {
+
+    .drop {
       height: 28px;
-      width: 28px;
+      width: 24px;
       border-radius: 50%;
       background-color: rgba(255, 77, 0, 0.85);
       position: absolute;
-      /* start at far right of the text row, animate down through it */
-      right: 40%;
+      left: 0;
       top: 50%;
       transform-origin: center;
-      animation: dropFall  cubic-bezier(0.77, 0.02, 0.68, 0.14) infinite;
+      animation: dropSlide 3s cubic-bezier(0.77, 0.02, 0.68, 0.14) infinite;
       z-index: 1;
     }
-      .drop {
-  height: 28px;
-  width: 24px;
-  border-radius: 50%;
-  background-color: rgba(255, 77, 0, 0.85);
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform-origin: center;
-  animation: dropSlide 3s cubic-bezier(0.77, 0.02, 0.68, 0.14) infinite;
-  z-index: 1;
-}
 
-@keyframes dropSlide {
-  0% {
-    transform: translate(-1500%, -50%) scaleY(0.55);
-    width: 14px;
-    opacity: 0;
-  }
-  8% {
-    opacity: 1;
-  }
-  35% {
-    transform: translate(200%, -50%) scaleY(1);
-    width: 24px;
-  }
-  65% {
-    transform: translate(700%, -50%) scaleY(1);
-    width: 24px;
-  }
-  92% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(1500%, -50%) scaleY(0.55);
-    width: 14px;
-    opacity: 0;
-  }
-}
+    @keyframes dropSlide {
+      0% {
+        transform: translate(-1500%, -50%) scaleY(0.55);
+        width: 14px;
+        opacity: 0;
+      }
+      8% {
+        opacity: 1;
+      }
+      35% {
+        transform: translate(200%, -50%) scaleY(1);
+        width: 24px;
+      }
+      65% {
+        transform: translate(700%, -50%) scaleY(1);
+        width: 24px;
+      }
+      92% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(1500%, -50%) scaleY(0.55);
+        width: 14px;
+        opacity: 0;
+      }
+    }
 
     @keyframes dropFall {
       0% {
@@ -188,13 +185,12 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       }
     }
 
-    /* ── Progress bar — sits under the "O" (last letter area) on the left ── */
+    /* ── Progress bar ── */
     .progress-bar-wrapper {
       position: absolute;
-      /* align to the bottom-left of the text block */
       bottom: -28px;
       left: 0;
-      width: 62%;   /* covers roughly up to the "O" */
+      width: 62%;
       height: 3px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 2px;
@@ -209,14 +205,24 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       transition: width 0.05s linear;
     }
 
-    /* ── "loading..." label ── */
+    /* ── "loading..." label with shimmer ── */
     .loading-label {
       margin-top: 52px;
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(0.65rem, 1.2vw, 0.85rem);
       letter-spacing: 0.5em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.28);
+      background: linear-gradient(90deg, #ff4d00, #fff, #ff4d00);
+      background-repeat: no-repeat;
+      background-size: 80%;
+      animation: shimmer 3s linear infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: rgba(255, 255, 255, 0);
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: -500%; }
+      100% { background-position: 500%; }
     }
   `;
 
@@ -225,7 +231,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       <style dangerouslySetInnerHTML={{ __html: css }} />
 
       {/* Off-screen SVG filter for goo effect */}
-      <svg className="goo-svg" aria-hidden="true">
+      <svg className="goo-svg " aria-hidden="true">
         <defs>
           <filter id="goo">
             <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
@@ -244,13 +250,12 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       </svg>
 
       <div className={`loading-root${isExiting ? " exiting" : ""}`}>
-        {/* Goo container wraps both text and drop blob */}
-        <div className="goo-container">
-          <h1 className="portfolio-text">
+        <div className="goo-container ">
+          <h1 className="portfolio-text ">
             {text.split("").map((char, index) => {
               const letterProgress = Math.min(
                 Math.max(fillProgress - index, 0),
-                1,
+                1
               );
               const orangeColor = `rgba(255, 77, 0, ${letterProgress})`;
               const greyColor = `rgba(255, 255, 255, ${
@@ -274,12 +279,10 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
             })}
           </h1>
 
-          {/* Drop blob */}
           <div className="drop" />
           <div className="dropp" />
           <div className="droppp" />
 
-          {/* Progress bar — under left side ending near the "O" */}
           <div className="progress-bar-wrapper">
             <div
               className="progress-bar-fill"
