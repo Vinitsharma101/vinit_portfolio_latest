@@ -189,9 +189,7 @@ export const TechStackSection = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <span className="text-xs tracking-[0.3em] text-[#6a6a6a] uppercase mb-3 block">
-            02
-          </span>
+          
           <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl text-terminal mb-3">
             The Stack
           </h2>

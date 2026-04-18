@@ -14,30 +14,30 @@ interface Experience {
 
 const experiences: Experience[] = [
   {
-    id: 1,
-    role: "Full Stack Developer",
-    company: "Token Buddy",
-    type: "Startup",
-    period: "Sept 2025 - Current",
-    description: [
-      "Cleaned and analyzed healthcare data",
-      "Built data visualizations for monthly team reports",
-      "Identified trends in patient feedback that led to 15% improvement in user satisfaction",
-    ],
-    isActive: true,
-  },
-  {
-    id: 2,
-    role: "Web Developer Intern",
-    company: "Vstart",
-    type: "Startup",
-    period: "June 2025 - Aug 2025",
-    description: [
-      "Collaborated with a team of developers to build and test features for a React-based web app",
-      "Fixed front-end bugs and improved UI responsiveness across mobile and desktop",
-      "Wrote unit tests to ensure app stability during updates",
-    ],
-  },
+  id: 1,
+  role: "Full Stack Developer Intern",
+  company: "Token Buddy",
+  type: "Startup",
+  period: "Dec 2025 - Present",
+  description: [
+    "Worked on building full stack web application features and dashboard functionality",
+    "Implemented secure authentication and managed backend logic for user data",
+    "Analyzed user feedback data and contributed to improving overall user experience",
+  ],
+  isActive: true,
+},
+{
+  id: 2,
+  role: "Junior Software Developer Intern",
+  company: "L.P. Engineering Works",
+  type: "Company",
+  period: "Aug 2025 - Jan 2025",
+  description: [
+    "Assisted in developing and maintaining backend APIs with guidance from senior developers",
+    "Worked on testing, debugging, and improving performance of applications",
+    "Collaborated with team members and handled database operations using MongoDB and SQL",
+  ],
+},
   {
     id: 3,
     role: "Training",
@@ -84,7 +84,7 @@ export const ExperienceSection = () => {
             />
 
             {/* Left side - meta */}
-            <div className={`pl-8 md:pl-0 md:pr-16 md:text-right ${index % 2 === 1 ? "md:order-2 md:pl-16 md:pr-0 md:text-left" : ""}`}>
+            <div className={`pl-8 md:pl-0 md:pr-16 md:justify-self-end md:text-right ${index % 2 === 1 ? "md:order-2 md:pl-16 md:pr-0 md:justify-self-start md:text-left" : ""}`}>
               <div className="flex items-center gap-2 md:justify-end mb-2" style={{ flexDirection: index % 2 === 1 ? "row" : "row-reverse" }}>
                 <Calendar className="w-3 h-3 text-muted-foreground" />
                 <span className="text-mono text-muted-foreground">{exp.period}</span>

@@ -10,7 +10,7 @@ import projectPreview2 from "@/assets/project-preview-2.png";
 import projectPreview3 from "@/assets/project-preview-3.png";
 import projectPreview4 from "@/assets/project-preview-4.jpg";
 import projectPreview5 from "@/assets/project-preview-5.jpg";
-import projectPreview6 from "@/assets/project-preview-6.jpg";
+import projectPreview6 from "@/assets/project-preview-6.png";
 import projectPreview7 from "@/assets/project-preview-7.png";
 
 const projectPreviews: { src: string; aspect: '16:9' | '9:16' }[] = [

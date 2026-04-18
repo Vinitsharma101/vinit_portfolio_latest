@@ -141,7 +141,7 @@ export const Hero = () => {
         {/* Desktop nav links */}
         <nav className="hidden md:flex items-center gap-2">
           <a
-            href="https://drive.google.com/file/d/1SAh062nRIF-QVeHDI-cWMd8poyI0SlTb/view?usp=drive_link"
+            href="https://drive.google.com/file/d/1HIM5unzHCjHNJhOi1XBM7ALxMHRKOkn_/view?usp=drive_link"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 text-xs border border-border text-muted-foreground hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-200"

@@ -55,21 +55,14 @@ const Index = () => {
 
       {/* Content that covers the hero */}
       <div className="relative z-10">
-        {/*  01: Projects - Real World Builds */}
-        <div className="sticky  z-[1] top-0">
-          <div className="bg-sand">
-            <ExperimentSection
-              number="01"
-              title="Real-World Builds"
-              description="Projects that solve problems. Each project represents a unique challenge conquered with code and creativity."
-              accent="olive"
-              bgVariant="sand"
-            >
-              <ProjectsStickyScroll />
-            </ExperimentSection>
-          </div>
-        </div>
-        ```
+        {/* 01: Projects */}
+{/* 01: Projects */}
+<div className="z-[1]">
+  <div className="bg-sand">
+    <ProjectsStickyScroll />
+  </div>
+</div>
+
         {/*  02: Tech Stack */}
         <div className="sticky top-0 z-[2]">
           <TechStackSection />
@@ -78,8 +71,8 @@ const Index = () => {
         <div className="sticky z-[3]">
           <div className="bg-background ">
             <ExperienceCanvasSection
-              number="03"
-              title="Experience"
+              number=""
+              title="Experience and Work"
               description="The journey through startups, teams, and real development challenges. Where theory met practice."
             />
           </div>

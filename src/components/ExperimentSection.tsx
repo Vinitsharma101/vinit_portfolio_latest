@@ -60,8 +60,8 @@ export const ExperimentSection = ({
   return (
     <section
       ref={ref}
-      className={`min-h-screen py-24 md:py-20 px-8 md:px-16 overflow-hidden ${bgStyles[bgVariant]}`}
-    >
+      className={`min-h-screen py-24 md:py-20 px-8 md:px-16 ${bgStyles[bgVariant]}`}
+      >
       <div 
         className={`max-w-6xl mx-auto transform transition-all duration-700 ease-out ${getTransformStyles(isInView)}`}
       >
