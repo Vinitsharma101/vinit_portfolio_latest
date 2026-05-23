@@ -105,31 +105,6 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       z-index: 1;
     }
 
-    .droppp {
-      height: 28px;
-      width: 28px;
-      border-radius: 50%;
-      background-color: rgba(255, 77, 0, 0.85);
-      position: absolute;
-      right: 80%;
-      top: 50%;
-      transform-origin: center;
-      animation: dropFall 4s cubic-bezier(0.77, 0.02, 0.68, 0.14) infinite;
-      z-index: 1;
-    }
-
-    .drop {
-      height: 28px;
-      width: 24px;
-      border-radius: 50%;
-      background-color: rgba(255, 77, 0, 0.85);
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform-origin: center;
-      animation: dropSlide 3s cubic-bezier(0.77, 0.02, 0.68, 0.14) infinite;
-      z-index: 1;
-    }
 
     @keyframes dropSlide {
       0% {

@@ -8,7 +8,7 @@ import projectPreview1 from "@/assets/project-preview-1.png";
 import projectPreview2 from "@/assets/project-preview-2.png";
 import projectPreview3 from "@/assets/project-preview-3.png";
 import projectPreviewx from "@/assets/image.png";
-import projectPreview6 from "@/assets/project-preview-6.png";
+import imgofapp from "@/assets/imgofapp.png";
 
 
 
@@ -25,14 +25,6 @@ const content = [
   },
   {
     number: "02",
-    title: "Live Location Sharing",
-    category: "Real-Time App",
-    tools: "WebSockets, React, Maps API",
-    image: projectPreview2,
-    link: "/projects",
-  },
-  {
-    number: "03",
     title: "Token Buddy Platform",
     category: "Data Viz",
     tools: "React, Charts, TypeScript",
@@ -40,11 +32,19 @@ const content = [
     link: "/projects",
   },
   {
+    number: "03",
+    title: "The Apix",
+    category: "Movie Streaming Platform",
+    tools: "React-Native, Expo, MongoDB",
+    image: imgofapp,
+    link: "/projects",
+  },
+  {
     number: "04",
-    title: "Projecttory - Find Your Team",
-    category: "Social Platform",
-    tools: "React, Charts, TypeScript",
-    image: projectPreview6,
+    title: "Live Location Sharing",
+    category: "Real-Time App",
+    tools: "WebSockets, React, Maps API",
+    image: projectPreview2,
     link: "/projects",
   },
   {

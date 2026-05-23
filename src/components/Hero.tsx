@@ -290,7 +290,7 @@ export const Hero = () => {
           <div className="flex items-end gap-4">
             {/* nth-of-type(2) → delay 0.8s */}
             <span
-              className="reveal-span text-[9vw] sm:text-[7vw] md:text-[6vw] lg:text-[5vw] font-serif font-normal tracking-tighter text-foreground/[0.3] whitespace-nowrap"
+              className=" text-[9vw] sm:text-[7vw] md:text-[6vw] lg:text-[5vw] font-serif font-normal tracking-tighter text-foreground/[0.3] whitespace-nowrap"
               style={{ lineHeight: 0.9 }}
             >
               DEVELOPER
