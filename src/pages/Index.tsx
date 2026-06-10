@@ -3,7 +3,6 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { Hero } from "@/components/Hero";
 import { ExperimentSection } from "@/components/ExperimentSection";
 import { ContactSection } from "@/components/ContactSection";
-
 import { FloatingNav } from "@/components/FloatingNav";
 import { TechStackSection } from "@/components/TechStackSection";
 import { CustomCursor } from "@/components/CustomCursor";
@@ -12,10 +11,16 @@ import { ExperienceCanvasSection } from "@/components/ExperienceCanvasSectionPro
 import { ProjectsStickyScroll } from "@/components/ProjectsStickyScroll";
 
 const Index = () => {
-  const [showLoading, setShowLoading] = useState(() => {
-    // Only show loading if it hasn't been shown this session
-    return !sessionStorage.getItem("terminal-loaded");
-  });
+  // Always start as true — loading screen shows by default on every render
+  const [showLoading, setShowLoading] = useState(true);
+
+  useEffect(() => {
+    // After mount, check if we've already loaded this session
+    if (sessionStorage.getItem("terminal-loaded")) {
+      setShowLoading(false);
+    }
+    // Otherwise stay true — loading screen will call handleLoadingComplete
+  }, []);
 
   const handleLoadingComplete = () => {
     sessionStorage.setItem("terminal-loaded", "true");
@@ -37,50 +42,40 @@ const Index = () => {
   return (
     <div className="relative">
       {showLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
-      {/* Custom cursor */}
-      {/* <CustomCursor /> */}
-      <CustomCursor />
 
-      {/* Scroll progress indicator */}
-      <ScrollProgress />
+      {/* Hide main content while loading to prevent flash */}
+      <div style={{ visibility: showLoading ? "hidden" : "visible" }}>
+        <CustomCursor />
+        <ScrollProgress />
+        <FloatingNav />
+        <Hero />
+        <div className="h-screen" />
 
-      {/* Floating navigation */}
-      <FloatingNav />
+        <div className="relative z-10">
+          <div className="z-[1]">
+            <div className="bg-sand">
+              <ProjectsStickyScroll />
+            </div>
+          </div>
 
-      {/* Fixed hero section */}
-      <Hero />
+          <div className="sticky top-0 z-[2]">
+            <TechStackSection />
+          </div>
 
-      {/* Spacer to allow hero to be visible */}
-      <div className="h-screen" />
+          <div className="sticky z-[3]">
+            <div className="bg-background">
+              <ExperienceCanvasSection
+                number=""
+                title="Experience and Work"
+                description="The journey through startups, teams, and real development challenges. Where theory met practice."
+              />
+            </div>
+          </div>
 
-      {/* Content that covers the hero */}
-      <div className="relative z-10">
-        {/* 01: Projects */}
-{/* 01: Projects */}
-<div className="z-[1]">
-  <div className="bg-sand">
-    <ProjectsStickyScroll />
-  </div>
-</div>
-
-        {/*  02: Tech Stack */}
-        <div className="sticky top-0 z-[2]">
-          <TechStackSection />
-        </div>
-        {/*  03: Experience  */}
-        <div className="sticky z-[3]">
-          <div className="bg-background ">
-            <ExperienceCanvasSection
-              number=""
-              title="Experience and Work"
-              description="The journey through startups, teams, and real development challenges. Where theory met practice."
-            />
+          <div className="relative z-[4]">
+            <ContactSection />
           </div>
         </div>
-        {/* Contact section */}
-        <div className="relative z-[4]">
-          <ContactSection />
-        </div>{" "}
       </div>
     </div>
   );
